@@ -29,8 +29,10 @@ index.html                home            ┐
 menu.html                 the menu        │ edit these
 robots.txt                                ┘
 build-dist.py             copies the above into dist/ and writes _headers
+build-preview.py          bundles the whole site into one self-contained file
 netlify.toml              points Netlify's publish directory at dist/
 dist/                     GENERATED — the folder that actually deploys
+preview.html              GENERATED — both pages in a single file
 netlify.toml
 assets/
   css/styles.css          all styling, numbered sections, tokens at the top
@@ -217,6 +219,24 @@ Any other static host works too (Cloudflare Pages, cPanel, S3). Only Netlify
 reads `_headers`; on anything else the headers in `build-dist.py` need
 translating into that host's own config, and **the site is meaningfully less
 safe without them**.
+
+## Single-file preview
+
+`build-preview.py` bundles the entire site — both pages, the stylesheet, the
+script, all five font faces and every illustration — into one `preview.html`
+with zero external requests. About 218 KB.
+
+```bash
+python3 build-preview.py
+```
+
+Useful for emailing the client a preview, opening the site off a USB stick, or
+publishing it somewhere that only accepts a single file. Because one file can
+only be one page, the two pages become two panels the nav swaps on the URL hash
+(`#home` / `#menu`); everything else, including the scroll sequence, is the real
+site running unmodified.
+
+This is a preview artefact, not the deliverable. What ships is `dist/`.
 
 ## Security
 

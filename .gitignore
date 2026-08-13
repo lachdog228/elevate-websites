@@ -1,2 +1,4 @@
 # The zipped copy of dist/ — regenerate it rather than committing binaries.
 daily-soup-go-netlify.zip
+# Single-file preview — regenerate with build-preview.py.
+preview.html
