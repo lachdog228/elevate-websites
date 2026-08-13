@@ -38,7 +38,7 @@
 <header class="site-header" id="top">
   <div class="wrap header-inner">
 
-    <a class="wordmark" href="#top" aria-label="Daily Soup Go., home">
+    <a class="wordmark" href="index.html" aria-label="Daily Soup Go., home">
       <span class="wordmark-icon" aria-hidden="true">
         <svg viewBox="0 0 64 48" focusable="false">
           <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none" opacity=".8">
@@ -53,12 +53,12 @@
 
     <nav class="site-nav" id="site-nav" aria-label="Main">
       <ul>
-        <li><a href="#soups">Today's&nbsp;soups</a></li>
-        <li><a href="#takeaway">1L&nbsp;packs</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#visit">Find&nbsp;us</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="index.html#takeaway" data-spy="takeaway">1L&nbsp;packs</a></li>
+        <li><a href="index.html#about" data-spy="about">About</a></li>
+        <li><a href="index.html#visit" data-spy="visit">Find&nbsp;us</a></li>
       </ul>
-      <a class="btn btn-primary nav-cta" href="#soups">View today's soups</a>
+      <a class="btn btn-primary nav-cta" href="menu.html">View the menu</a>
     </nav>
 
     <p class="status-pill" data-open-status hidden>
@@ -94,7 +94,7 @@
       </p>
 
       <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#soups">View today's soups</a>
+        <a class="btn btn-primary btn-lg" href="menu.html">View the menu</a>
         <a class="btn btn-ghost btn-lg" href="#visit">Find the shop</a>
       </div>
     </div>
@@ -159,142 +159,24 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     TODAY'S SOUPS
-     ─────────────────────────────────────────────────────────────
-     EDIT HERE: soup names, descriptions, prices and dietary tags.
-     Four <article class="soup"> blocks — the first two are Basic
-     (badge reads "Classic"), the last two Gourmet. Replace [$0.00]
-     with the real price.
-
-     On a wide screen main.js turns this into a scroll-scrubbed
-     sequence: the soups cross-fade one into the next as you scroll.
-     With JavaScript off, on a narrow screen, or under
-     prefers-reduced-motion, the same four blocks simply stack and
-     read as a normal list. Content is identical either way.
+     TODAY'S SOUPS — a pointer, not a copy.
+     The soups themselves live on menu.html so there is only ever one
+     place to edit when the board changes.
      ══════════════════════════════════════════════════════════════ -->
 <section class="section soups" id="soups" aria-labelledby="soups-title">
-
-  <div class="wrap">
-    <header class="section-head">
-      <p class="section-marker">On today</p>
-      <h2 id="soups-title">Today&rsquo;s soups</h2>
-      <p class="section-lede">
-        Two classics and two gourmet, cooked this morning and held hot until
-        3pm. Cup or bowl, always to take away.
-      </p>
-    </header>
-  </div>
-
-  <div class="soups-scroll" data-scrub>
-    <div class="soups-stage">
-      <div class="wrap soups-layout">
-
-        <!-- Index rail. Only shown in scrub mode; JS wires up the buttons. -->
-        <ol class="soups-index" data-scrub-index hidden>
-          <li><button type="button" data-scrub-to="0"><span>01</span> Chicken &amp; Vegetable</button></li>
-          <li><button type="button" data-scrub-to="1"><span>02</span> Pumpkin</button></li>
-          <li><button type="button" data-scrub-to="2"><span>03</span> Beef &amp; Barley</button></li>
-          <li><button type="button" data-scrub-to="3"><span>04</span> Creamy Tomato &amp; Basil</button></li>
-        </ol>
-
-        <div class="soups-panels">
-
-          <!-- ── Basic 1 ──────────────────────────────────────── -->
-          <article class="soup" data-soup>
-            <div class="soup-art">
-              <img src="assets/img/soup-chicken-vegetable.svg" width="360" height="360"
-                   alt="Bowl of chicken and vegetable soup seen from above" decoding="async">
-            </div>
-            <div class="soup-info">
-              <p class="soup-tier">Classic</p>
-              <h3>Chicken &amp; Vegetable</h3>
-              <p class="soup-desc">
-                Slow-simmered chicken, carrot, celery and leek in a clear
-                golden broth. The one people come back for.
-              </p>
-              <ul class="soup-tags">
-                <li>Dairy free</li>
-                <li>Contains gluten</li>
-              </ul>
-              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
-            </div>
-          </article>
-
-          <!-- ── Basic 2 ──────────────────────────────────────── -->
-          <article class="soup" data-soup>
-            <div class="soup-art">
-              <img src="assets/img/soup-pumpkin.svg" width="360" height="360"
-                   alt="Bowl of pumpkin soup with a cream swirl seen from above" loading="lazy" decoding="async">
-            </div>
-            <div class="soup-info">
-              <p class="soup-tier">Classic</p>
-              <h3>Pumpkin</h3>
-              <p class="soup-desc">
-                Roasted pumpkin blended smooth with onion and a little cream,
-                finished with toasted pepitas and cracked pepper.
-              </p>
-              <ul class="soup-tags">
-                <li>Vegetarian</li>
-                <li>Gluten free</li>
-              </ul>
-              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
-            </div>
-          </article>
-
-          <!-- ── Gourmet 1 ────────────────────────────────────── -->
-          <article class="soup" data-soup>
-            <div class="soup-art">
-              <img src="assets/img/soup-beef-barley.svg" width="360" height="360"
-                   alt="Bowl of beef and barley soup seen from above" loading="lazy" decoding="async">
-            </div>
-            <div class="soup-info">
-              <p class="soup-tier soup-tier-gourmet">Gourmet</p>
-              <h3>Beef &amp; Barley</h3>
-              <p class="soup-desc">
-                Chuck beef braised three hours with pearl barley, root
-                vegetables and thyme. Thick enough to stand a spoon in.
-              </p>
-              <ul class="soup-tags">
-                <li>Dairy free</li>
-                <li>Contains gluten</li>
-              </ul>
-              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
-            </div>
-          </article>
-
-          <!-- ── Gourmet 2 ────────────────────────────────────── -->
-          <article class="soup" data-soup>
-            <div class="soup-art">
-              <img src="assets/img/soup-creamy-tomato.svg" width="360" height="360"
-                   alt="Bowl of creamy tomato soup with basil seen from above" loading="lazy" decoding="async">
-            </div>
-            <div class="soup-info">
-              <p class="soup-tier soup-tier-gourmet">Gourmet</p>
-              <h3>Creamy Tomato &amp; Basil</h3>
-              <p class="soup-desc">
-                Slow-roasted tomatoes, garlic and torn basil, swirled with
-                cream and scattered with croutons from yesterday's loaf.
-              </p>
-              <ul class="soup-tags">
-                <li>Vegetarian</li>
-                <li>Contains gluten</li>
-              </ul>
-              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="wrap">
+  <div class="wrap soups-home reveal">
+    <p class="section-marker">On today</p>
+    <h2 id="soups-title">Four soups<br>on the board</h2>
+    <p class="section-lede">
+      Two classics and two gourmet, cooked this morning and held hot until 3pm.
+      Cup or bowl, always to take away — and whatever is left goes home in a
+      chilled 1L pack.
+    </p>
+    <a class="btn btn-primary btn-lg" href="menu.html">View the menu</a>
     <p class="soups-note">
-      The board changes every day. Bowls and large cups are also available —
-      ask at the counter.
+      The board changes every weekday. When a soup runs out it is gone for the day.
     </p>
   </div>
-
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -513,10 +395,10 @@
       </ul>
       <nav class="footer-nav" aria-label="Footer">
         <ul>
-          <li><a href="#soups">Today's soups</a></li>
-          <li><a href="#takeaway">1L packs</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#visit">Location</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="index.html#takeaway">1L packs</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#visit">Location</a></li>
         </ul>
       </nav>
     </div>

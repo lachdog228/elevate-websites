@@ -95,18 +95,22 @@
   /* ── Highlight the section currently in view ────────────────────── */
 
   (function scrollSpy() {
-    var links = $$('.site-nav ul a[href^="#"]');
+    // Nav links point across pages now (index.html#about), so the section
+    // each one tracks is named by data-spy rather than parsed from the href.
+    // Links whose section is not on this page simply never light up.
+    var links = $$('.site-nav ul a[data-spy]');
     if (!links.length || !('IntersectionObserver' in window)) return;
 
     var byId = {};
     var sections = [];
 
     links.forEach(function (link) {
-      var section = document.getElementById(link.hash.slice(1));
+      var section = document.getElementById(link.getAttribute('data-spy'));
       if (!section) return;
       byId[section.id] = link;
       sections.push(section);
     });
+    if (!sections.length) return;
 
     var visible = {};
 

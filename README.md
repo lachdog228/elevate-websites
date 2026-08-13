@@ -1,8 +1,17 @@
 # Daily Soup Go. — website
 
-A one-page site for a fixed-location soup shop: four soups cooked fresh every
+A two-page site for a fixed-location soup shop: four soups cooked fresh every
 weekday morning (two Basic, two Gourmet), served takeaway only 11am–3pm, with
 whatever is left over chilled into 1L packs.
+
+| Page | What it is |
+| --- | --- |
+| `index.html` | Home — hero, a pointer to the menu, 1L packs, about, location and hours |
+| `menu.html` | The menu — the scroll-scrubbed soups, then sizes, packs, dietary key and notes |
+
+**The four soups live on `menu.html` only.** The home page links to it rather
+than repeating it, so when the board changes there is exactly one file to
+edit.
 
 > **This is a draft for client approval.** Every price and contact detail is a
 > bracketed placeholder highlighted in yellow, the page carries `noindex`, and a
@@ -16,7 +25,8 @@ no third-party requests at runtime. Drop the folder on any static host (Netlify,
 Cloudflare Pages, cPanel, S3) and it works.
 
 ```
-index.html                the whole site — one page, six sections
+index.html                home
+menu.html                 the menu
 robots.txt
 netlify.toml
 assets/
@@ -61,9 +71,10 @@ one-line change — see below.
 
 ## The scroll-scrubbed soup sequence
 
-On a wide screen the four soups are not a grid of cards. They share one
-position on screen and cross-fade from one to the next as you scroll, with an
-index rail down the left that tracks and jumps between them.
+Lives at the top of `menu.html`. On a wide screen the four soups are not a grid
+of cards. They share one position on screen and cross-fade from one to the next
+as you scroll, with an index rail down the left that tracks and jumps between
+them.
 
 **How it is built.** A tall wrapper (`.soups-scroll`) supplies the scroll
 distance; its child (`.soups-stage`) is `position: sticky`, so the soup holds
@@ -106,7 +117,7 @@ property.
 
 Everything a shop owner would want to change is in one of three places.
 
-### The four soups — `index.html`, the `TODAY'S SOUPS` block
+### The four soups — `menu.html`, the `TODAY'S SOUPS` block
 
 Each soup is one `<article class="soup" data-soup>`. The four are in order: two
 Basic (label reads "Classic") then two Gourmet. To change a soup, edit these
@@ -136,16 +147,28 @@ you add one, add a matching `<li>` to the `.soups-index` rail above so the
 index stays in step. Keep `data-soup` on the article and the `.soup-art` /
 `.soup-info` wrappers inside it: those are what the scrub animates.
 
-The 1L pack price is the same pattern, in the `1L TAKEAWAY PACKS` block.
+### Sizes, packs and extras — `menu.html`, the `THE PRINTED MENU` block
 
-### Location, hours and contact — `index.html`
+Cup, bowl, roll and the 1L pack are rows in `.menu-list`. Each is a name, a
+dotted leader and a price, laid out like the shop's own board. Add a row by
+copying an `<li>`; the leader stretches on its own.
 
-- **Address** appears twice: in the `LOCATION & HOURS` block and in the footer.
+The 1L pack price also appears in the `1L TAKEAWAY PACKS` block on
+`index.html` — the one figure that is deliberately in two places, because it
+belongs in the pitch as well as the menu.
+
+### Location, hours and contact
+
+- **Address** appears three times: the `LOCATION & HOURS` block on
+  `index.html`, and the footer of both pages.
 - **Opening hours** are in the `<table class="hours">`, one row per day. Each row
   carries `data-day="0…6"` (0 = Sunday) — leave those alone, they drive the
   "Today" marker.
-- **Phone, email and socials** are in the footer, marked `data-tel`,
-  `data-email` and `data-social`.
+- **Phone, email and socials** are in the footer of both pages, marked
+  `data-tel`, `data-email` and `data-social`.
+- **The header and footer blocks are duplicated across the two pages on
+  purpose** — no build step means no includes. They are marked with a comment
+  saying to keep them identical; change one, change both.
 - **The directions button** is marked `data-map-link`.
 
 ### Hours logic — `assets/js/main.js`
@@ -265,11 +288,13 @@ checked with the client before launch:
 
 ## Testing
 
-Checked in Chromium at 320, 390, 768, 1024 and 1440 px:
+Checked in Chromium at 320, 390, 768, 1024 and 1440 px, on both pages:
 
 - no horizontal overflow at any width, and no console or network errors
+- every link on both pages resolves (200), including the cross-page anchors
 - mobile nav opens, closes on Escape, on outside click and on following a link
-- scroll spy marks the right nav item for each section
+- scroll spy marks the right nav item for each section, and leaves the
+  current-page marker on `menu.html` alone
 - anchored sections clear the sticky header
 - every in-page anchor resolves to a real element
 - the open/closed line and the "Today" row were tested against a fixed clock at
@@ -305,3 +330,8 @@ kitchen, not as a template. Worth preserving if the site is extended:
   short fade-up on scroll and the drifting steam. Everything stops under
   `prefers-reduced-motion`.
 - **The food is the only illustration.** No icon sets, no stock photography.
+- **The menu reads like a menu.** Name, dotted leader, price — the layout on
+  the shop's own board — rather than product cards with badges. Nav and group
+  labels are uppercase and letterspaced, and interior pages open with a centred
+  title. This direction was taken from thekyn.com.au at the client's request;
+  the palette, type, artwork and scroll sequence remain this site's own.

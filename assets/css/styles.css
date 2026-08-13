@@ -251,8 +251,10 @@ a { color: inherit; }
 .site-nav ul a {
   position: relative;
   text-decoration: none;
-  font-weight: 400;
-  font-size: .94rem;
+  font-weight: 500;
+  font-size: .78rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
   color: var(--ink-soft);
   padding: .5rem 0;
   transition: color .2s var(--ease);
@@ -270,9 +272,16 @@ a { color: inherit; }
 .site-nav ul a:hover { color: var(--ink); }
 .site-nav ul a:hover::after,
 .site-nav ul a[aria-current="true"]::after { transform: scaleX(1); }
-.site-nav ul a[aria-current="true"] { color: var(--ink); }
+.site-nav ul a[aria-current="true"],
+.site-nav ul a[aria-current="page"] { color: var(--ink); }
+.site-nav ul a[aria-current="page"]::after { transform: scaleX(1); }
 
-.nav-cta { padding: .65rem 1.15rem; font-size: .89rem; }
+.nav-cta {
+  padding: .68rem 1.2rem;
+  font-size: .76rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
 
 .status-pill {
   display: inline-flex;
@@ -473,6 +482,11 @@ a { color: inherit; }
   color: var(--ink-dim);
 }
 
+/* The scroll runway supplies its own space, so the section does not need
+   a bottom pad and the heading can sit close to the sequence it labels. */
+.soups-scrubbed { padding-bottom: 0; }
+.soups-scrubbed .section-head { margin-bottom: clamp(1rem, 2vw, 1.75rem); }
+
 /* ── The scroll-scrubbed sequence ──────────────────────────────────
    main.js adds .is-scrub once it has confirmed the viewport is wide
    enough and motion is welcome. The tall wrapper provides the scroll
@@ -542,6 +556,114 @@ a { color: inherit; }
   color: var(--ink);
   border-left-color: var(--cocoa);
 }
+
+/* ── 8b. Interior page header ────────────────────────────────────── */
+
+.page-head {
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(2rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--rule);
+  text-align: center;
+}
+.page-head .eyebrow {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: 1.2rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  font-size: .76rem;
+}
+.page-head h1 {
+  font-size: clamp(2.8rem, 1.6rem + 5vw, 5rem);
+  letter-spacing: -.03em;
+  margin-bottom: 1.3rem;
+}
+.page-head-lede { margin-inline: auto; text-align: center; }
+
+/* the home page points at the menu rather than repeating it */
+.soups-home { max-width: 44ch; }
+.soups-home h2 { font-size: clamp(2rem, 1.5rem + 2.2vw, 3.1rem); margin-bottom: .9rem; }
+.soups-home .section-lede { margin-bottom: 2rem; }
+.soups-home .soups-note {
+  margin-top: 1.6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* ── 8c. The printed menu ────────────────────────────────────────── */
+
+.menu-sheet { border-top: 1px solid var(--rule); }
+.menu-sheet-inner { max-width: 46rem; }
+
+.menu-group { margin-bottom: clamp(2.8rem, 5vw, 4rem); }
+
+.menu-group-title {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  padding-bottom: .9rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--rule-firm);
+}
+
+.menu-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.7rem; }
+
+/* name … price, with the dotted leader from the shop's own board */
+.menu-line {
+  display: flex;
+  align-items: baseline;
+  gap: .7rem;
+  margin-bottom: .35rem;
+}
+.menu-name {
+  flex: 0 1 auto;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.15rem, 1.05rem + .4vw, 1.4rem);
+  letter-spacing: -.015em;
+  color: var(--ink);
+}
+.menu-leader {
+  flex: 1 1 auto;
+  min-width: 1.5rem;
+  align-self: center;
+  border-bottom: 1px dotted var(--rule-firm);
+}
+.menu-price {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.menu-note {
+  margin: 0;
+  max-width: 52ch;
+  font-size: .95rem;
+  color: var(--ink-soft);
+}
+
+.menu-aside {
+  margin: 1.6rem 0 0;
+  font-size: .9rem;
+  color: var(--ink-dim);
+  max-width: 56ch;
+}
+
+.menu-key { list-style: none; margin: 0; padding: 0; display: grid; gap: .7rem; font-size: .95rem; color: var(--ink-soft); }
+.menu-key strong { color: var(--ink); font-weight: 600; }
+
+.menu-footnotes {
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
+  font-size: .9rem;
+  color: var(--ink-dim);
+}
+.menu-footnotes p { margin-bottom: .4rem; }
+
+.menu-cta { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: clamp(2.5rem, 5vw, 3.5rem); }
 
 /* ── 9. 1L takeaway packs ────────────────────────────────────────── */
 
@@ -810,7 +932,7 @@ a { color: inherit; }
   .site-nav ul { flex-direction: column; align-items: stretch; gap: 0; }
   .site-nav li + li { border-top: 1px solid var(--rule); }
   /* scoped to the list — `.site-nav a` would flatten the CTA button too */
-  .site-nav ul a { display: block; padding: .95rem 0; font-size: 1.02rem; }
+  .site-nav ul a { display: block; padding: .95rem 0; font-size: .88rem; }
   .site-nav ul a::after { display: none; }
   .nav-cta { margin-top: 1.1rem; width: 100%; padding: .9rem 1.15rem; font-size: .98rem; }
 
@@ -829,7 +951,7 @@ a { color: inherit; }
   .wordmark-text { font-size: 1.12rem; }
   .wordmark-icon { width: 1.6rem; }
   .pot { width: min(78%, 290px); }
-  .hero-actions .btn { width: 100%; }
+  .hero-actions .btn, .menu-cta .btn { width: 100%; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-base { flex-direction: column; }
 }

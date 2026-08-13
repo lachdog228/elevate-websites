@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menu — Daily Soup Go.</title>
+<meta name="description" content="Today's four soups, cup and bowl sizes, and chilled 1L takeaway packs. Cooked from scratch every weekday morning, served 11am to 3pm.">
+<meta name="theme-color" content="#2E1D12">
+
+<!-- Draft: nothing is indexed until the client approves and the details are filled in. -->
+<meta name="robots" content="noindex, nofollow">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Menu — Daily Soup Go.">
+<meta property="og:description" content="Today's four soups, cup and bowl sizes, and chilled 1L takeaway packs.">
+<meta property="og:locale" content="en_AU">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/fraunces-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/work-sans-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     DRAFT BANNER — delete this block when the site goes live.
+     ══════════════════════════════════════════════════════════════ -->
+<div class="draft-banner" role="note">
+  <strong>Draft preview.</strong> Every price and contact detail below is a
+  placeholder for the client to fill in.
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     HEADER — keep this block identical on index.html and menu.html.
+     ══════════════════════════════════════════════════════════════ -->
+<header class="site-header" id="top">
+  <div class="wrap header-inner">
+
+    <a class="wordmark" href="index.html" aria-label="Daily Soup Go., home">
+      <span class="wordmark-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 48" focusable="false">
+          <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none" opacity=".8">
+            <path d="M26 12c3-3 0-5 0-8"/><path d="M35 11c3-3 0-6 0-9"/>
+          </g>
+          <path d="M10 22h44c0 12-10 20-22 20S10 34 10 22z" fill="currentColor"/>
+          <rect x="6" y="18" width="52" height="5.5" rx="2.75" fill="currentColor"/>
+        </svg>
+      </span>
+      <span class="wordmark-text">Daily&nbsp;Soup&nbsp;Go<span class="wordmark-dot">.</span></span>
+    </a>
+
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="menu.html" aria-current="page">Menu</a></li>
+        <li><a href="index.html#takeaway" data-spy="takeaway">1L&nbsp;packs</a></li>
+        <li><a href="index.html#about" data-spy="about">About</a></li>
+        <li><a href="index.html#visit" data-spy="visit">Find&nbsp;us</a></li>
+      </ul>
+      <a class="btn btn-primary nav-cta" href="index.html#visit">Find the shop</a>
+    </nav>
+
+    <p class="status-pill" data-open-status hidden>
+      <span class="status-dot" aria-hidden="true"></span>
+      <span data-open-status-text></span>
+    </p>
+
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      <span class="nav-toggle-label">Menu</span>
+    </button>
+
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PAGE HEADER
+     ══════════════════════════════════════════════════════════════ -->
+<section class="page-head">
+  <div class="wrap">
+    <p class="eyebrow">Monday to Friday &middot; 11am–3pm &middot; Takeaway only</p>
+    <h1>Menu</h1>
+    <p class="lede page-head-lede">
+      Four soups a day, cooked from scratch each morning — two classics and two
+      gourmet. The board changes daily, so what is below is the shape of it
+      rather than a fixed list.
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     TODAY'S SOUPS — the scroll-scrubbed sequence
+     ─────────────────────────────────────────────────────────────
+     EDIT HERE: soup names, descriptions, prices and dietary tags.
+     Four <article class="soup"> blocks — the first two are Basic
+     (label reads "Classic"), the last two Gourmet. Replace [$0.00]
+     with the real price.
+
+     On a wide screen main.js turns this into a scroll-scrubbed
+     sequence: the soups cross-fade one into the next as you scroll.
+     With JavaScript off, on a narrow screen, or under
+     prefers-reduced-motion, the same four blocks simply stack and
+     read as a normal list. Content is identical either way.
+     ══════════════════════════════════════════════════════════════ -->
+<section class="section soups soups-scrubbed" id="soups" aria-labelledby="soups-title">
+
+  <div class="wrap">
+    <header class="section-head">
+      <p class="section-marker">On today</p>
+      <h2 id="soups-title">Today&rsquo;s soups</h2>
+    </header>
+  </div>
+
+  <div class="soups-scroll" data-scrub>
+    <div class="soups-stage">
+      <div class="wrap soups-layout">
+
+        <!-- Index rail. Only shown in scrub mode; JS wires up the buttons. -->
+        <ol class="soups-index" data-scrub-index hidden>
+          <li><button type="button" data-scrub-to="0"><span>01</span> Chicken &amp; Vegetable</button></li>
+          <li><button type="button" data-scrub-to="1"><span>02</span> Pumpkin</button></li>
+          <li><button type="button" data-scrub-to="2"><span>03</span> Beef &amp; Barley</button></li>
+          <li><button type="button" data-scrub-to="3"><span>04</span> Creamy Tomato &amp; Basil</button></li>
+        </ol>
+
+        <div class="soups-panels">
+
+          <!-- ── Basic 1 ──────────────────────────────────────── -->
+          <article class="soup" data-soup>
+            <div class="soup-art">
+              <img src="assets/img/soup-chicken-vegetable.svg" width="360" height="360"
+                   alt="Bowl of chicken and vegetable soup seen from above" decoding="async">
+            </div>
+            <div class="soup-info">
+              <p class="soup-tier">Classic</p>
+              <h3>Chicken &amp; Vegetable</h3>
+              <p class="soup-desc">
+                Slow-simmered chicken, carrot, celery and leek in a clear
+                golden broth. The one people come back for.
+              </p>
+              <ul class="soup-tags">
+                <li>Dairy free</li>
+                <li>Contains gluten</li>
+              </ul>
+              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
+            </div>
+          </article>
+
+          <!-- ── Basic 2 ──────────────────────────────────────── -->
+          <article class="soup" data-soup>
+            <div class="soup-art">
+              <img src="assets/img/soup-pumpkin.svg" width="360" height="360"
+                   alt="Bowl of pumpkin soup with a cream swirl seen from above" loading="lazy" decoding="async">
+            </div>
+            <div class="soup-info">
+              <p class="soup-tier">Classic</p>
+              <h3>Pumpkin</h3>
+              <p class="soup-desc">
+                Roasted pumpkin blended smooth with onion and a little cream,
+                finished with toasted pepitas and cracked pepper.
+              </p>
+              <ul class="soup-tags">
+                <li>Vegetarian</li>
+                <li>Gluten free</li>
+              </ul>
+              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
+            </div>
+          </article>
+
+          <!-- ── Gourmet 1 ────────────────────────────────────── -->
+          <article class="soup" data-soup>
+            <div class="soup-art">
+              <img src="assets/img/soup-beef-barley.svg" width="360" height="360"
+                   alt="Bowl of beef and barley soup seen from above" loading="lazy" decoding="async">
+            </div>
+            <div class="soup-info">
+              <p class="soup-tier soup-tier-gourmet">Gourmet</p>
+              <h3>Beef &amp; Barley</h3>
+              <p class="soup-desc">
+                Chuck beef braised three hours with pearl barley, root
+                vegetables and thyme. Thick enough to stand a spoon in.
+              </p>
+              <ul class="soup-tags">
+                <li>Dairy free</li>
+                <li>Contains gluten</li>
+              </ul>
+              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
+            </div>
+          </article>
+
+          <!-- ── Gourmet 2 ────────────────────────────────────── -->
+          <article class="soup" data-soup>
+            <div class="soup-art">
+              <img src="assets/img/soup-creamy-tomato.svg" width="360" height="360"
+                   alt="Bowl of creamy tomato soup with basil seen from above" loading="lazy" decoding="async">
+            </div>
+            <div class="soup-info">
+              <p class="soup-tier soup-tier-gourmet">Gourmet</p>
+              <h3>Creamy Tomato &amp; Basil</h3>
+              <p class="soup-desc">
+                Slow-roasted tomatoes, garlic and torn basil, swirled with
+                cream and scattered with croutons from yesterday's loaf.
+              </p>
+              <ul class="soup-tags">
+                <li>Vegetarian</li>
+                <li>Contains gluten</li>
+              </ul>
+              <p class="soup-price"><span class="placeholder">[$0.00]</span> <span class="soup-size">cup</span></p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     THE PRINTED MENU
+     ─────────────────────────────────────────────────────────────
+     EDIT HERE: sizes, packs and extras. Each row is one <li>; the
+     price sits after the em dash. Replace [$0.00] with the real
+     figure and delete the <span class="placeholder"> wrapper.
+     ══════════════════════════════════════════════════════════════ -->
+<section class="section menu-sheet" aria-labelledby="sheet-title">
+  <div class="wrap menu-sheet-inner">
+
+    <h2 class="visually-hidden" id="sheet-title">Sizes, packs and extras</h2>
+
+    <section class="menu-group reveal" aria-labelledby="group-sizes">
+      <h3 class="menu-group-title" id="group-sizes">Sizes</h3>
+      <ul class="menu-list">
+        <li>
+          <p class="menu-line"><span class="menu-name">Cup</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price"><span class="placeholder">[$0.00]</span></span></p>
+          <p class="menu-note">The everyday size. Lidded, with a spoon and a napkin.</p>
+        </li>
+        <li>
+          <p class="menu-line"><span class="menu-name">Bowl</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price"><span class="placeholder">[$0.00]</span></span></p>
+          <p class="menu-note">Around half again. Ask at the counter.</p>
+        </li>
+        <li>
+          <p class="menu-line"><span class="menu-name">Crusty roll</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price"><span class="placeholder">[$0.00]</span></span></p>
+          <p class="menu-note">Baked locally, delivered each morning.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="menu-group reveal" aria-labelledby="group-packs">
+      <h3 class="menu-group-title" id="group-packs">Take home</h3>
+      <ul class="menu-list">
+        <li>
+          <p class="menu-line"><span class="menu-name">Chilled 1L pack</span><span class="menu-leader" aria-hidden="true"></span><span class="menu-price"><span class="placeholder">[$0.00]</span></span></p>
+          <p class="menu-note">
+            Whatever is left in the pots at 3pm, cooled down the same afternoon
+            and sealed. Same soup, same day it was cooked. Feeds two or three.
+          </p>
+        </li>
+      </ul>
+      <p class="menu-aside">
+        Stock depends on what is left over, so packs sell out. Ring ahead if you
+        want a particular soup put aside.
+      </p>
+    </section>
+
+    <section class="menu-group reveal" aria-labelledby="group-key">
+      <h3 class="menu-group-title" id="group-key">Dietary</h3>
+      <ul class="menu-key">
+        <li><strong>Vegetarian</strong> — no meat or meat stock</li>
+        <li><strong>Gluten free</strong> — no gluten-containing ingredient</li>
+        <li><strong>Dairy free</strong> — no milk, cream or butter</li>
+      </ul>
+      <p class="menu-aside">
+        Everything is cooked in one kitchen, so we cannot promise a soup is free
+        of traces. Tell us at the counter if it matters and we will tell you
+        exactly what went in the pot.
+      </p>
+    </section>
+
+    <footer class="menu-footnotes reveal">
+      <p>The board changes every weekday. When a soup runs out it is gone for the day.</p>
+      <p>Cash and card at the counter. Takeaway only — there is no seating.</p>
+    </footer>
+
+    <div class="menu-cta reveal">
+      <a class="btn btn-primary btn-lg" href="index.html#visit">Find the shop</a>
+      <a class="btn btn-ghost btn-lg" href="index.html">Back to home</a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     FOOTER — keep this block identical on index.html and menu.html.
+     ══════════════════════════════════════════════════════════════ -->
+<footer class="site-footer" id="contact">
+  <div class="wrap footer-inner">
+
+    <div class="footer-brand">
+      <p class="wordmark wordmark-footer">
+        <span class="wordmark-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 48" focusable="false">
+            <g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none" opacity=".8">
+              <path d="M26 12c3-3 0-5 0-8"/><path d="M35 11c3-3 0-6 0-9"/>
+            </g>
+            <path d="M10 22h44c0 12-10 20-22 20S10 34 10 22z" fill="currentColor"/>
+            <rect x="6" y="18" width="52" height="5.5" rx="2.75" fill="currentColor"/>
+          </svg>
+        </span>
+        <span class="wordmark-text">Daily&nbsp;Soup&nbsp;Go<span class="wordmark-dot">.</span></span>
+      </p>
+      <p class="footer-tag">Hot soup made fresh daily. Takeaway only.</p>
+    </div>
+
+    <div class="footer-col">
+      <h2>Contact</h2>
+      <ul class="footer-list">
+        <li><a href="#" data-tel><span class="placeholder">[PHONE NUMBER]</span></a></li>
+        <li><a href="#" data-email><span class="placeholder">[EMAIL ADDRESS]</span></a></li>
+        <li>
+          <address>
+            <span class="placeholder">[STREET ADDRESS]</span><br>
+            <span class="placeholder">[SUBURB STATE POSTCODE]</span>
+          </address>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>Hours</h2>
+      <ul class="footer-list">
+        <li>Monday to Friday<br><strong>11:00am – 3:00pm</strong></li>
+        <li>Saturday &amp; Sunday<br><strong>Closed</strong></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h2>Follow</h2>
+      <ul class="footer-list footer-social">
+        <li>
+          <a href="#" data-social="instagram">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+              <circle cx="17.2" cy="6.8" r="1.4" fill="currentColor"/>
+            </svg>
+            Instagram
+          </a>
+        </li>
+        <li>
+          <a href="#" data-social="facebook">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+              <path d="M14 8.5V7c0-.9.4-1.5 1.6-1.5H17V2.6C16.5 2.5 15.6 2.4 14.6 2.4c-2.4 0-3.9 1.4-3.9 4V8.5H8V12h2.7v9.6h3.6V12h2.6l.4-3.5H14z" fill="currentColor"/>
+            </svg>
+            Facebook
+          </a>
+        </li>
+      </ul>
+      <nav class="footer-nav" aria-label="Footer">
+        <ul>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="index.html#takeaway">1L packs</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#visit">Location</a></li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+  <div class="wrap footer-base">
+    <p>&copy; <span data-year>2026</span> Daily Soup Go. All rights reserved.</p>
+    <p>Made fresh daily since <span class="placeholder">[YEAR]</span>.</p>
+  </div>
+</footer>
+
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>
