@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of chicken and vegetable soup, seen from above">
+  <defs>
+    <clipPath id="cv-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+  </defs>
+  <!-- bowl -->
+  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
+  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
+  <!-- broth -->
+  <circle cx="100" cy="100" r="66" fill="#E0A63C"/>
+  <g clip-path="url(#cv-broth)">
+    <ellipse cx="76" cy="72" rx="38" ry="26" fill="#E7B453" opacity=".55"/>
+    <!-- shredded chicken -->
+    <g fill="#F2E3C4">
+      <rect x="70" y="86" width="30" height="9" rx="4.5" transform="rotate(-16 85 90)"/>
+      <rect x="104" y="112" width="26" height="8" rx="4" transform="rotate(24 117 116)"/>
+      <rect x="84" y="128" width="24" height="8" rx="4" transform="rotate(-8 96 132)"/>
+    </g>
+    <!-- carrot discs -->
+    <g fill="#DE7226">
+      <circle cx="128" cy="80" r="9"/><circle cx="128" cy="80" r="4.5" fill="#E98A3E"/>
+      <circle cx="66" cy="118" r="8"/><circle cx="66" cy="118" r="4" fill="#E98A3E"/>
+      <circle cx="106" cy="60" r="7"/><circle cx="106" cy="60" r="3.5" fill="#E98A3E"/>
+      <circle cx="140" cy="122" r="7.5"/><circle cx="140" cy="122" r="3.7" fill="#E98A3E"/>
+    </g>
+    <!-- peas and celery -->
+    <g fill="#6E8A3C">
+      <circle cx="88" cy="66" r="5.5"/><circle cx="60" cy="92" r="5"/>
+      <circle cx="120" cy="140" r="5.5"/><circle cx="150" cy="98" r="5"/>
+      <circle cx="94" cy="150" r="4.6"/><circle cx="72" cy="140" r="4.4"/>
+    </g>
+    <!-- parsley -->
+    <g fill="#8CA24C" opacity=".9">
+      <circle cx="112" cy="92" r="2.6"/><circle cx="96" cy="112" r="2.4"/>
+      <circle cx="134" cy="104" r="2.4"/><circle cx="78" cy="106" r="2.2"/>
+    </g>
+  </g>
+  <circle cx="100" cy="100" r="66" fill="none" stroke="#B98B4E" stroke-width="1.5" opacity=".5"/>
+</svg>

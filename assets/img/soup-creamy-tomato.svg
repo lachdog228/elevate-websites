@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of creamy tomato soup with basil, seen from above">
+  <defs>
+    <clipPath id="ct-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+  </defs>
+  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
+  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
+  <circle cx="100" cy="100" r="66" fill="#C8442A"/>
+  <g clip-path="url(#ct-broth)">
+    <ellipse cx="78" cy="74" rx="40" ry="28" fill="#D4553A" opacity=".65"/>
+    <!-- cream ripple -->
+    <path d="M46 92 C 68 78 88 106 110 92 C 132 78 152 100 168 88"
+          fill="none" stroke="#F7EBD5" stroke-width="6.5" stroke-linecap="round" opacity=".95"/>
+    <path d="M42 122 C 64 108 86 136 108 122 C 130 108 150 130 166 118"
+          fill="none" stroke="#F7EBD5" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+    <!-- basil leaves -->
+    <g fill="#5E7C33">
+      <path d="M118 62 C 132 56 142 64 138 76 C 126 82 116 74 118 62Z"/>
+      <path d="M66 140 C 80 134 90 142 86 154 C 74 160 64 152 66 140Z"/>
+      <path d="M136 132 C 148 126 158 134 154 145 C 143 151 134 143 136 132Z"/>
+    </g>
+    <g stroke="#7E9448" stroke-width="1.4" fill="none">
+      <path d="M120 74 L136 62"/><path d="M68 152 L84 140"/><path d="M138 143 L152 131"/>
+    </g>
+    <!-- croutons -->
+    <g fill="#E6C88E">
+      <rect x="84" y="104" width="15" height="14" rx="3" transform="rotate(-12 91 111)"/>
+      <rect x="106" y="140" width="14" height="13" rx="3" transform="rotate(18 113 146)"/>
+      <rect x="56" y="66" width="13" height="12" rx="3" transform="rotate(24 62 72)"/>
+    </g>
+    <g fill="#4A2E1B" opacity=".55">
+      <circle cx="100" cy="86" r="1.8"/><circle cx="128" cy="106" r="1.6"/>
+      <circle cx="78" cy="120" r="1.6"/><circle cx="112" cy="126" r="1.5"/>
+    </g>
+  </g>
+  <circle cx="100" cy="100" r="66" fill="none" stroke="#8E2E1B" stroke-width="1.5" opacity=".4"/>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of beef and barley soup, seen from above">
+  <defs>
+    <clipPath id="bb-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+  </defs>
+  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
+  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
+  <circle cx="100" cy="100" r="66" fill="#8A4A22"/>
+  <g clip-path="url(#bb-broth)">
+    <ellipse cx="78" cy="74" rx="40" ry="28" fill="#9A5828" opacity=".6"/>
+    <!-- beef chunks -->
+    <g fill="#5C2E15">
+      <rect x="80" y="70" width="26" height="20" rx="6" transform="rotate(-14 93 80)"/>
+      <rect x="112" y="106" width="24" height="19" rx="6" transform="rotate(20 124 115)"/>
+      <rect x="62" y="112" width="23" height="18" rx="6" transform="rotate(-6 73 121)"/>
+    </g>
+    <g fill="#6E3A1B">
+      <rect x="84" y="74" width="14" height="8" rx="4" transform="rotate(-14 91 78)"/>
+      <rect x="116" y="110" width="12" height="7" rx="3.5" transform="rotate(20 122 113)"/>
+    </g>
+    <!-- barley -->
+    <g fill="#DCC391">
+      <ellipse cx="120" cy="74" rx="6" ry="4.2" transform="rotate(30 120 74)"/>
+      <ellipse cx="136" cy="92" rx="6" ry="4.2" transform="rotate(-20 136 92)"/>
+      <ellipse cx="98" cy="132" rx="6" ry="4.2" transform="rotate(12 98 132)"/>
+      <ellipse cx="66" cy="88" rx="6" ry="4.2" transform="rotate(-40 66 88)"/>
+      <ellipse cx="128" cy="138" rx="5.6" ry="4" transform="rotate(44 128 138)"/>
+      <ellipse cx="82" cy="150" rx="5.6" ry="4" transform="rotate(-10 82 150)"/>
+      <ellipse cx="104" cy="98" rx="5.6" ry="4" transform="rotate(66 104 98)"/>
+      <ellipse cx="146" cy="114" rx="5.4" ry="3.8" transform="rotate(-30 146 114)"/>
+      <ellipse cx="54" cy="112" rx="5.4" ry="3.8" transform="rotate(18 54 112)"/>
+    </g>
+    <!-- carrot and thyme -->
+    <g fill="#D06A20">
+      <circle cx="146" cy="76" r="7"/><circle cx="146" cy="76" r="3.4" fill="#E07E30"/>
+      <circle cx="60" cy="140" r="6.4"/><circle cx="60" cy="140" r="3.1" fill="#E07E30"/>
+    </g>
+    <g fill="#7E9448" opacity=".9">
+      <circle cx="110" cy="88" r="2.6"/><circle cx="92" cy="114" r="2.4"/>
+      <circle cx="132" cy="122" r="2.3"/><circle cx="74" cy="66" r="2.3"/>
+    </g>
+  </g>
+  <circle cx="100" cy="100" r="66" fill="none" stroke="#5C2E15" stroke-width="1.5" opacity=".4"/>
+</svg>

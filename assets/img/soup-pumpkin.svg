@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of pumpkin soup with a cream swirl, seen from above">
+  <defs>
+    <clipPath id="pk-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+  </defs>
+  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
+  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
+  <circle cx="100" cy="100" r="66" fill="#DE7A24"/>
+  <g clip-path="url(#pk-broth)">
+    <ellipse cx="78" cy="74" rx="40" ry="28" fill="#E88C33" opacity=".6"/>
+    <!-- cream swirl -->
+    <path d="M100 100
+             C 112 100 118 90 112 80 C 104 66 82 66 74 80
+             C 64 98 78 122 100 124 C 128 126 146 104 140 80"
+          fill="none" stroke="#F7EBD5" stroke-width="7" stroke-linecap="round"/>
+    <!-- pepitas -->
+    <g fill="#6E8A3C">
+      <ellipse cx="126" cy="120" rx="8" ry="5" transform="rotate(28 126 120)"/>
+      <ellipse cx="70" cy="128" rx="8" ry="5" transform="rotate(-18 70 128)"/>
+      <ellipse cx="112" cy="142" rx="7.5" ry="4.6" transform="rotate(8 112 142)"/>
+      <ellipse cx="58" cy="96" rx="7" ry="4.4" transform="rotate(-42 58 96)"/>
+      <ellipse cx="132" cy="62" rx="7" ry="4.4" transform="rotate(34 132 62)"/>
+    </g>
+    <!-- cracked pepper -->
+    <g fill="#4A2E1B" opacity=".7">
+      <circle cx="94" cy="86" r="2"/><circle cx="118" cy="106" r="1.8"/>
+      <circle cx="86" cy="118" r="1.7"/><circle cx="106" cy="72" r="1.6"/>
+      <circle cx="140" cy="98" r="1.6"/>
+    </g>
+  </g>
+  <circle cx="100" cy="100" r="66" fill="none" stroke="#B0561A" stroke-width="1.5" opacity=".45"/>
+</svg>
