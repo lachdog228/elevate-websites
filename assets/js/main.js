@@ -23,10 +23,17 @@
 
   var DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   function $(sel, scope) { return (scope || document).querySelector(sel); }
   function $$(sel, scope) { return Array.prototype.slice.call((scope || document).querySelectorAll(sel)); }
+  function clamp(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+
+  // Safari < 14 only has the deprecated addListener.
+  function onMediaChange(mq, fn) {
+    if (mq.addEventListener) mq.addEventListener('change', fn);
+    else if (mq.addListener) mq.addListener(fn);
+  }
+
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
   /* ── Mobile navigation ──────────────────────────────────────────── */
 
@@ -61,13 +68,12 @@
       toggle.focus();
     });
 
-    // Reset when the layout goes back to the desktop nav.
-    window.matchMedia('(min-width: 861px)').addEventListener('change', function (event) {
+    onMediaChange(window.matchMedia('(min-width: 861px)'), function (event) {
       if (event.matches) setOpen(false);
     });
   }());
 
-  /* ── Header shadow once the page has scrolled ───────────────────── */
+  /* ── Header rule once the page has scrolled ─────────────────────── */
 
   (function stickyHeader() {
     var header = $('.site-header');
@@ -127,7 +133,7 @@
     var items = $$('.reveal');
     if (!items.length) return;
 
-    if (prefersReducedMotion || !('IntersectionObserver' in window)) {
+    if (reducedMotion.matches || !('IntersectionObserver' in window)) {
       items.forEach(function (item) { item.classList.add('is-visible'); });
       return;
     }
@@ -141,6 +147,141 @@
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
 
     items.forEach(function (item) { observer.observe(item); });
+  }());
+
+  /* ── Scroll-scrubbed soup sequence ───────────────────────────────
+     The four soups share one grid cell and cross-fade as the page
+     scrolls through a tall wrapper whose inner stage is `sticky`. A
+     sticky parent rather than a pinned element means native scrolling
+     is never intercepted — no scroll-jacking, no wheel handlers.
+
+     Only switched on when the viewport is wide enough for the two-up
+     layout and the visitor has not asked for reduced motion. In every
+     other case the same four blocks stay in normal flow and read as a
+     plain list, so nothing is hidden behind the effect.
+  */
+
+  (function soupScrub() {
+    var scroller = $('[data-scrub]');
+    if (!scroller) return;
+
+    var panels = $$('[data-soup]', scroller);
+    var indexList = $('[data-scrub-index]', scroller);
+    var buttons = indexList ? $$('button[data-scrub-to]', indexList) : [];
+    if (panels.length < 2) return;
+
+    var parts = panels.map(function (panel) {
+      return { art: $('.soup-art', panel), copy: $('.soup-info', panel) };
+    });
+    if (parts.some(function (part) { return !part.art || !part.copy; })) return;
+
+    var wideEnough = window.matchMedia('(min-width: 900px)');
+    var active = false;
+    var queued = false;
+    var lastIndex = -1;
+
+    // Artwork and copy need different curves. The bowls are opaque and
+    // identically framed, so a later one can simply fade in on top of the
+    // one before and stay there. Copy is transparent — two blocks at once
+    // would overprint — so it fades out and the next fades in, the two
+    // ramps meeting exactly at the hand-over point.
+    function artOpacity(i, position) {
+      if (i === 0) return 1;
+      return clamp((position - (i - 0.2)) / 0.5, 0, 1);
+    }
+    function copyOpacity(i, position) {
+      return clamp((0.5 - Math.abs(position - (i + 0.5))) / 0.14, 0, 1);
+    }
+
+    function paint() {
+      queued = false;
+      if (!active) return;
+
+      var travel = scroller.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+
+      var progress = clamp(-scroller.getBoundingClientRect().top / travel, 0, 1);
+      // Centre the first soup at the start of the run and the last at the
+      // end, so neither is caught mid-fade when the sequence comes to rest.
+      var position = progress * (panels.length - 1) + 0.5;
+      var current = Math.round(clamp(position - 0.5, 0, panels.length - 1));
+
+      for (var i = 0; i < panels.length; i++) {
+        var art = artOpacity(i, position);
+        var copy = copyOpacity(i, position);
+
+        parts[i].art.style.opacity = art;
+        parts[i].copy.style.opacity = copy;
+        parts[i].copy.style.transform = 'translateY(' + ((1 - copy) * 14).toFixed(2) + 'px)';
+
+        if (i === current) panels[i].removeAttribute('aria-hidden');
+        else panels[i].setAttribute('aria-hidden', 'true');
+      }
+
+      if (current !== lastIndex) {
+        lastIndex = current;
+        buttons.forEach(function (button, i) {
+          if (i === current) button.setAttribute('aria-current', 'true');
+          else button.removeAttribute('aria-current');
+        });
+      }
+    }
+
+    function request() {
+      if (queued) return;
+      queued = true;
+      window.requestAnimationFrame(paint);
+    }
+
+    function enable() {
+      if (active) return;
+      active = true;
+      scroller.style.setProperty('--panels', String(panels.length));
+      scroller.classList.add('is-scrub');
+      if (indexList) indexList.hidden = false;
+      lastIndex = -1;
+      paint();
+    }
+
+    function disable() {
+      active = false;
+      scroller.classList.remove('is-scrub');
+      scroller.style.removeProperty('--panels');
+      if (indexList) indexList.hidden = true;
+      lastIndex = -1;
+      panels.forEach(function (panel, i) {
+        parts[i].art.style.opacity = '';
+        parts[i].copy.style.opacity = '';
+        parts[i].copy.style.transform = '';
+        panel.removeAttribute('aria-hidden');
+      });
+      buttons.forEach(function (button) { button.removeAttribute('aria-current'); });
+    }
+
+    function sync() {
+      if (wideEnough.matches && !reducedMotion.matches) enable();
+      else disable();
+    }
+
+    // Jump to a soup from the index rail.
+    buttons.forEach(function (button, i) {
+      button.addEventListener('click', function () {
+        if (!active) return;
+        var travel = scroller.offsetHeight - window.innerHeight;
+        var top = scroller.getBoundingClientRect().top + window.pageYOffset;
+        window.scrollTo({
+          top: top + travel * ((i + 0.5) / panels.length),
+          behavior: reducedMotion.matches ? 'auto' : 'smooth'
+        });
+      });
+    });
+
+    window.addEventListener('scroll', request, { passive: true });
+    window.addEventListener('resize', request, { passive: true });
+    onMediaChange(wideEnough, sync);
+    onMediaChange(reducedMotion, sync);
+
+    sync();
   }());
 
   /* ── Open / closed status ───────────────────────────────────────── */
@@ -160,11 +301,7 @@
       if (!slot) continue;
       var nowMinutes = from.getHours() * 60 + from.getMinutes();
       if (offset === 0 && nowMinutes >= slot.open) continue;
-      return {
-        day: day,
-        offset: offset,
-        label: minutesToLabel(slot.open)
-      };
+      return { day: day, offset: offset, label: minutesToLabel(slot.open) };
     }
     return null;
   }
@@ -187,25 +324,18 @@
 
   (function openStatus() {
     var pills = $$('[data-open-status]');
-    var neon = $('[data-neon]');
     var todayRow = $('.hours tr[data-day="' + new Date().getDay() + '"]');
 
     if (todayRow) todayRow.classList.add('is-today');
 
     function paint() {
       var state = statusNow();
-
       pills.forEach(function (pill) {
         var label = $('[data-open-status-text]', pill);
         if (label) label.textContent = state.text;
         pill.classList.toggle('is-open', state.open);
         pill.hidden = false;
       });
-
-      if (neon) {
-        neon.setAttribute('data-state', state.open ? 'open' : 'closed');
-        neon.textContent = state.open ? 'OPEN' : 'CLOSED';
-      }
     }
 
     paint();
@@ -227,8 +357,7 @@
      Delete this block once the hrefs are real.
   */
   (function placeholderLinks() {
-    var selector = '[data-tel], [data-email], [data-map-link], [data-social]';
-    $$(selector).forEach(function (link) {
+    $$('[data-tel], [data-email], [data-map-link], [data-social]').forEach(function (link) {
       if (link.getAttribute('href') && link.getAttribute('href') !== '#') return;
       link.setAttribute('aria-disabled', 'true');
       link.addEventListener('click', function (event) { event.preventDefault(); });

@@ -1,45 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of beef and barley soup, seen from above">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="Bowl of beef and barley soup, seen from above">
   <defs>
-    <clipPath id="bb-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+    <radialGradient id="bb-broth" cx=".38" cy=".32" r=".78"><stop offset="0" stop-color="#9A5828"/><stop offset=".55" stop-color="#7E421C"/><stop offset="1" stop-color="#5E2F12"/></radialGradient>
+    <radialGradient id="bb-rim" cx=".5" cy=".5" r=".5">
+      <stop offset=".82" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4A2C18" stop-opacity=".26"/>
+    </radialGradient>
+    <linearGradient id="bb-glaze" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#FFFDF7"/>
+      <stop offset=".5" stop-color="#F3E6CE"/>
+      <stop offset="1" stop-color="#DFCDAC"/>
+    </linearGradient>
+    <clipPath id="bb-clip"><circle cx="180" cy="176" r="112"/></clipPath>
   </defs>
-  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
-  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
-  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
-  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
-  <circle cx="100" cy="100" r="66" fill="#8A4A22"/>
-  <g clip-path="url(#bb-broth)">
-    <ellipse cx="78" cy="74" rx="40" ry="28" fill="#9A5828" opacity=".6"/>
-    <!-- beef chunks -->
-    <g fill="#5C2E15">
-      <rect x="80" y="70" width="26" height="20" rx="6" transform="rotate(-14 93 80)"/>
-      <rect x="112" y="106" width="24" height="19" rx="6" transform="rotate(20 124 115)"/>
-      <rect x="62" y="112" width="23" height="18" rx="6" transform="rotate(-6 73 121)"/>
+
+  <ellipse cx="180" cy="330" rx="132" ry="17" fill="#2E1D12" opacity=".13"/>
+
+  <circle cx="180" cy="180" r="150" fill="url(#bb-glaze)"/>
+  <circle cx="180" cy="180" r="150" fill="none" stroke="#C6A97C" stroke-width="1.5" opacity=".55"/>
+  <circle cx="180" cy="178" r="126" fill="#E9D8B8"/>
+  <circle cx="180" cy="176" r="112" fill="url(#bb-broth)"/>
+
+  <g clip-path="url(#bb-clip)">
+    <!-- beef -->
+    <g fill="#4A2410">
+      <rect x="140" y="126" width="46" height="34" rx="11" transform="rotate(-14 163 143)"/>
+      <rect x="196" y="190" width="43" height="33" rx="11" transform="rotate(20 217 206)"/>
+      <rect x="108" y="200" width="41" height="31" rx="10" transform="rotate(-6 128 215)"/>
     </g>
-    <g fill="#6E3A1B">
-      <rect x="84" y="74" width="14" height="8" rx="4" transform="rotate(-14 91 78)"/>
-      <rect x="116" y="110" width="12" height="7" rx="3.5" transform="rotate(20 122 113)"/>
+    <g fill="#63351A">
+      <rect x="147" y="133" width="24" height="13" rx="6.5" transform="rotate(-14 159 139)"/>
+      <rect x="203" y="197" width="22" height="12" rx="6" transform="rotate(20 214 203)"/>
     </g>
-    <!-- barley -->
+    <!-- pearl barley -->
     <g fill="#DCC391">
-      <ellipse cx="120" cy="74" rx="6" ry="4.2" transform="rotate(30 120 74)"/>
-      <ellipse cx="136" cy="92" rx="6" ry="4.2" transform="rotate(-20 136 92)"/>
-      <ellipse cx="98" cy="132" rx="6" ry="4.2" transform="rotate(12 98 132)"/>
-      <ellipse cx="66" cy="88" rx="6" ry="4.2" transform="rotate(-40 66 88)"/>
-      <ellipse cx="128" cy="138" rx="5.6" ry="4" transform="rotate(44 128 138)"/>
-      <ellipse cx="82" cy="150" rx="5.6" ry="4" transform="rotate(-10 82 150)"/>
-      <ellipse cx="104" cy="98" rx="5.6" ry="4" transform="rotate(66 104 98)"/>
-      <ellipse cx="146" cy="114" rx="5.4" ry="3.8" transform="rotate(-30 146 114)"/>
-      <ellipse cx="54" cy="112" rx="5.4" ry="3.8" transform="rotate(18 54 112)"/>
+      <ellipse cx="216" cy="128" rx="10" ry="7" transform="rotate(30 216 128)"/>
+      <ellipse cx="244" cy="162" rx="10" ry="7" transform="rotate(-20 244 162)"/>
+      <ellipse cx="176" cy="238" rx="10" ry="7" transform="rotate(12 176 238)"/>
+      <ellipse cx="104" cy="158" rx="10" ry="7" transform="rotate(-40 104 158)"/>
+      <ellipse cx="230" cy="248" rx="9" ry="6.4" transform="rotate(44 230 248)"/>
+      <ellipse cx="136" cy="262" rx="9" ry="6.4" transform="rotate(-10 136 262)"/>
+      <ellipse cx="186" cy="172" rx="9" ry="6.4" transform="rotate(66 186 172)"/>
+      <ellipse cx="262" cy="206" rx="8.6" ry="6" transform="rotate(-30 262 206)"/>
+      <ellipse cx="88" cy="204" rx="8.6" ry="6" transform="rotate(18 88 204)"/>
+      <ellipse cx="200" cy="98" rx="8.4" ry="5.8" transform="rotate(50 200 98)"/>
     </g>
     <!-- carrot and thyme -->
-    <g fill="#D06A20">
-      <circle cx="146" cy="76" r="7"/><circle cx="146" cy="76" r="3.4" fill="#E07E30"/>
-      <circle cx="60" cy="140" r="6.4"/><circle cx="60" cy="140" r="3.1" fill="#E07E30"/>
+    <g>
+      <circle cx="258" cy="130" r="13" fill="#C05F18"/><circle cx="258" cy="130" r="6.4" fill="#D4762C"/>
+      <circle cx="112" cy="252" r="12" fill="#C05F18"/><circle cx="112" cy="252" r="6" fill="#D4762C"/>
     </g>
-    <g fill="#7E9448" opacity=".9">
-      <circle cx="110" cy="88" r="2.6"/><circle cx="92" cy="114" r="2.4"/>
-      <circle cx="132" cy="122" r="2.3"/><circle cx="74" cy="66" r="2.3"/>
+    <g fill="#7E9648" opacity=".85">
+      <circle cx="192" cy="156" r="3.6"/><circle cx="158" cy="196" r="3.2"/>
+      <circle cx="232" cy="216" r="3"/><circle cx="128" cy="126" r="3"/>
     </g>
+    <!-- surface sheen -->
+    <ellipse cx="140" cy="130" rx="66" ry="38" fill="#FFF3D8" opacity=".14" transform="rotate(-22 140 130)"/>
   </g>
-  <circle cx="100" cy="100" r="66" fill="none" stroke="#5C2E15" stroke-width="1.5" opacity=".4"/>
+
+  <circle cx="180" cy="176" r="112" fill="url(#bb-rim)"/>
+  <circle cx="180" cy="176" r="112" fill="none" stroke="#8E5F1C" stroke-width="1.5" opacity=".35"/>
+  <path d="M68 172a112 112 0 0 1 44-86" fill="none" stroke="#FFF6E4" stroke-width="4" stroke-linecap="round" opacity=".28"/>
 </svg>

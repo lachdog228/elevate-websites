@@ -1,40 +1,67 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Bowl of chicken and vegetable soup, seen from above">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="Bowl of chicken and vegetable soup, seen from above">
   <defs>
-    <clipPath id="cv-broth"><circle cx="100" cy="100" r="66"/></clipPath>
+    <radialGradient id="cv-broth" cx=".38" cy=".32" r=".78">
+      <stop offset="0" stop-color="#E7B45A"/>
+      <stop offset=".55" stop-color="#D99B33"/>
+      <stop offset="1" stop-color="#B87A20"/>
+    </radialGradient>
+    <radialGradient id="cv-rim" cx=".5" cy=".5" r=".5">
+      <stop offset=".82" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4A2C18" stop-opacity=".26"/>
+    </radialGradient>
+    <linearGradient id="cv-glaze" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#FFFDF7"/>
+      <stop offset=".5" stop-color="#F3E6CE"/>
+      <stop offset="1" stop-color="#DFCDAC"/>
+    </linearGradient>
+    <clipPath id="cv-clip"><circle cx="180" cy="176" r="112"/></clipPath>
   </defs>
-  <!-- bowl -->
-  <circle cx="100" cy="100" r="88" fill="#F6EAD6"/>
-  <circle cx="100" cy="100" r="88" fill="none" stroke="#C9A87C" stroke-width="2"/>
-  <circle cx="100" cy="100" r="76" fill="#EFE0C6"/>
-  <circle cx="100" cy="100" r="70" fill="#E4D2B2"/>
-  <!-- broth -->
-  <circle cx="100" cy="100" r="66" fill="#E0A63C"/>
-  <g clip-path="url(#cv-broth)">
-    <ellipse cx="76" cy="72" rx="38" ry="26" fill="#E7B453" opacity=".55"/>
+
+  <ellipse cx="180" cy="330" rx="132" ry="17" fill="#2E1D12" opacity=".13"/>
+
+  <circle cx="180" cy="180" r="150" fill="url(#cv-glaze)"/>
+  <circle cx="180" cy="180" r="150" fill="none" stroke="#C6A97C" stroke-width="1.5" opacity=".55"/>
+  <circle cx="180" cy="178" r="126" fill="#E9D8B8"/>
+  <circle cx="180" cy="176" r="112" fill="url(#cv-broth)"/>
+
+  <g clip-path="url(#cv-clip)">
     <!-- shredded chicken -->
-    <g fill="#F2E3C4">
-      <rect x="70" y="86" width="30" height="9" rx="4.5" transform="rotate(-16 85 90)"/>
-      <rect x="104" y="112" width="26" height="8" rx="4" transform="rotate(24 117 116)"/>
-      <rect x="84" y="128" width="24" height="8" rx="4" transform="rotate(-8 96 132)"/>
+    <g fill="#F0DDBB">
+      <rect x="120" y="140" width="58" height="16" rx="8" transform="rotate(-17 149 148)"/>
+      <rect x="186" y="196" width="50" height="15" rx="7.5" transform="rotate(23 211 203)"/>
+      <rect x="140" y="222" width="46" height="14" rx="7" transform="rotate(-7 163 229)"/>
+      <rect x="206" y="128" width="42" height="13" rx="6.5" transform="rotate(34 227 134)"/>
     </g>
-    <!-- carrot discs -->
-    <g fill="#DE7226">
-      <circle cx="128" cy="80" r="9"/><circle cx="128" cy="80" r="4.5" fill="#E98A3E"/>
-      <circle cx="66" cy="118" r="8"/><circle cx="66" cy="118" r="4" fill="#E98A3E"/>
-      <circle cx="106" cy="60" r="7"/><circle cx="106" cy="60" r="3.5" fill="#E98A3E"/>
-      <circle cx="140" cy="122" r="7.5"/><circle cx="140" cy="122" r="3.7" fill="#E98A3E"/>
+    <!-- carrot -->
+    <g>
+      <circle cx="238" cy="152" r="16" fill="#D2691E"/><circle cx="238" cy="152" r="8" fill="#E2833A"/>
+      <circle cx="112" cy="200" r="14" fill="#D2691E"/><circle cx="112" cy="200" r="7" fill="#E2833A"/>
+      <circle cx="196" cy="252" r="13" fill="#D2691E"/><circle cx="196" cy="252" r="6.5" fill="#E2833A"/>
     </g>
-    <!-- peas and celery -->
-    <g fill="#6E8A3C">
-      <circle cx="88" cy="66" r="5.5"/><circle cx="60" cy="92" r="5"/>
-      <circle cx="120" cy="140" r="5.5"/><circle cx="150" cy="98" r="5"/>
-      <circle cx="94" cy="150" r="4.6"/><circle cx="72" cy="140" r="4.4"/>
+    <!-- leek and celery -->
+    <g fill="#69823C">
+      <ellipse cx="140" cy="118" rx="15" ry="9" transform="rotate(-24 140 118)"/>
+      <ellipse cx="256" cy="212" rx="14" ry="8.5" transform="rotate(38 256 212)"/>
+      <ellipse cx="106" cy="152" rx="12" ry="7.5" transform="rotate(12 106 152)"/>
+      <ellipse cx="164" cy="264" rx="12" ry="7" transform="rotate(-16 164 264)"/>
     </g>
-    <!-- parsley -->
-    <g fill="#8CA24C" opacity=".9">
-      <circle cx="112" cy="92" r="2.6"/><circle cx="96" cy="112" r="2.4"/>
-      <circle cx="134" cy="104" r="2.4"/><circle cx="78" cy="106" r="2.2"/>
+    <!-- peas -->
+    <g fill="#7E9648">
+      <circle cx="212" cy="176" r="8"/><circle cx="130" cy="248" r="7.5"/>
+      <circle cx="252" cy="122" r="7"/><circle cx="88" cy="176" r="6.5"/>
+      <circle cx="230" cy="238" r="6.5"/>
     </g>
+    <!-- herbs -->
+    <g fill="#93A85A" opacity=".85">
+      <circle cx="166" cy="186" r="3.6"/><circle cx="204" cy="212" r="3.2"/>
+      <circle cx="146" cy="168" r="3"/><circle cx="228" cy="188" r="2.8"/>
+      <circle cx="180" cy="236" r="2.8"/>
+    </g>
+    <!-- surface sheen -->
+    <ellipse cx="140" cy="130" rx="66" ry="38" fill="#FFF3D8" opacity=".14" transform="rotate(-22 140 130)"/>
   </g>
-  <circle cx="100" cy="100" r="66" fill="none" stroke="#B98B4E" stroke-width="1.5" opacity=".5"/>
+
+  <circle cx="180" cy="176" r="112" fill="url(#cv-rim)"/>
+  <circle cx="180" cy="176" r="112" fill="none" stroke="#8E5F1C" stroke-width="1.5" opacity=".35"/>
+  <path d="M68 172a112 112 0 0 1 44-86" fill="none" stroke="#FFF6E4" stroke-width="4" stroke-linecap="round" opacity=".28"/>
 </svg>

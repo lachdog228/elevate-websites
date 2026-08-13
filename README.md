@@ -21,7 +21,7 @@ robots.txt
 netlify.toml
 assets/
   css/styles.css          all styling, numbered sections, tokens at the top
-  js/main.js              nav, scroll spy, reveals, live open/closed status
+  js/main.js              nav, scroll spy, the soup scrub, live open/closed status
   fonts/*.woff2           Fraunces + Work Sans, latin subset, self-hosted
   img/soup-*.svg          the four soup illustrations
   img/takeaway-tub.svg    the 1L pack
@@ -46,11 +46,10 @@ ONLY" signs, the neon `OPEN` in the window, and the warm wood and bone palette.
 
 | From the photo | Where it shows up |
 | --- | --- |
-| Cream / amber / orange / brown stripe band | The pot, the 1L tub, the footer rule, the sign |
+| Cream / amber / orange / brown stripe band | The pot and the 1L tub |
 | Chunky 70s signage lettering | Fraunces 900 for every heading and the pot wordmark |
-| Neon `OPEN` in the window | The hero badge, which lights up during trading hours |
-| "Hot soup made fresh daily" board | The sign panel in the About section |
-| "Takeaway only" card | The hero eyebrow and the scrolling ticker |
+| Neon `OPEN` in the window | The live open/closed line in the header and hours card |
+| "Takeaway only" card | The hero eyebrow |
 | Stacked 1L tubs on the back shelf | The chilled-packs illustration |
 
 **Note on imagery.** The client's photo itself was supplied as a reference, not
@@ -60,21 +59,63 @@ photos, the best places to use them are the hero (behind or instead of the pot),
 the four soup cards, and the fridge of 1L packs. Swapping a soup card is a
 one-line change — see below.
 
+## The scroll-scrubbed soup sequence
+
+On a wide screen the four soups are not a grid of cards. They share one
+position on screen and cross-fade from one to the next as you scroll, with an
+index rail down the left that tracks and jumps between them.
+
+**How it is built.** A tall wrapper (`.soups-scroll`) supplies the scroll
+distance; its child (`.soups-stage`) is `position: sticky`, so the soup holds
+still in the viewport while you read it. Nothing intercepts the scroll — there
+are no wheel or touch handlers and no scroll-jacking, so flicking, keyboard
+paging, find-in-page and the scrollbar all behave normally. This is the
+sticky-parent variant of the pinned-scrub pattern; it avoids the layout
+thrash that pinning an element causes.
+
+`main.js` reads one number per frame (how far through the wrapper you are,
+clamped 0–1), converts it to a position along the sequence, and sets opacity.
+Reads and writes are batched into a `requestAnimationFrame` callback, and only
+`opacity` and `transform` are touched, so nothing triggers layout.
+
+**Artwork and copy use different curves,** which matters:
+
+- The **bowls** are opaque and identically framed, so each one fades in *over*
+  the one before and then stays. Nothing shows through mid-transition.
+- The **copy** is transparent — two blocks at once would overprint and become
+  unreadable — so each fades out as the next fades in, the two ramps meeting
+  exactly at the hand-over point.
+
+**It is an enhancement, never a requirement.** The effect only switches on at
+900px and wider *and* when the visitor has not asked for reduced motion.
+Otherwise the same four blocks stay in normal document flow and read as a
+plain list — which is also exactly what renders with JavaScript disabled. The
+content is identical either way; nothing is hidden behind the animation. Only
+the soup currently on top is exposed to assistive technology, matching what is
+actually legible.
+
+**Tuning it.** Scroll distance per soup is the `80vh` in
+`.soups-scroll.is-scrub`'s height calculation — raise it for a slower scrub,
+lower it for a brisker one. The cross-fade sharpness is the divisors in
+`artOpacity` and `copyOpacity` in `main.js`. The 900px cut-off is the
+`wideEnough` media query in the same block. Adding or removing a soup needs no
+changes: the count is read from the DOM and written to the `--panels` custom
+property.
+
 ## Editing the content
 
 Everything a shop owner would want to change is in one of three places.
 
 ### The four soups — `index.html`, the `TODAY'S SOUPS` block
 
-Each soup is one `<article class="soup-card">`. The four are in order: two
-Basic (`data-tier="basic"`, badge reads "Classic") then two Gourmet
-(`data-tier="gourmet"`). To change a soup, edit these five things inside its
-card:
+Each soup is one `<article class="soup" data-soup>`. The four are in order: two
+Basic (label reads "Classic") then two Gourmet. To change a soup, edit these
+inside its block:
 
 | What | Where |
 | --- | --- |
-| Illustration | `<img src="assets/img/soup-….svg" alt="…">` |
-| Tier badge | `<p class="tier tier-basic">Classic</p>` / `tier-gourmet`, `Gourmet` |
+| Illustration | `<img src="assets/img/soup-….svg" alt="…">` inside `.soup-art` |
+| Label | `<p class="soup-tier">Classic</p>`, or add `soup-tier-gourmet` for Gourmet |
 | Name | `<h3>` |
 | Description | `<p class="soup-desc">` |
 | Dietary tags | `<ul class="soup-tags">` — add or remove `<li>` items |
@@ -89,9 +130,11 @@ Setting a price means replacing the whole placeholder span:
 <p class="soup-price">$9.50 <span class="soup-size">cup</span></p>
 ```
 
-Adding a fifth soup is just copying a whole `<article>`; the grid reflows on its
-own. If the shop regularly runs a different number, change `.soup-grid`'s
-`grid-template-columns` in `assets/css/styles.css` (section 9).
+Adding or removing a soup is just copying or deleting a whole `<article>`. The
+scroll sequence counts them itself, so nothing else needs changing — though if
+you add one, add a matching `<li>` to the `.soups-index` rail above so the
+index stays in step. Keep `data-soup` on the article and the `.soup-art` /
+`.soup-info` wrappers inside it: those are what the scrub animates.
 
 The 1L pack price is the same pattern, in the `1L TAKEAWAY PACKS` block.
 
@@ -107,8 +150,8 @@ The 1L pack price is the same pattern, in the `1L TAKEAWAY PACKS` block.
 
 ### Hours logic — `assets/js/main.js`
 
-The live "Open until 3pm" / "Opens tomorrow, 11am" pill and the neon sign read
-from one object at the top of the file:
+The live "Open until 3pm" / "Opens tomorrow, 11am" line in the header and the
+hours card reads from one object at the top of the file:
 
 ```js
 var HOURS = {
@@ -229,23 +272,36 @@ Checked in Chromium at 320, 390, 768, 1024 and 1440 px:
 - scroll spy marks the right nav item for each section
 - anchored sections clear the sticky header
 - every in-page anchor resolves to a real element
-- the open/closed pill, the neon sign and the "Today" row were tested against a
-  fixed clock at Wed 10:30am, Wed 12:30pm, Wed 3:30pm, Fri 2:59pm and Sat noon
+- the open/closed line and the "Today" row were tested against a fixed clock at
+  Wed 10:30am, Wed 12:30pm, Wed 3:30pm, Fri 2:59pm and Sat noon
+- the soup scrub was stepped through at four scroll positions, checking that
+  the right soup is active, the rail agrees, and **only one copy block is ever
+  visible at a time**
+- both fallbacks were asserted: under `prefers-reduced-motion` and at 390px the
+  scrub stays off, all four soups render at full opacity, and the rail is hidden
 - text contrast meets WCAG AA (4.5:1) against its background everywhere
 
 ## Design notes
 
-Worth preserving if the site is extended:
+The look is meant to read as an established food business with a real
+kitchen, not as a template. Worth preserving if the site is extended:
 
-- **Warm and rounded, not sharp.** Generous corner radii (26px on cards) and
-  pill buttons. The shop's signage is 70s-soft; square corners would fight it.
-- **The three-stripe band is the brand.** Amber → orange → brown, in that
-  order, on the pot, the tub, the sign and the footer. It does the work a logo
-  would.
-- **Two accents only.** Orange for anything clickable, rust for section markers
-  and headings' emphasis. Amber is reserved for dark backgrounds.
-- **Dark sections earn their place.** Only the ticker, the 1L packs section and
-  the footer are cocoa. They break up the cream and make the food pop.
-- **Restrained motion.** A fade-up on scroll, drifting steam, a slow ticker and
-  a lift on card hover. All of it stops under `prefers-reduced-motion`.
+- **Restraint is the whole idea.** No floating badges, no rotated signs, no
+  scrolling marquee, no glow, no stat counters, no cards that lift and tilt on
+  hover. Those read as decoration for its own sake and are the fastest way to
+  make a site look generated rather than designed. Depth comes from hairline
+  rules, flat colour and whitespace.
+- **Type carries the page.** Fraunces 900 for headings, Work Sans for
+  everything else, and a short scale used consistently. The headline is allowed
+  to be big; nothing else competes with it.
+- **One accent, used sparingly.** Cream and cocoa do the work. Orange appears
+  in the wordmark and on button hover, rust on the Gourmet label. That is all.
+- **Square-ish corners.** `--radius` is 4px. The rounded, pill-shaped version of
+  this page looked like a template; the flatter one looks like a shop.
+- **Dark sections earn their place.** Only the 1L packs section and the footer
+  are cocoa. Two dark bands in a cream page give it structure.
+- **Motion is either functional or absent.** The scrub sequence is the one real
+  flourish, and it carries content rather than decorating it. Beyond that: a
+  short fade-up on scroll and the drifting steam. Everything stops under
+  `prefers-reduced-motion`.
 - **The food is the only illustration.** No icon sets, no stock photography.
