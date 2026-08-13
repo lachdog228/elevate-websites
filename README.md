@@ -25,9 +25,12 @@ no third-party requests at runtime. Drop the folder on any static host (Netlify,
 Cloudflare Pages, cPanel, S3) and it works.
 
 ```
-index.html                home
-menu.html                 the menu
-robots.txt
+index.html                home            ┐
+menu.html                 the menu        │ edit these
+robots.txt                                ┘
+build-dist.py             copies the above into dist/ and writes _headers
+netlify.toml              points Netlify's publish directory at dist/
+dist/                     GENERATED — the folder that actually deploys
 netlify.toml
 assets/
   css/styles.css          all styling, numbered sections, tokens at the top
@@ -188,6 +191,71 @@ local time. A day left out is treated as closed. **If the hours change, edit
 both this object and the table in the HTML** — the table is what search engines
 and non-JS visitors read.
 
+## Deploying
+
+`dist/` is the folder to upload. It holds the site and nothing else — no
+README, no build script, no git history — plus a `_headers` file carrying the
+security and caching rules.
+
+**Drag and drop.** Open <https://app.netlify.com/drop> and drop the `dist`
+folder onto it. That is the whole process; there is no build to configure.
+
+**From the repo.** Connect the repository in Netlify and leave the build
+command empty. `netlify.toml` already sets the publish directory to `dist`, so
+a git deploy ships exactly the same bytes as a drag-and-drop one.
+
+**After editing anything**, rebuild the folder:
+
+```bash
+python3 build-dist.py
+```
+
+It prints every file and the total size. Edit the files at the repo root — the
+copies inside `dist/` are overwritten on every build.
+
+Any other static host works too (Cloudflare Pages, cPanel, S3). Only Netlify
+reads `_headers`; on anything else the headers in `build-dist.py` need
+translating into that host's own config, and **the site is meaningfully less
+safe without them**.
+
+## Security
+
+The site makes **no third-party requests at all** — no CDN, no analytics, no
+web fonts, no embeds, no trackers. Fonts, styles, script and artwork are all
+served from the same origin. That is what makes the headers in
+`build-dist.py` as tight as they are:
+
+| Header | Why |
+| --- | --- |
+| `Content-Security-Policy` | `default-src 'none'` with same-origin script, style, image and font only. `connect-src 'none'` means the page cannot make a network request; `form-action 'none'` means nothing can be submitted anywhere; `base-uri 'none'` blocks `<base>` hijacking. Anything injected into the page has nowhere to load from and nowhere to phone home to. |
+| `X-Content-Type-Options: nosniff` | Stops a browser second-guessing a declared content type. |
+| `X-Frame-Options: DENY` + `frame-ancestors 'none'` | The site cannot be framed, so it cannot be clickjacked. |
+| `Referrer-Policy` | Full URLs are never leaked to other origins. |
+| `Permissions-Policy` | Camera, microphone, geolocation and the rest are switched off outright. |
+| `Cross-Origin-Opener-Policy` / `-Resource-Policy` | Isolates the page from other windows and stops other sites hotlinking assets. |
+| `X-Robots-Tag: noindex, nofollow` | Draft only — see below. |
+
+The page has no forms, no cookies, no `localStorage`, and no user input of any
+kind, so there is nothing to inject into and nothing to steal. `main.js`
+contains no `innerHTML`, `eval`, `document.write` or `new Function` — the only
+text it ever writes is through `textContent`, which cannot execute markup.
+There is no inline script and no inline `style` attribute anywhere, which is
+what lets the CSP run without a single `'unsafe-inline'`.
+
+**Two things to change at launch:**
+
+1. **Remove the three noindex switches** — `X-Robots-Tag` in `build-dist.py`,
+   the `<meta name="robots">` in both HTML files, and `Disallow: /` in
+   `robots.txt`. All three are draft-only. Miss one and the site stays out of
+   Google.
+2. **Adding the Google Maps embed needs one CSP line**, and only one:
+   `frame-src https://www.google.com;`. Nothing else should be loosened.
+
+`Strict-Transport-Security` is deliberately **not** set. Netlify already serves
+HTTPS and redirects HTTP, and HSTS is very hard to undo once browsers have
+cached it. Add it at launch, on the real domain, once every subdomain can
+serve HTTPS.
+
 ## Draft state
 
 Nothing real is published while the site is a proposal:
@@ -288,7 +356,11 @@ checked with the client before launch:
 
 ## Testing
 
-Checked in Chromium at 320, 390, 768, 1024 and 1440 px, on both pages:
+Every suite below runs against the built `dist/` folder served with its real
+`_headers` rules, so what is tested is what deploys.
+
+**Layout**, on both pages at 320, 360, 375, 390, 414, 430, 667×375, 844×390,
+768 and 1440 px:
 
 - no horizontal overflow at any width, and no console or network errors
 - every link on both pages resolves (200), including the cross-page anchors
@@ -305,6 +377,20 @@ Checked in Chromium at 320, 390, 768, 1024 and 1440 px, on both pages:
 - both fallbacks were asserted: under `prefers-reduced-motion` and at 390px the
   scrub stays off, all four soups render at full opacity, and the rail is hidden
 - text contrast meets WCAG AA (4.5:1) against its background everywhere
+- no text below 12px, and every link and button is at least 32×32 — the
+  wordmark and the menu button are 43 and 44px, thumb-sized
+- checked in both orientations; the scroll sequence correctly stays off below
+  900px, where a pinned section would fight a phone's scrolling
+
+**Under the strict CSP**, both pages, desktop and mobile: stylesheet applies,
+all five font faces load, the script runs, the scroll sequence and the mobile
+nav both work, and the browser reports zero policy violations.
+
+**Code**: `main.js` passes ESLint with no real findings; the stylesheet's
+braces balance, every `var()` resolves, and there are no unused tokens. The
+markup was parsed on both pages — no unclosed tags, no duplicate ids, every
+image has `alt` and explicit dimensions, exactly one `h1` per page, and no
+external requests.
 
 ## Design notes
 

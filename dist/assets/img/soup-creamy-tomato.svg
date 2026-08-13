@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="Bowl of creamy tomato soup with basil, seen from above">
+  <defs>
+    <radialGradient id="ct-broth" cx=".38" cy=".32" r=".78"><stop offset="0" stop-color="#D4553A"/><stop offset=".55" stop-color="#BE3F26"/><stop offset="1" stop-color="#932C18"/></radialGradient>
+    <radialGradient id="ct-rim" cx=".5" cy=".5" r=".5">
+      <stop offset=".82" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4A2C18" stop-opacity=".26"/>
+    </radialGradient>
+    <linearGradient id="ct-glaze" x1=".2" y1="0" x2=".8" y2="1">
+      <stop offset="0" stop-color="#FFFDF7"/>
+      <stop offset=".5" stop-color="#F3E6CE"/>
+      <stop offset="1" stop-color="#DFCDAC"/>
+    </linearGradient>
+    <clipPath id="ct-clip"><circle cx="180" cy="176" r="112"/></clipPath>
+  </defs>
+
+  <ellipse cx="180" cy="330" rx="132" ry="17" fill="#2E1D12" opacity=".13"/>
+
+  <circle cx="180" cy="180" r="150" fill="url(#ct-glaze)"/>
+  <circle cx="180" cy="180" r="150" fill="none" stroke="#C6A97C" stroke-width="1.5" opacity=".55"/>
+  <circle cx="180" cy="178" r="126" fill="#E9D8B8"/>
+  <circle cx="180" cy="176" r="112" fill="url(#ct-broth)"/>
+
+  <g clip-path="url(#ct-clip)">
+    <!-- cream ripples -->
+    <path d="M76 156 C114 132 152 180 190 156 C228 132 262 172 290 148"
+          fill="none" stroke="#F7EBD5" stroke-width="12" stroke-linecap="round" opacity=".95"/>
+    <path d="M70 208 C108 184 148 232 186 208 C224 184 258 224 288 200"
+          fill="none" stroke="#F7EBD5" stroke-width="9" stroke-linecap="round" opacity=".78"/>
+    <!-- basil -->
+    <g fill="#4F6B2C">
+      <path d="M214 106 C238 96 256 110 250 130 C228 140 210 126 214 106Z"/>
+      <path d="M114 244 C138 234 156 248 150 268 C128 278 110 264 114 244Z"/>
+      <path d="M244 234 C266 224 282 238 276 257 C256 267 240 253 244 234Z"/>
+    </g>
+    <g stroke="#7E9648" stroke-width="2.2" fill="none" opacity=".9">
+      <path d="M218 126 L246 106"/><path d="M118 264 L146 244"/><path d="M247 255 L272 236"/>
+    </g>
+    <!-- croutons -->
+    <g fill="#E6C88E">
+      <rect x="150" y="182" width="27" height="25" rx="5" transform="rotate(-12 163 194)"/>
+      <rect x="188" y="246" width="25" height="23" rx="5" transform="rotate(18 200 257)"/>
+      <rect x="100" y="118" width="23" height="21" rx="5" transform="rotate(24 111 128)"/>
+    </g>
+    <g fill="#3A1B10" opacity=".45">
+      <circle cx="180" cy="150" r="3.2"/><circle cx="230" cy="186" r="2.8"/>
+      <circle cx="138" cy="216" r="2.8"/><circle cx="200" cy="212" r="2.6"/>
+    </g>
+    <!-- surface sheen -->
+    <ellipse cx="140" cy="130" rx="66" ry="38" fill="#FFF3D8" opacity=".14" transform="rotate(-22 140 130)"/>
+  </g>
+
+  <circle cx="180" cy="176" r="112" fill="url(#ct-rim)"/>
+  <circle cx="180" cy="176" r="112" fill="none" stroke="#8E5F1C" stroke-width="1.5" opacity=".35"/>
+  <path d="M68 172a112 112 0 0 1 44-86" fill="none" stroke="#FFF6E4" stroke-width="4" stroke-linecap="round" opacity=".28"/>
+</svg>

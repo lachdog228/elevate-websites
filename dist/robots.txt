@@ -1,0 +1,3 @@
+# Draft site — nothing here should be indexed until the client signs off.
+User-agent: *
+Disallow: /

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 300" role="img" aria-label="A one litre chilled takeaway soup tub with a lid">
+  <defs>
+    <clipPath id="tub-body">
+      <path d="M74 78 L86 250 C 87 262 96 268 110 268 L210 268 C 224 268 233 262 234 250 L246 78 Z"/>
+    </clipPath>
+    <linearGradient id="tub-shade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity=".10"/>
+      <stop offset=".22" stop-color="#000" stop-opacity="0"/>
+      <stop offset=".78" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".14"/>
+    </linearGradient>
+  </defs>
+
+  <!-- shadow -->
+  <ellipse cx="160" cy="272" rx="88" ry="12" fill="#2E1D12" opacity=".14"/>
+
+  <!-- tub body -->
+  <path d="M74 78 L86 250 C 87 262 96 268 110 268 L210 268 C 224 268 233 262 234 250 L246 78 Z" fill="#F4E7D0"/>
+
+  <g clip-path="url(#tub-body)">
+    <!-- brand band -->
+    <rect x="60" y="128" width="200" height="9" fill="#EFA83A"/>
+    <rect x="60" y="137" width="200" height="9" fill="#DE7A24"/>
+    <rect x="60" y="146" width="200" height="9" fill="#6B4227"/>
+    <!-- base band -->
+    <rect x="60" y="236" width="200" height="34" fill="#6B4227"/>
+    <rect x="60" y="226" width="200" height="10" fill="#DE7A24"/>
+    <rect x="60" y="217" width="200" height="9" fill="#EFA83A"/>
+    <!-- 1 L mark -->
+    <g fill="#4A2C18">
+      <text x="160" y="196" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="900" font-size="46">1L</text>
+    </g>
+    <rect x="60" y="60" width="200" height="220" fill="url(#tub-shade)"/>
+  </g>
+  <path d="M74 78 L86 250 C 87 262 96 268 110 268 L210 268 C 224 268 233 262 234 250 L246 78 Z"
+        fill="none" stroke="#C9A87C" stroke-width="2"/>
+
+  <!-- lid -->
+  <path d="M62 62 L258 62 L250 88 L70 88 Z" fill="#E9DAC0"/>
+  <rect x="58" y="46" width="204" height="20" rx="7" fill="#F4E7D0"/>
+  <rect x="58" y="46" width="204" height="20" rx="7" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <path d="M62 62 L258 62 L250 88 L70 88 Z" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <ellipse cx="160" cy="46" rx="102" ry="11" fill="#FBF3E6"/>
+  <ellipse cx="160" cy="46" rx="102" ry="11" fill="none" stroke="#C9A87C" stroke-width="2"/>
+  <ellipse cx="160" cy="46" rx="84" ry="8" fill="none" stroke="#DCC9A6" stroke-width="2"/>
+
+</svg>

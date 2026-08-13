@@ -1,21 +1,9 @@
-# Static site — no build step, the HTML lives at the repo root.
+# Static site — no build step. `dist/` is produced by build-dist.py and is
+# the only thing that ships; the repo root holds the working files.
+#
+#   python3 build-dist.py     # refresh dist/ after editing anything
+#
+# Response headers live in dist/_headers so that drag-and-drop deploys and
+# git-based builds are governed by exactly the same rules.
 [build]
-  publish = "."
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Fingerprint-free assets, so keep the window modest until launch.
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=604800"
-
-[[headers]]
-  for = "/assets/fonts/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+  publish = "dist"
