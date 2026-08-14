@@ -2,3 +2,10 @@
 daily-soup-go-netlify.zip
 # Single-file preview — regenerate with build-preview.py.
 preview.html
+# Raw film, rendered frames and review copies. Never ship these.
+# The deployable encodes live in assets/; everything here is an intermediate.
+review/frames/
+review/*.mp4
+review/*.webm
+review/*.jpg
+review/yavg.txt

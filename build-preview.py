@@ -53,9 +53,30 @@ def inline_fonts(css: str) -> str:
 
 
 def inline_images(html: str) -> str:
-    def sub(m):
+    def svg(m):
         return 'src="' + data_uri("assets/img/" + m.group(1), "image/svg+xml") + '"'
-    return re.sub(r'src="assets/img/([^"]+)"', sub, html)
+    html = re.sub(r'src="assets/img/([^"]+)"', svg, html)
+    return re.sub(r'src="assets/([^"/]+\.jpg)"',
+                  lambda m: 'src="' + data_uri("assets/" + m.group(1), "image/jpeg") + '"',
+                  html)
+
+
+def inline_film(js: str) -> str:
+    """Turn the film and the two stills into data: URIs.
+
+    The film is the single biggest thing here, roughly 3.7 MB of base64 for
+    both codecs. That is the price of one file that plays the real sequence
+    offline in any browser; dropping a codec would strand either Safari or
+    the Chromium builds without an H.264 decoder. main.js recognises a data:
+    URI and skips its Blob fetch, since the bytes are already in memory.
+    """
+    js = re.sub(r"url: 'assets/(hero-scrub\.mp4)'",
+                lambda m: "url: '" + data_uri("assets/" + m.group(1), "video/mp4") + "'", js)
+    js = re.sub(r"url: 'assets/(hero-scrub\.webm)'",
+                lambda m: "url: '" + data_uri("assets/" + m.group(1), "video/webm") + "'", js)
+    js = re.sub(r"= 'assets/(hero-poster\.jpg|hero-ending\.jpg)'",
+                lambda m: "= '" + data_uri("assets/" + m.group(1), "image/jpeg") + "'", js)
+    return js
 
 
 def rewrite_links(html: str) -> str:
@@ -132,7 +153,7 @@ def main() -> int:
         index_html = read("index.html")
         menu_html = read("menu.html")
         css = inline_fonts(read("assets/css/styles.css"))
-        js = read("assets/js/main.js")
+        js = inline_film(read("assets/js/main.js"))
     except FileNotFoundError as err:
         print(f"missing source file: {err}", file=sys.stderr)
         return 1
@@ -140,19 +161,21 @@ def main() -> int:
     banner = grab(index_html, "div", '<div class="draft-banner"')
     header = grab(index_html, "header", '<header class="site-header"')
     footer = grab(index_html, "footer", '<footer class="site-footer"')
-    home_main = grab(index_html, "main", '<main id="main">')
-    menu_main = grab(menu_html, "main", '<main id="main">')
+    home_main = grab(index_html, "main", '<main id="main"')
+    menu_main = grab(menu_html, "main", '<main id="main"')
 
     # Strip the <main> wrapper off each page; one wrapper serves both.
     inner = lambda block: re.sub(r"^<main[^>]*>|</main>$", "", block).strip()
     home_body, menu_body = inner(home_main), inner(menu_main)
 
-    # Both pages name their soups section the same thing. Two elements
-    # cannot share an id in one document, so the home teaser gives way.
-    home_body = (home_body
-                 .replace('id="soups"', 'id="soups-home"')
-                 .replace('id="soups-title"', 'id="soups-home-title"')
-                 .replace('aria-labelledby="soups-title"', 'aria-labelledby="soups-home-title"'))
+    # Two elements cannot share an id in one document. The home page and the
+    # menu page no longer collide on any id, but a future section could, so
+    # this is checked rather than assumed.
+    ids = lambda block: set(re.findall(r'id="([^"]+)"', block))
+    clash = ids(home_body) & ids(menu_body)
+    if clash:
+        print("duplicate ids across the two pages: " + ", ".join(sorted(clash)), file=sys.stderr)
+        return 1
 
     parts = [banner, header, home_body, menu_body, footer]
     parts = [inline_images(rewrite_links(p)) for p in parts]

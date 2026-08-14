@@ -1,0 +1,411 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The Pour — frame renderer</title>
+<style>html,body{margin:0;background:#111;overflow:hidden}canvas{display:block}</style>
+<canvas id="c" width="1920" height="1080"></canvas>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   THE POUR — a stand-in for the generated hero film.
+
+   Six seconds, 1920x1080. A cream cup on a lit counter, the shop's
+   back bench out of focus behind it. Soup pours in from above frame,
+   fills the cup, and the shot comes to rest on it steaming.
+
+   Composed for the page: the cup sits in the RIGHT third, so the whole
+   left half stays clear for captions. Law 7, decided before drawing.
+
+   No ladle on purpose. A drawn ladle read as a lollipop in the first
+   pass; pouring from out of frame is both cleaner and how food is
+   actually shot.
+
+   Swap the real generated film in and only assets/hero-scrub.mp4
+   changes. Nothing in the page knows the difference.
+   ═══════════════════════════════════════════════════════════════════ */
+
+const C = document.getElementById('c');
+const X = C.getContext('2d');
+const W = C.width, H = C.height;
+const DUR = 6.0;
+
+const CREAM  = '#F4E7D3';
+const AMBER  = '#EFA83A';
+const ORANGE = '#DE7A24';
+const BROWN  = '#6B4227';
+const SOUP   = '#C4671F';
+const SOUP_L = '#E89A3F';
+
+// Cup geometry: big in frame, right third.
+const CX  = W * 0.660;
+const TOP = H * 0.395;
+const BOT = H * 0.800;
+const RT  = W * 0.147;
+const RB  = W * 0.112;
+const RY  = RT * 0.275;
+
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const smooth = (t) => t <= 0 ? 0 : t >= 1 ? 1 : t * t * (3 - 2 * t);
+const ease = (p, a, b) => smooth((p - a) / (b - a));
+const lerp = (a, b, t) => a + (b - a) * t;
+
+function rng(seed) { let s = seed >>> 0; return () => (s = (s * 1664525 + 1013904223) >>> 0) / 4294967296; }
+const R = rng(20260814);
+
+// Out-of-focus warm shapes on the back bench: pots, a light, a jar.
+const BOKEH = [
+  { x: 0.115, y: 0.300, r: 0.088, a: 0.30, c: '236,170,88' },
+  { x: 0.225, y: 0.345, r: 0.062, a: 0.22, c: '212,128,52' },
+  { x: 0.845, y: 0.270, r: 0.075, a: 0.26, c: '240,182,104' },
+  { x: 0.930, y: 0.365, r: 0.055, a: 0.18, c: '198,116,46' },
+  { x: 0.400, y: 0.250, r: 0.045, a: 0.14, c: '242,196,128' }
+];
+const MOTES = Array.from({ length: 30 }, () => ({
+  x: R(), y: R(), r: 0.8 + R() * 2.4, sp: 0.2 + R() * 0.6, ph: R() * 6.28
+}));
+const STEAM = Array.from({ length: 9 }, (_, i) => ({
+  off: (i - 4) * 0.020, ph: R() * 6.28, sp: 0.45 + R() * 0.6,
+  amp: 0.010 + R() * 0.020, w: 14 + R() * 22, len: 0.20 + R() * 0.14
+}));
+
+/* ── the timeline ──────────────────────────────────────────────── */
+function beats(t) {
+  const p = t / DUR;
+  return {
+    p,
+    enter:  ease(p, 0.11, 0.19),                          // the stream arrives from above
+    pour:   ease(p, 0.11, 0.20) * (1 - ease(p, 0.66, 0.78)),
+    fill:   ease(p, 0.16, 0.72),
+    steam:  ease(p, 0.24, 0.62),
+    settle: ease(p, 0.70, 1.00),
+    push:   ease(p, 0.00, 1.00)                           // a very slow camera push in
+  };
+}
+
+/* ── the room ──────────────────────────────────────────────────── */
+function drawRoom(b) {
+  X.fillStyle = '#170D06';
+  X.fillRect(0, 0, W, H);
+
+  const breathe = 1 + Math.sin(b.p * 2.6) * 0.015;
+  let g = X.createRadialGradient(W * 0.28, H * 0.14, 0, W * 0.28, H * 0.14, W * 0.98 * breathe);
+  g.addColorStop(0, 'rgba(242,178,74,0.24)');
+  g.addColorStop(0.40, 'rgba(186,108,40,0.085)');
+  g.addColorStop(1, 'rgba(23,13,6,0)');
+  X.fillStyle = g; X.fillRect(0, 0, W, H);
+
+  // the back bench, thrown out of focus
+  X.save();
+  X.filter = 'blur(58px)';
+  for (const k of BOKEH) {
+    const rg = X.createRadialGradient(k.x * W, k.y * H, 0, k.x * W, k.y * H, k.r * W);
+    rg.addColorStop(0, `rgba(${k.c},${k.a})`);
+    rg.addColorStop(1, `rgba(${k.c},0)`);
+    X.fillStyle = rg;
+    X.beginPath(); X.arc(k.x * W, k.y * H, k.r * W, 0, 6.284); X.fill();
+  }
+  X.restore();
+
+  // the pool of light the cup stands in
+  g = X.createRadialGradient(CX, TOP + H * 0.10, 0, CX, TOP + H * 0.10, W * 0.38);
+  g.addColorStop(0, `rgba(244,186,96,${0.16 + b.settle * 0.08})`);
+  g.addColorStop(1, 'rgba(23,13,6,0)');
+  X.fillStyle = g; X.fillRect(0, 0, W, H);
+}
+
+function drawCounter(b) {
+  const y = BOT;
+
+  // the surface, receding rather than ending on a hard line
+  let g = X.createLinearGradient(0, y - H * 0.075, 0, H);
+  g.addColorStop(0, 'rgba(74,46,22,0)');
+  g.addColorStop(0.30, '#432A14');
+  g.addColorStop(0.62, '#311E0E');
+  g.addColorStop(1, '#180E06');
+  X.fillStyle = g; X.fillRect(0, y - H * 0.075, W, H - y + H * 0.075);
+
+  // an elliptical wash of light across the timber, brightest under the cup
+  X.save();
+  X.beginPath(); X.rect(0, y - H * 0.05, W, H); X.clip();
+  g = X.createRadialGradient(CX, y + H * 0.05, 0, CX, y + H * 0.05, W * 0.46);
+  g.addColorStop(0, 'rgba(240,172,80,0.20)');
+  g.addColorStop(0.55, 'rgba(200,120,44,0.07)');
+  g.addColorStop(1, 'rgba(0,0,0,0)');
+  X.fillStyle = g; X.fillRect(0, y - H * 0.05, W, H);
+  X.restore();
+
+  // the lit front edge of the bench
+  g = X.createLinearGradient(0, y - 5, 0, y + 9);
+  g.addColorStop(0, 'rgba(255,206,132,0)');
+  g.addColorStop(0.5, 'rgba(255,206,132,0.20)');
+  g.addColorStop(1, 'rgba(255,206,132,0)');
+  X.fillStyle = g; X.fillRect(0, y - 5, W, 14);
+
+  // contact shadow, tightening as the cup gains weight
+  X.save();
+  X.translate(CX, y + 10);
+  X.scale(1, 0.15);
+  const s = X.createRadialGradient(0, 0, 0, 0, 0, RB * (2.7 - b.fill * 0.4));
+  s.addColorStop(0, `rgba(0,0,0,${0.58 + b.fill * 0.16})`);
+  s.addColorStop(0.6, 'rgba(0,0,0,0.22)');
+  s.addColorStop(1, 'rgba(0,0,0,0)');
+  X.fillStyle = s;
+  X.beginPath(); X.arc(0, 0, RB * 2.7, 0, 6.284); X.fill();
+  X.restore();
+
+  // the faint reflection of the cup in the polished timber
+  X.save();
+  X.globalAlpha = 0.13;
+  X.translate(CX, y * 2 + 4);
+  X.scale(1, -0.36);
+  X.translate(-CX, 0);
+  X.filter = 'blur(9px)';
+  cupPath();
+  X.fillStyle = CREAM; X.fill();
+  X.restore();
+}
+
+function drawMotes(b) {
+  for (const m of MOTES) {
+    // No wrap-around. A mote teleporting from the top of frame to the bottom
+    // is a one-frame pop, and it landed in the calmest part of the shot where
+    // it read as a flicker. They drift, fade out at the top, and stay gone.
+    const y = m.y - b.p * m.sp * 0.09;
+    if (y < 0.005) continue;
+    const exit = clamp((y - 0.005) / 0.06, 0, 1);
+    const x = m.x + Math.sin(b.p * 3.4 + m.ph) * 0.005;
+    const a = (0.06 + Math.sin(b.p * 4.4 + m.ph) * 0.045) * exit;
+    X.fillStyle = `rgba(246,204,142,${clamp(a, 0, 0.11)})`;
+    X.beginPath(); X.arc(x * W, y * H, m.r, 0, 6.284); X.fill();
+  }
+}
+
+/* ── the cup ───────────────────────────────────────────────────── */
+function side(k) { return lerp(RT, RB, smooth(k) * 0.88 + k * 0.12); }
+
+function cupPath() {
+  X.beginPath();
+  X.moveTo(CX - RT, TOP);
+  for (let i = 0; i <= 28; i++) { const k = i / 28; X.lineTo(CX - side(k), TOP + (BOT - TOP) * k); }
+  X.quadraticCurveTo(CX, BOT + RB * 0.16, CX + RB, BOT);
+  for (let i = 28; i >= 0; i--) { const k = i / 28; X.lineTo(CX + side(k), TOP + (BOT - TOP) * k); }
+  X.closePath();
+}
+
+function drawCupBody(b) {
+  cupPath();
+  X.fillStyle = CREAM; X.fill();
+  X.save(); X.clip();
+
+  // the barrel's shading: dark at both edges, light just off centre
+  const sg = X.createLinearGradient(CX - RT, 0, CX + RT, 0);
+  sg.addColorStop(0,    'rgba(78,48,22,0.40)');
+  sg.addColorStop(0.14, 'rgba(78,48,22,0.13)');
+  sg.addColorStop(0.36, 'rgba(255,248,232,0.30)');
+  sg.addColorStop(0.62, 'rgba(78,48,22,0.02)');
+  sg.addColorStop(0.88, 'rgba(78,48,22,0.20)');
+  sg.addColorStop(1,    'rgba(78,48,22,0.34)');
+  X.fillStyle = sg; X.fillRect(CX - RT, TOP, RT * 2, BOT - TOP + RB);
+
+  // the shop's stripe band, low on the cup
+  const by = TOP + (BOT - TOP) * 0.735;
+  const bh = (BOT - TOP) * 0.050;
+  X.fillStyle = AMBER;  X.fillRect(CX - RT, by, RT * 2, bh);
+  X.fillStyle = ORANGE; X.fillRect(CX - RT, by + bh, RT * 2, bh);
+  X.fillStyle = BROWN;  X.fillRect(CX - RT, by + bh * 2, RT * 2, BOT - by + RB);
+
+  // re-apply the shading over the band so it wraps the form
+  X.fillStyle = sg; X.fillRect(CX - RT, by, RT * 2, BOT - by + RB);
+
+  // warm rim light down the right shoulder
+  const rl = X.createLinearGradient(CX + RT * 0.45, 0, CX + RT, 0);
+  rl.addColorStop(0, 'rgba(255,196,110,0)');
+  rl.addColorStop(1, 'rgba(255,212,140,0.40)');
+  X.fillStyle = rl; X.fillRect(CX, TOP, RT, BOT - TOP + RB);
+
+  // a soft specular on the left, where the key light lands
+  const sp = X.createRadialGradient(CX - RT * 0.52, TOP + (BOT - TOP) * 0.34, 0,
+                                    CX - RT * 0.52, TOP + (BOT - TOP) * 0.34, RT * 0.72);
+  sp.addColorStop(0, 'rgba(255,252,242,0.34)');
+  sp.addColorStop(1, 'rgba(255,252,242,0)');
+  X.fillStyle = sp; X.fillRect(CX - RT, TOP, RT * 2, BOT - TOP);
+  X.restore();
+}
+
+function drawInterior(b) {
+  X.save();
+  X.beginPath(); X.ellipse(CX, TOP, RT, RY, 0, 0, 6.284);
+  X.clip();
+
+  // the shadowed inside wall
+  const ig = X.createLinearGradient(CX - RT, 0, CX + RT, 0);
+  ig.addColorStop(0, '#4A2E15');
+  ig.addColorStop(0.5, '#2A1809');
+  ig.addColorStop(1, '#3A2210');
+  X.fillStyle = ig;
+  X.fillRect(CX - RT, TOP - RY - 2, RT * 2, RY * 2 + 6);
+
+  if (b.fill > 0.004) {
+    const surfY = TOP + RY * 0.80 - RY * 1.62 * b.fill;
+    const wob = Math.sin(b.p * 24) * 2.4 * b.pour;
+    const rx = RT * 0.972, ry = RY * 0.95;
+
+    const sg = X.createRadialGradient(CX - rx * 0.34, surfY - ry * 0.42, 0, CX, surfY, rx * 1.15);
+    sg.addColorStop(0, '#F0A54B');
+    sg.addColorStop(0.42, SOUP_L);
+    sg.addColorStop(0.78, SOUP);
+    sg.addColorStop(1, '#9C4A0D');
+    X.fillStyle = sg;
+    X.beginPath(); X.ellipse(CX, surfY + wob, rx, ry, 0, 0, 6.284); X.fill();
+
+    // the meniscus catching light where it meets the wall
+    X.strokeStyle = 'rgba(255,206,140,0.34)'; X.lineWidth = 3;
+    X.beginPath(); X.ellipse(CX, surfY + wob, rx * 0.985, ry * 0.95, 0, 0, 6.284); X.stroke();
+
+    // rings spreading from the impact
+    if (b.pour > 0.04) {
+      for (let i = 0; i < 4; i++) {
+        const ph = (b.p * 3.1 + i * 0.25) % 1;
+        X.strokeStyle = `rgba(255,222,164,${0.26 * (1 - ph) * b.pour})`;
+        X.lineWidth = 2.4;
+        X.beginPath();
+        X.ellipse(CX - 8, surfY + wob, rx * (0.10 + 0.86 * ph), ry * (0.10 + 0.86 * ph), 0, 0, 6.284);
+        X.stroke();
+      }
+    }
+  }
+  X.restore();
+}
+
+function drawRim(b) {
+  X.save();
+  X.beginPath();
+  X.ellipse(CX, TOP, RT, RY, 0, 0, 6.284);
+  X.ellipse(CX, TOP, RT * 0.945, RY * 0.90, 0, 0, 6.284);
+  const rg = X.createLinearGradient(CX - RT, 0, CX + RT, 0);
+  rg.addColorStop(0, '#D6C09C');
+  rg.addColorStop(0.35, '#FDF6EA');
+  rg.addColorStop(1, '#CDB48D');
+  X.fillStyle = rg; X.fill('evenodd');
+  X.restore();
+  X.strokeStyle = 'rgba(255,232,186,0.50)'; X.lineWidth = 2.4;
+  X.beginPath(); X.ellipse(CX, TOP, RT, RY, 0, Math.PI * 1.02, Math.PI * 1.96); X.stroke();
+}
+
+/* ── the pour ──────────────────────────────────────────────────── */
+function drawStream(b) {
+  if (b.pour < 0.02) return;
+  const surfY = TOP + RY * 0.80 - RY * 1.62 * b.fill;
+  const headY = lerp(-40, surfY, b.enter);
+  const bottom = Math.min(headY, surfY);
+  const originX = CX - RT * 0.10;
+
+  const steps = 54;
+  const L = [], Rt = [];
+  for (let i = 0; i <= steps; i++) {
+    const k = i / steps;
+    const y = lerp(-40, bottom, k);
+    if (y > bottom) break;
+    // the stream drifts and necks as it falls, thickening near the surface
+    const wob = Math.sin(b.p * 15 + k * 7.2) * 7 * (1 - k * 0.5);
+    const x = originX + wob * (0.4 + k * 0.6);
+    const w = lerp(17, 30, k * k * 0.9 + k * 0.1) * b.pour * (1 - Math.sin(k * 12 + b.p * 9) * 0.06);
+    L.push([x - w, y]); Rt.push([x + w, y]);
+  }
+  if (L.length < 2) return;
+
+  X.beginPath();
+  L.forEach(([x, y], i) => i ? X.lineTo(x, y) : X.moveTo(x, y));
+  for (let i = Rt.length - 1; i >= 0; i--) X.lineTo(Rt[i][0], Rt[i][1]);
+  X.closePath();
+  const g = X.createLinearGradient(originX - 30, 0, originX + 30, 0);
+  g.addColorStop(0, '#A85312');
+  g.addColorStop(0.34, SOUP_L);
+  g.addColorStop(0.52, '#F6B463');
+  g.addColorStop(0.72, SOUP);
+  g.addColorStop(1, '#8E440C');
+  X.fillStyle = g; X.fill();
+
+  // the bright core running down the stream
+  X.strokeStyle = `rgba(255,214,150,${0.42 * b.pour})`;
+  X.lineWidth = 4.5; X.lineCap = 'round';
+  X.beginPath();
+  L.forEach(([x, y], i) => i ? X.lineTo(x + 9, y) : X.moveTo(x + 9, y));
+  X.stroke();
+
+  // splash thrown off the surface
+  if (b.enter > 0.98) {
+    for (let i = 0; i < 9; i++) {
+      const ph = (b.p * 2.9 + i * 0.15) % 1;
+      const dir = (i % 2 ? 1 : -1) * (0.4 + (i / 9));
+      const dx = CX - 8 + dir * RT * 0.62 * ph;
+      const dy = surfY - 46 * ph + 120 * ph * ph;
+      X.fillStyle = `rgba(232,150,62,${0.6 * (1 - ph) * b.pour})`;
+      X.beginPath(); X.arc(dx, dy, 4.2 * (1 - ph * 0.45), 0, 6.284); X.fill();
+    }
+  }
+}
+
+function drawSteam(b) {
+  const amt = b.steam * (0.5 + b.settle * 0.5);
+  if (amt < 0.02) return;
+  X.save();
+  X.lineCap = 'round';
+  X.filter = 'blur(7px)';
+  for (const s of STEAM) {
+    const bx = CX + s.off * W;
+    const by = TOP - RY * 0.35;
+    X.beginPath();
+    for (let i = 0; i <= 26; i++) {
+      const k = i / 26;
+      const y = by - k * H * s.len * (0.7 + b.settle * 0.5);
+      const drift = Math.sin(b.p * 5.0 * s.sp + s.ph + k * 3.2) * s.amp * W * (0.2 + k * 1.1);
+      const x = bx + drift + k * W * 0.016;
+      i ? X.lineTo(x, y) : X.moveTo(x, y);
+    }
+    X.strokeStyle = `rgba(248,238,222,${0.085 * amt})`;
+    X.lineWidth = s.w;
+    X.stroke();
+    X.strokeStyle = `rgba(255,248,236,${0.05 * amt})`;
+    X.lineWidth = s.w * 0.4;
+    X.stroke();
+  }
+  X.restore();
+}
+
+function grade(b) {
+  // a gentle vignette, kept light so the room stays a room
+  const g = X.createRadialGradient(W * 0.52, H * 0.44, H * 0.42, W * 0.5, H * 0.5, W * 0.86);
+  g.addColorStop(0, 'rgba(12,7,2,0)');
+  g.addColorStop(1, 'rgba(12,7,2,0.50)');
+  X.fillStyle = g; X.fillRect(0, 0, W, H);
+
+  // a whisper of warm bloom over everything, lifting as it settles
+  X.fillStyle = `rgba(240,170,80,${0.020 + b.settle * 0.022})`;
+  X.fillRect(0, 0, W, H);
+}
+
+/* ── the frame ─────────────────────────────────────────────────── */
+window.renderFrame = function (t) {
+  const b = beats(clamp(t, 0, DUR));
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  X.clearRect(0, 0, W, H);
+
+  // the slow push in: 100% to 104% over the whole shot
+  const z = 1 + b.push * 0.04;
+  X.translate(W * 0.5, H * 0.52);
+  X.scale(z, z);
+  X.translate(-W * 0.5, -H * 0.52);
+
+  drawRoom(b);
+  drawMotes(b);
+  drawCounter(b);
+  drawCupBody(b);
+  drawInterior(b);
+  drawRim(b);
+  drawStream(b);
+  drawSteam(b);
+  X.setTransform(1, 0, 0, 1, 0, 0);
+  grade(b);
+  return true;
+};
+renderFrame(0);
+</script>

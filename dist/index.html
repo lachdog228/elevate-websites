@@ -3,17 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Daily Soup Go. — Hot soup made fresh daily, Mon–Fri 11–3</title>
-<meta name="description" content="Four soups cooked from scratch every morning — two classics, two gourmet. Takeaway only, weekdays 11am to 3pm. Chilled 1L packs to take home.">
-<meta name="theme-color" content="#2E1D12">
+<title>Daily Soup Go. Hot soup, made fresh daily</title>
+<meta name="description" content="Four soups cooked from scratch every weekday morning, two classics and two gourmet. Takeaway only, 11am to 3pm. Chilled 1L packs to take home.">
+<meta name="theme-color" content="#170D06">
 
 <!-- Draft: nothing is indexed until the client approves and the details are filled in. -->
 <meta name="robots" content="noindex, nofollow">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Daily Soup Go. — Hot soup made fresh daily">
-<meta property="og:description" content="Four soups cooked from scratch every morning. Takeaway only, weekdays 11am to 3pm.">
+<meta property="og:title" content="Daily Soup Go. Hot soup, made fresh daily">
+<meta property="og:description" content="Four soups cooked from scratch every weekday morning. Takeaway only, 11am to 3pm.">
 <meta property="og:locale" content="en_AU">
+<!-- DEPLOY STEP: og:image and og:url need the live absolute URL. Patch both at deploy.
+<meta property="og:url" content="https://LIVE-URL/">
+<meta property="og:image" content="https://LIVE-URL/assets/hero-ending.jpg">
+-->
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/playfair-display-700.woff2" as="font" type="font/woff2" crossorigin>
@@ -25,15 +29,18 @@
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     DRAFT BANNER — delete this block when the site goes live.
+     DRAFT BANNER. Delete this block when the site goes live.
      ══════════════════════════════════════════════════════════════ -->
 <div class="draft-banner" role="note">
   <strong>Draft preview.</strong> Every price and contact detail below is a
   placeholder for the client to fill in.
 </div>
 
+<!-- the one environment layer, behind everything -->
+<div class="environment" aria-hidden="true"></div>
+
 <!-- ══════════════════════════════════════════════════════════════════
-     HEADER
+     HEADER. Keep this block identical on index.html and menu.html.
      ══════════════════════════════════════════════════════════════ -->
 <header class="site-header" id="top">
   <div class="wrap header-inner">
@@ -58,7 +65,7 @@
         <li><a href="index.html#about" data-spy="about">About</a></li>
         <li><a href="index.html#visit" data-spy="visit">Find&nbsp;us</a></li>
       </ul>
-      <a class="btn btn-primary nav-cta" href="menu.html">View the menu</a>
+      <a class="btn btn-primary nav-cta" href="#visit">Find the shop</a>
     </nav>
 
     <p class="status-pill" data-open-status hidden>
@@ -74,99 +81,191 @@
   </div>
 </header>
 
-<main id="main">
+<!-- ══════════════════════════════════════════════════════════════════
+     THE DOCKET, the signature element.
+     A kitchen docket down the right edge: the day, the live open state,
+     and where the visitor is on the page. Hidden under 1100px and on
+     short screens, where it has no room.
+     ══════════════════════════════════════════════════════════════ -->
+<aside class="docket" data-docket aria-hidden="true">
+  <span class="docket-line" data-docket-day></span>
+  <span class="docket-rule"></span>
+  <span class="docket-line" data-docket-state></span>
+  <span class="docket-rule"></span>
+  <span class="docket-line docket-here" data-docket-here></span>
+</aside>
+
+<main id="main" tabindex="-1">
 
 <!-- ══════════════════════════════════════════════════════════════════
-     HERO
+     THE HERO, the scroll-scrubbed film.
+
+     A tall section whose inner stage is sticky. Scroll progress through
+     it drives the film's time. Four caption bands ride that progress.
+
+     Phones, portrait tablets, coarse-pointer portrait, short sideways
+     phones and reduced motion all get the composed still hero instead,
+     and never download the film. The five conditions are identical in
+     the CSS and in main.js.
      ══════════════════════════════════════════════════════════════ -->
-<section class="hero" aria-labelledby="hero-title">
-  <div class="wrap hero-inner">
+<section class="hero" data-hero data-docket-name="The pour" aria-labelledby="hero-title">
+  <h1 class="visually-hidden" id="hero-title">
+    Hot soup, made fresh daily. Four soups cooked this morning, Monday to Friday, 11 to 3, takeaway only.
+  </h1>
 
-    <p class="eyebrow">Takeaway only &middot; Monday to Friday &middot; 11am–3pm</p>
+  <div class="hero-stage" data-stage>
 
-    <h1 id="hero-title">Hot soup,<br>made fresh daily.</h1>
-
-    <p class="lede">
-      Four soups a day, cooked from scratch in our kitchen each morning — two
-      classics and two that go a bit further. Ladled into a cup, lidded, and
-      out the door.
-    </p>
-
-    <div class="hero-actions">
-      <a class="btn btn-primary btn-lg" href="menu.html">View the menu</a>
-      <a class="btn btn-ghost btn-lg" href="#visit">Find the shop</a>
+    <div class="hero-media" aria-hidden="true">
+      <div class="hero-poster" data-poster></div>
+      <video class="hero-video" data-video preload="none" muted playsinline
+             aria-hidden="true" tabindex="-1" disablepictureinpicture></video>
+      <div class="hero-scrim"></div>
     </div>
 
-    <!-- the band painted round the shop's own stoneware, as a full stop -->
-    <div class="hero-mark" aria-hidden="true"><i></i><i></i><i></i></div>
+    <!-- the honest loading ring, replaced by a scroll cue if the film fails -->
+    <div class="hero-loader" data-loader aria-hidden="true">
+      <svg viewBox="0 0 48 48" focusable="false">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(246,235,216,.18)" stroke-width="2.5"/>
+        <circle class="ring" cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-dasharray="126" transform="rotate(-90 24 24)"/>
+      </svg>
+    </div>
+
+    <!-- ── the caption bands ────────────────────────────────────────
+         Copy is verbatim from the design package. Each band lives in
+         the left half, where the film's composition was drawn to leave
+         the lane clear.
+         ─────────────────────────────────────────────────────────── -->
+    <div class="bands" data-bands>
+
+      <div class="band band-1" data-band data-range="0,0.19" data-entrance="punch" data-ramp="0.030">
+        <p class="band-kicker">Weekdays, 11 to 3</p>
+        <p class="band-line" data-split>Another cold sandwich.</p>
+      </div>
+
+      <div class="band band-2" data-band data-range="0.24,0.46" data-entrance="drift">
+        <p class="band-line" data-split>Or something that was cooked this morning.</p>
+      </div>
+
+      <div class="band band-3" data-band data-range="0.52,0.72" data-entrance="blur">
+        <p class="band-line band-line-big" data-split>Hot soup, made fresh daily.</p>
+      </div>
+
+      <div class="band band-4" data-band data-range="0.80,1" data-entrance="rise">
+        <p class="band-line band-line-big" data-split>Daily Soup Go.</p>
+        <p class="band-sub">Monday to Friday, 11 to 3. Takeaway only.</p>
+        <p class="band-cta"><a class="btn btn-accent btn-lg" href="#visit">Find the shop</a></p>
+      </div>
+
+    </div>
+
+    <!-- ── the still hero, for the five gated cases ──────────────── -->
+    <div class="hero-still">
+      <div class="wrap hero-still-inner">
+        <p class="band-kicker">Weekdays, 11 to 3</p>
+        <p class="hero-still-line">Hot soup, made fresh daily.</p>
+        <p class="hero-still-sub">
+          Four soups, cooked this morning. Monday to Friday, 11 to 3. Takeaway only.
+        </p>
+        <a class="btn btn-accent btn-lg" href="#visit">Find the shop</a>
+      </div>
+    </div>
 
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     TODAY'S SOUPS — a pointer, not a copy.
-     The soups themselves live on menu.html so there is only ever one
-     place to edit when the board changes.
+     THE TURN
      ══════════════════════════════════════════════════════════════ -->
-<section class="section soups" id="soups" aria-labelledby="soups-title">
-  <div class="wrap soups-home reveal">
-    <p class="section-marker">On today</p>
-    <h2 id="soups-title">Four soups<br>on the board</h2>
-    <p class="section-lede">
-      Two classics and two gourmet, cooked this morning and held hot until 3pm.
-      Cup or bowl, always to take away — and whatever is left goes home in a
-      chilled 1L pack.
+<section class="section turn" id="turn" data-docket-name="Today" aria-labelledby="turn-title">
+  <div class="wrap turn-inner">
+    <p class="kicker reveal">Today</p>
+    <h2 class="turn-head reveal" id="turn-title">Made this morning.<br>Gone by three.</h2>
+    <p class="turn-body reveal">
+      Four soups a day, cooked from scratch in our kitchen each morning, two
+      classics and two that go a bit further. Ladled into a cup, lidded, and out
+      the door.
     </p>
-    <a class="btn btn-primary btn-lg" href="menu.html">View the menu</a>
-    <p class="soups-note">
-      The board changes every weekday. When a soup runs out it is gone for the day.
-    </p>
+  </div>
+  <!-- the steam line, drawn by scroll -->
+  <svg class="steamline" viewBox="0 0 200 900" preserveAspectRatio="none" aria-hidden="true" data-steamline>
+    <path d="M100 900 C60 780 140 700 100 600 C60 500 140 420 100 320 C62 226 138 150 100 40"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     THE BOARD, with the one interactive moment
+     ══════════════════════════════════════════════════════════════ -->
+<section class="section board" id="board" data-docket-name="The board" aria-labelledby="board-title">
+  <div class="wrap board-inner">
+
+    <div class="board-copy reveal">
+      <p class="kicker">The board</p>
+      <h2 id="board-title">Four soups<br>on the board</h2>
+      <p class="board-body">
+        Two classics and two gourmet, held hot until three. The board changes
+        every weekday. When a soup runs out it is gone for the day.
+      </p>
+      <a class="btn btn-primary" href="menu.html">View the menu</a>
+    </div>
+
+    <!-- ── Hold to pour ─────────────────────────────────────────────
+         The visitor performs the brand's one idea instead of reading
+         it. Holding fills the cup; letting go early eases the level
+         back down rather than snapping. Filling it lights the board.
+         Reduced motion gets the filled state with no hold required.
+         ─────────────────────────────────────────────────────────── -->
+    <div class="pour reveal" data-pour>
+      <p class="pour-label" data-pour-label>Hold to pour</p>
+
+      <button class="pour-cup" type="button" data-pour-btn
+              aria-label="Press and hold to pour a cup and reveal today's board">
+        <span class="pour-stream" aria-hidden="true"></span>
+        <span class="pour-vessel" aria-hidden="true">
+          <span class="pour-fill"></span>
+          <span class="pour-band"><i></i><i></i><i></i></span>
+        </span>
+        <span class="pour-steam" aria-hidden="true"><i></i><i></i><i></i></span>
+      </button>
+
+      <ol class="pour-list" data-pour-list>
+        <li><span class="pour-n">01</span> Chicken &amp; Vegetable</li>
+        <li><span class="pour-n">02</span> Pumpkin</li>
+        <li><span class="pour-n">03</span> Beef &amp; Barley</li>
+        <li><span class="pour-n">04</span> Creamy Tomato &amp; Basil</li>
+      </ol>
+    </div>
+
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
      1L TAKEAWAY PACKS
      ══════════════════════════════════════════════════════════════ -->
-<section class="section takeaway" id="takeaway" aria-labelledby="takeaway-title">
+<section class="section takeaway" id="takeaway" data-docket-name="1L packs" aria-labelledby="takeaway-title">
   <div class="wrap takeaway-inner">
 
-    <div class="takeaway-art reveal" aria-hidden="true">
-      <img src="assets/img/takeaway-tub.svg" width="320" height="300"
+    <div class="takeaway-art reveal">
+      <img src="assets/pour-still.jpg" width="1920" height="1080"
            alt="" loading="lazy" decoding="async">
     </div>
 
     <div class="takeaway-copy reveal">
-      <p class="section-marker">Take it home</p>
+      <p class="kicker">Take it home</p>
       <h2 id="takeaway-title">Chilled 1L packs</h2>
-      <p class="section-lede">
-        Whatever is left in the pots at 3pm gets chilled down the same
-        afternoon and sealed into one-litre packs. Same soup, same day it was
-        cooked — just cold, and enough to feed two or three.
+      <p class="lede">
+        Whatever is left in the pots at 3pm gets chilled down the same afternoon
+        and sealed into one-litre packs. Same soup, same day it was cooked.
+        Feeds two or three.
       </p>
-
-      <dl class="notes">
-        <div>
-          <dt>Cooked in the morning</dt>
-          <dd>The same four soups on the board that day, nothing else.</dd>
-        </div>
-        <div>
-          <dt>Chilled, not wasted</dt>
-          <dd>Cooled fast at close and sealed into 1L packs, dated and labelled.</dd>
-        </div>
-        <div>
-          <dt>Reheat at home</dt>
-          <dd>Keeps three days in the fridge, or freeze it for up to three months.</dd>
-        </div>
-      </dl>
-
       <p class="pack-price">
         <span class="placeholder">[$0.00]</span>
         <span class="pack-price-label">per 1L pack, from the fridge at the counter</span>
       </p>
-
       <p class="fine-print">
-        Stock depends on what's left over, so packs sell out. Ring ahead if
-        you want a particular soup put aside.
+        Stock depends on what is left over, so packs sell out. Ring ahead if you
+        want a particular soup put aside.
       </p>
     </div>
 
@@ -176,14 +275,12 @@
 <!-- ══════════════════════════════════════════════════════════════════
      ABOUT
      ══════════════════════════════════════════════════════════════ -->
-<section class="section about" id="about" aria-labelledby="about-title">
+<section class="section about" id="about" data-docket-name="The shop" aria-labelledby="about-title">
   <div class="wrap about-inner">
-
     <div class="about-head reveal">
-      <p class="section-marker">The shop</p>
+      <p class="kicker">The shop</p>
       <h2 id="about-title">One kitchen,<br>one job</h2>
     </div>
-
     <div class="about-copy reveal">
       <p class="about-lead">
         We are a small shop on a single site with a stove, four pots and a
@@ -191,35 +288,50 @@
         arrives frozen in a bag.
       </p>
       <p>
-        Stock goes on before six. The four soups are decided by what came in
-        from the market that week, which is why the board is different on
-        Tuesday to what it was on Monday. We make what we think will sell that
-        day and no more — a short menu, cooked properly, is the whole idea.
-      </p>
-      <p>
-        It is takeaway only. Cups, lids and spoons at the counter, and a fridge
-        of 1L packs by the door on the way out.
+        Stock goes on before six. The four soups are decided by what came in from
+        the market that week, which is why the board is different on Tuesday to
+        what it was on Monday. We make what we think will sell that day and no
+        more.
       </p>
     </div>
-
   </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     LOCATION & HOURS
-     ─────────────────────────────────────────────────────────────
+     THE QUESTIONS PEOPLE ACTUALLY ASK
+     ══════════════════════════════════════════════════════════════ -->
+<section class="section asked" id="asked" data-docket-name="Questions" aria-labelledby="asked-title">
+  <div class="wrap">
+    <p class="kicker reveal">Before you walk down</p>
+    <h2 class="reveal" id="asked-title">The questions people actually ask</h2>
+
+    <dl class="asked-list">
+      <div class="reveal">
+        <dt>Is soup actually enough for lunch?</dt>
+        <dd>A cup with a roll gets most people through the afternoon. If you want more, ask for a bowl.</dd>
+      </div>
+      <div class="reveal">
+        <dt>Will it still be hot when I get back to my desk?</dt>
+        <dd>It goes out lidded, straight off the heat. Five minutes' walk is fine. Much further and the 1L pack is the better buy.</dd>
+      </div>
+      <div class="reveal">
+        <dt>What if I get there and it is gone?</dt>
+        <dd>It happens on cold days. Earlier is safer, and there is always something left on the board even late.</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     FIND US, the one call to action the whole page funnels to.
      EDIT HERE: address, opening hours and the directions link.
      ══════════════════════════════════════════════════════════════ -->
-<section class="section visit" id="visit" aria-labelledby="visit-title">
+<section class="section visit" id="visit" data-docket-name="Find us" aria-labelledby="visit-title">
   <div class="wrap">
 
     <header class="section-head reveal">
-      <p class="section-marker">Find us</p>
-      <h2 id="visit-title">Location &amp; hours</h2>
-      <p class="section-lede">
-        One shop, one address, weekdays only. We are not a van and we do not
-        move around.
-      </p>
+      <p class="kicker">Find us</p>
+      <h2 id="visit-title">One shop, one address</h2>
     </header>
 
     <div class="visit-grid">
@@ -230,8 +342,8 @@
           <span class="placeholder">[STREET ADDRESS]</span><br>
           <span class="placeholder">[SUBURB STATE POSTCODE]</span>
         </address>
-        <p class="visit-note">Street parking out front. Closest stop is <span class="placeholder">[NEAREST TRANSPORT]</span>.</p>
-        <a class="btn btn-primary" href="#" data-map-link>Get directions</a>
+        <p class="visit-note">Street parking out front.</p>
+        <a class="btn btn-accent btn-lg" href="#" data-map-link>Get directions</a>
       </div>
 
       <div class="visit-card reveal">
@@ -254,14 +366,7 @@
             <tr data-day="0"><th scope="row">Sunday</th><td class="closed">Closed</td></tr>
           </tbody>
         </table>
-        <p class="visit-note">Soups sell out before close on a cold day — earlier is safer.</p>
-      </div>
-
-      <div class="visit-map reveal" role="img" aria-label="Map placeholder — the real map embed goes here once the address is confirmed">
-        <div class="map-placeholder">
-          <p><strong>Map goes here</strong></p>
-          <p>Drops in once the street address is confirmed.</p>
-        </div>
+        <p class="visit-note">Soups sell out before close on a cold day. Earlier is safer.</p>
       </div>
 
     </div>
@@ -271,8 +376,7 @@
 </main>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     FOOTER / CONTACT
-     ─────────────────────────────────────────────────────────────
+     FOOTER. Keep this block identical on index.html and menu.html.
      EDIT HERE: phone, email and social links.
      ══════════════════════════════════════════════════════════════ -->
 <footer class="site-footer" id="contact">
@@ -341,9 +445,9 @@
       <nav class="footer-nav" aria-label="Footer">
         <ul>
           <li><a href="menu.html">Menu</a></li>
-          <li><a href="index.html#takeaway">1L packs</a></li>
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#visit">Location</a></li>
+          <li><a href="#takeaway">1L packs</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#visit">Location</a></li>
         </ul>
       </nav>
     </div>

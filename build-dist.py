@@ -44,7 +44,9 @@ CSP = "; ".join([
     "style-src 'self'",
     "img-src 'self'",
     "font-src 'self'",
-    "connect-src 'none'",
+    # the hero streams its own film with fetch(), then plays it from a Blob URL
+    "connect-src 'self'",
+    "media-src 'self' blob:",
     "form-action 'none'",
     "frame-ancestors 'none'",
     "base-uri 'none'",

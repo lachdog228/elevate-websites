@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Menu — Daily Soup Go.</title>
+<title>Menu. Daily Soup Go.</title>
 <meta name="description" content="Today's four soups, cup and bowl sizes, and chilled 1L takeaway packs. Cooked from scratch every weekday morning, served 11am to 3pm.">
-<meta name="theme-color" content="#2E1D12">
+<meta name="theme-color" content="#170D06">
 
 <!-- Draft: nothing is indexed until the client approves and the details are filled in. -->
 <meta name="robots" content="noindex, nofollow">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="Menu — Daily Soup Go.">
+<meta property="og:title" content="Menu. Daily Soup Go.">
 <meta property="og:description" content="Today's four soups, cup and bowl sizes, and chilled 1L takeaway packs.">
 <meta property="og:locale" content="en_AU">
 
@@ -25,15 +25,18 @@
 <a class="skip-link" href="#main">Skip to content</a>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     DRAFT BANNER — delete this block when the site goes live.
+     DRAFT BANNER. Delete this block when the site goes live.
      ══════════════════════════════════════════════════════════════ -->
 <div class="draft-banner" role="note">
   <strong>Draft preview.</strong> Every price and contact detail below is a
   placeholder for the client to fill in.
 </div>
 
+<!-- the one environment layer, behind everything -->
+<div class="environment" aria-hidden="true"></div>
+
 <!-- ══════════════════════════════════════════════════════════════════
-     HEADER — keep this block identical on index.html and menu.html.
+     HEADER. Keep this block identical on index.html and menu.html.
      ══════════════════════════════════════════════════════════════ -->
 <header class="site-header" id="top">
   <div class="wrap header-inner">
@@ -74,17 +77,26 @@
   </div>
 </header>
 
-<main id="main">
+<!-- the docket: the day, the live state, and where the visitor is -->
+<aside class="docket" data-docket aria-hidden="true">
+  <span class="docket-line" data-docket-day></span>
+  <span class="docket-rule"></span>
+  <span class="docket-line" data-docket-state></span>
+  <span class="docket-rule"></span>
+  <span class="docket-line docket-here" data-docket-here></span>
+</aside>
+
+<main id="main" tabindex="-1">
 
 <!-- ══════════════════════════════════════════════════════════════════
      PAGE HEADER
      ══════════════════════════════════════════════════════════════ -->
 <section class="page-head">
   <div class="wrap">
-    <p class="eyebrow">Monday to Friday &middot; 11am–3pm &middot; Takeaway only</p>
+    <p class="kicker">Monday to Friday &middot; 11am–3pm &middot; Takeaway only</p>
     <h1>Menu</h1>
     <p class="lede page-head-lede">
-      Four soups a day, cooked from scratch each morning — two classics and two
+      Four soups a day, cooked from scratch each morning. Two classics and two
       gourmet. The board changes daily, so what is below is the shape of it
       rather than a fixed list.
     </p>
@@ -92,10 +104,10 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     TODAY'S SOUPS — the scroll-scrubbed sequence
+     TODAY'S SOUPS, the scroll-scrubbed sequence
      ─────────────────────────────────────────────────────────────
      EDIT HERE: soup names, descriptions, prices and dietary tags.
-     Four <article class="soup"> blocks — the first two are Basic
+     Four <article class="soup"> blocks. The first two are Basic
      (label reads "Classic"), the last two Gourmet. Replace [$0.00]
      with the real price.
 
@@ -109,7 +121,7 @@
 
   <div class="wrap">
     <header class="section-head">
-      <p class="section-marker">On today</p>
+      <p class="kicker">On today</p>
       <h2 id="soups-title">Today&rsquo;s soups</h2>
     </header>
   </div>
@@ -269,9 +281,9 @@
     <section class="menu-group reveal" aria-labelledby="group-key">
       <h3 class="menu-group-title" id="group-key">Dietary</h3>
       <ul class="menu-key">
-        <li><strong>Vegetarian</strong> — no meat or meat stock</li>
-        <li><strong>Gluten free</strong> — no gluten-containing ingredient</li>
-        <li><strong>Dairy free</strong> — no milk, cream or butter</li>
+        <li><strong>Vegetarian</strong>: no meat or meat stock</li>
+        <li><strong>Gluten free</strong>: no gluten-containing ingredient</li>
+        <li><strong>Dairy free</strong>: no milk, cream or butter</li>
       </ul>
       <p class="menu-aside">
         Everything is cooked in one kitchen, so we cannot promise a soup is free
@@ -282,11 +294,11 @@
 
     <footer class="menu-footnotes reveal">
       <p>The board changes every weekday. When a soup runs out it is gone for the day.</p>
-      <p>Cash and card at the counter. Takeaway only — there is no seating.</p>
+      <p>Cash and card at the counter. Takeaway only, there is no seating.</p>
     </footer>
 
     <div class="menu-cta reveal">
-      <a class="btn btn-primary btn-lg" href="index.html#visit">Find the shop</a>
+      <a class="btn btn-accent btn-lg" href="index.html#visit">Find the shop</a>
       <a class="btn btn-ghost btn-lg" href="index.html">Back to home</a>
     </div>
 
@@ -296,7 +308,7 @@
 </main>
 
 <!-- ══════════════════════════════════════════════════════════════════
-     FOOTER — keep this block identical on index.html and menu.html.
+     FOOTER. Keep this block identical on index.html and menu.html.
      ══════════════════════════════════════════════════════════════ -->
 <footer class="site-footer" id="contact">
   <div class="wrap footer-inner">

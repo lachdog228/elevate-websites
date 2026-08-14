@@ -6,7 +6,7 @@ whatever is left over chilled into 1L packs.
 
 | Page | What it is |
 | --- | --- |
-| `index.html` | Home — hero, a pointer to the menu, 1L packs, about, location and hours |
+| `index.html` | Home — the scroll-driven hero film, the turn, the board, 1L packs, about, questions, find us |
 | `menu.html` | The menu — the scroll-scrubbed soups, then sizes, packs, dietary key and notes |
 
 **The four soups live on `menu.html` only.** The home page links to it rather
@@ -28,16 +28,22 @@ Cloudflare Pages, cPanel, S3) and it works.
 index.html                home            ┐
 menu.html                 the menu        │ edit these
 robots.txt                                ┘
+design-package.md         the brand decisions: palette, type, band map, the docket
 build-dist.py             copies the above into dist/ and writes _headers
 build-preview.py          bundles the whole site into one self-contained file
 netlify.toml              points Netlify's publish directory at dist/
 dist/                     GENERATED — the folder that actually deploys
 preview.html              GENERATED — both pages in a single file
-netlify.toml
+review/                   the film's source renderer, NOT deployed
 assets/
   css/styles.css          all styling, numbered sections, tokens at the top
-  js/main.js              nav, scroll spy, the soup scrub, live open/closed status
-  fonts/*.woff2           Playfair Display + Work Sans, latin subset, self-hosted
+  js/main.js              nav, scroll spy, the hero scrub, the soup scrub, hours
+  fonts/*.woff2           Playfair Display + Work Sans + IBM Plex Mono, latin subset
+  hero-scrub.mp4          the hero film, H.264      ┐ only one is ever downloaded
+  hero-scrub.webm         the hero film, VP9        ┘
+  hero-poster.jpg         first frame, shown while the film loads
+  hero-ending.jpg         last frame, the static hero on phones
+  pour-still.jpg          the same frame, used in the turn section
   img/soup-*.svg          the four soup illustrations
   img/takeaway-tub.svg    the 1L pack
   img/favicon.svg
@@ -50,8 +56,16 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Total page weight is about 190 KB, most of it fonts. All artwork is SVG, so it
-is sharp at any size and costs a few kilobytes.
+**Weight.** Everything except the film is about 250 KB, most of it fonts. The
+film adds 704 KB (webm) or 2.0 MB (mp4) on top, but only on screens that
+actually play it — phones and anyone with reduced motion get the 42 KB still
+instead and never request it. The poster renders first either way, so the page
+is readable long before the film arrives.
+
+`review/` holds the Canvas renderer and the Playwright script that produced the
+film's frames. It is kept so the film can be regenerated or retimed, and it is
+deliberately outside the `FILES`/`DIRS` lists in `build-dist.py` so it never
+ships.
 
 ## Where the design came from
 
@@ -61,22 +75,114 @@ ONLY" signs, the neon `OPEN` in the window, and the warm wood and bone palette.
 
 | From the photo | Where it shows up |
 | --- | --- |
-| Cream / amber / orange / brown stripe band | The 1L tub, and the mark closing the hero |
+| Cream / amber / orange / brown stripe band | The 1L tub, and the fill line on Hold to pour |
 | Painted shopfront lettering | Playfair Display for the wordmark and every heading |
-| Neon `OPEN` in the window | The live open/closed line in the header and hours card |
-| "Takeaway only" card | The hero eyebrow |
+| Neon `OPEN` in the window | The live open/closed line in the header and the docket |
+| "Takeaway only" card | The closing band of the hero film |
+| "HOT SOUP MADE FRESH DAILY" board | The third band's line, near enough verbatim |
 | Stacked 1L tubs on the back shelf | The chilled-packs illustration |
+| The steam over the counter | The hero film, and the drawn steam line on the turn |
 
 **Note on imagery.** The client's photo itself was supplied as a reference, not
 as a file, so nothing on the site is that photograph. The remaining artwork —
 the four soups and the 1L tub — is hand-drawn SVG matching its palette.
 
-**The home page carries no illustration at all.** It is a full-height
-typographic statement, which is what a shop with good signage would do, and it
-is the right shape to drop a photograph into: a wide shot of the counter or the
-shopfront behind the headline would finish it. The other places real
-photography belongs are the four soups on the menu and the fridge of 1L packs.
-Swapping a soup illustration for a photo is a one-line `src` change.
+**The hero film is rendered, not filmed.** It is a Canvas animation of a pour,
+built to hold the sequence's shape until real footage exists. Replacing it with
+six seconds of the actual shop is the single biggest upgrade available to this
+site, and the swap is three files (`hero-scrub.mp4`, `.webm`, and the two
+stills) plus the byte sizes in `SOURCES`. Keep the cup in the right third of
+frame so the copy still has its half. The other places real photography belongs
+are the four soups on the menu and the fridge of 1L packs; swapping a soup
+illustration for a photo is a one-line `src` change.
+
+`design-package.md` records the decisions behind all of this — the palette
+tokens, the type trio, the four-beat band map and the docket — and is the file
+to read before changing any of them.
+
+## The hero film
+
+The top of `index.html` is a six-second film of soup being poured. It does not
+autoplay. **Scroll drives it frame by frame** — down runs it forward, up runs
+it backward — and four lines of copy land on top as it goes. At the end it
+settles on the last frame and the real page begins. `design-package.md` holds
+the band map; the four beats are:
+
+| Range | Line | Entrance |
+| --- | --- | --- |
+| 0.00–0.19 | Another cold sandwich. | word-punch |
+| 0.24–0.46 | Or something that was cooked this morning. | drift-down |
+| 0.52–0.72 | Hot soup, made fresh daily. | blur-to-sharp |
+| 0.80–1.00 | Daily Soup Go. + hours + the one CTA | word-by-word rise |
+
+**How it is built.** Same sticky-parent pattern as the soup scrub: a 480vh
+`.hero` gives the scroll distance, `.hero-stage` is `position: sticky`, and one
+number per frame (progress 0–1) sets `video.currentTime`. Nothing intercepts
+the scroll.
+
+Four details are what make it work, and all four are easy to break:
+
+- **The film is fetched whole as a Blob**, then played from an object URL.
+  Seeking a video streamed over HTTP needs Range support, and plenty of hosts
+  answer a Range request with the whole file — which silently clamps every seek
+  to zero and freezes the film on frame one. Downloading it once removes the
+  question. The loading ring is that fetch's progress.
+- **Seeks are gated.** Writing `currentTime` while a seek is already in flight
+  drops frames, so a new seek waits for `seeked` and only the newest queued
+  position is used. The `error` handler clears the same flag — without that, one
+  failed seek deadlocks the film for good.
+- **The lerp is time-normalised**, `1 - pow(1 - k, dt / 16.667)`, so a 120Hz
+  laptop and a 60Hz monitor ease at the same speed rather than one running
+  double.
+- **DOM writes are delta-gated.** Every frame computes the numbers; a write only
+  happens when the value actually changed. Text updates at about 10Hz.
+
+**Legibility.** Bone text on moving film is the easiest thing in the world to
+make unreadable, so there are four layers: a base scrim over the whole stage, a
+per-band scrim whose opacity rides that band's own progress, a three-layer text
+shadow, and a smaller scrim behind chips and labels. The audit measures the
+lightest pixel behind each headline on the real composited page, at three scroll
+positions per band; the worst frame measured 14.5:1 against a floor of 3.5:1.
+
+**It is an enhancement, never a requirement.** Five gates turn it off and show
+`hero-ending.jpg` instead: width ≤720px, portrait ≤1024px, portrait with a
+coarse pointer, short landscape with a coarse pointer, and
+`prefers-reduced-motion`. **Those five strings are duplicated in `styles.css`
+and `main.js` and must stay character-identical** — if they drift, one side
+hides what the other is loading. If the film fails to download at all, the
+poster stays, the loading ring is replaced by a scroll cue rather than spinning
+forever, and the four captions still carry the whole sequence.
+
+**Two codecs ship** because neither alone is enough: Safari needs H.264 in an
+mp4, and many Linux Chromium builds have no H.264 decoder at all and need VP9.
+`canPlayType` picks one and only that file is downloaded.
+
+**Regenerating the film.** `review/pour-renderer.html` draws the frames on a
+canvas and `review/render.js` steps it through 150 frames at 25fps. The encode
+matters as much as the footage — a scrubbed video needs keyframes everywhere,
+or seeking lands on the nearest one and the motion stutters:
+
+```bash
+ffmpeg -framerate 25 -i frames/f%04d.jpg \
+  -c:v libx264 -crf 18 -preset slow -g 8 -keyint_min 8 \
+  -pix_fmt yuv420p -movflags +faststart -an assets/hero-scrub.mp4
+```
+
+`-g 8` is the important flag. After re-encoding, update the byte sizes in
+`SOURCES` at the top of `main.js` — they are the fallback when a host omits
+`Content-Length`, and only affect the loading ring's accuracy.
+
+## The docket
+
+A thin monospace strip down the right edge showing the day, whether the shop is
+open, and which section you are in. It is the one piece of furniture that
+persists across the whole page, and it exists because kitchen dockets are
+monospaced — it is the reason IBM Plex Mono is in the type stack at all.
+
+Section names come from each `<section>`'s `data-docket-name`. **Set that
+attribute when adding a section.** There is a fallback that derives a name from
+the heading, but headings contain `<br>` and joining across one gives
+"FOUR SOUPSON THE BOARD", so the explicit attribute is what should be relied on.
 
 ## The scroll-scrubbed soup sequence
 
@@ -227,8 +333,14 @@ safe without them**.
 ## Single-file preview
 
 `build-preview.py` bundles the entire site — both pages, the stylesheet, the
-script, all five font faces and every illustration — into one `preview.html`
-with zero external requests. About 218 KB.
+script, all eight font faces, every illustration and the hero film in both
+codecs — into one `preview.html` with zero external requests. About 4 MB, of
+which roughly 3.7 MB is the film as base64.
+
+That is a lot for one file, and it buys the thing the preview exists to show.
+Dropping a codec would halve it and strand either Safari or the Chromium builds
+without an H.264 decoder, so both stay. `main.js` recognises a `data:` URI and
+skips its Blob fetch, since the bytes are already in memory.
 
 ```bash
 python3 build-preview.py
@@ -251,7 +363,7 @@ served from the same origin. That is what makes the headers in
 
 | Header | Why |
 | --- | --- |
-| `Content-Security-Policy` | `default-src 'none'` with same-origin script, style, image and font only. `connect-src 'none'` means the page cannot make a network request; `form-action 'none'` means nothing can be submitted anywhere; `base-uri 'none'` blocks `<base>` hijacking. Anything injected into the page has nowhere to load from and nowhere to phone home to. |
+| `Content-Security-Policy` | `default-src 'none'` with same-origin script, style, image, font, `connect-src` and `media-src` only, plus `blob:` for media. `form-action 'none'` means nothing can be submitted anywhere; `base-uri 'none'` blocks `<base>` hijacking. Anything injected into the page can only reach this origin, and has nowhere to phone home to. |
 | `X-Content-Type-Options: nosniff` | Stops a browser second-guessing a declared content type. |
 | `X-Frame-Options: DENY` + `frame-ancestors 'none'` | The site cannot be framed, so it cannot be clickjacked. |
 | `Referrer-Policy` | Full URLs are never leaked to other origins. |
@@ -260,11 +372,20 @@ served from the same origin. That is what makes the headers in
 | `X-Robots-Tag: noindex, nofollow` | Draft only — see below. |
 
 The page has no forms, no cookies, no `localStorage`, and no user input of any
-kind, so there is nothing to inject into and nothing to steal. `main.js`
-contains no `innerHTML`, `eval`, `document.write` or `new Function` — the only
-text it ever writes is through `textContent`, which cannot execute markup.
-There is no inline script and no inline `style` attribute anywhere, which is
-what lets the CSP run without a single `'unsafe-inline'`.
+kind, so there is nothing to inject into and nothing to steal. `main.js` writes
+text through `textContent`, which cannot execute markup, and never calls `eval`,
+`document.write` or `new Function`. There is no inline script and no inline
+`style` attribute anywhere, which is what lets the CSP run without a single
+`'unsafe-inline'`.
+
+**`connect-src 'self'` and `media-src 'self' blob:` are the film's doing**, and
+they are the loosest two lines in the policy. `connect-src` is what lets the
+hero `fetch()` its own film; `blob:` is what lets the resulting object URL play.
+Both are same-origin. Two things follow: an inline `style="…"` attribute is
+still blocked — the loading ring's `stroke-dashoffset` lives in the stylesheet
+for exactly that reason, though the same property set from JavaScript is fine,
+since CSSOM writes are not what `style-src` governs — and if the film is ever
+dropped, both lines should come back out.
 
 **Two things to change at launch:**
 
@@ -406,9 +527,38 @@ Every suite below runs against the built `dist/` folder served with its real
 - checked in both orientations; the scroll sequence correctly stays off below
   900px, where a pinned section would fight a phone's scrolling
 
+**The hero film:**
+
+- `currentTime` tracks scroll across the whole runway — 0%→0s, 25%→1.5s,
+  50%→3s, 75%→4.5s, 100%→6s
+- **the flick test**, because visitors flick rather than drag: stepped in wheel
+  increments of 120, 240 and 360px. Every beat holds fully readable for at least
+  five 120px flicks (measured 6, 5, 5, 7), and **no beat is skippable even at
+  360px**
+- **worst-frame legibility**: the glyphs are hidden, the real composited page is
+  screenshotted at three positions per band, and the lightest pixel behind the
+  headline is measured. Worst result 14.5:1, floor 3.5:1
+- each band leads in its own range and the closing headline assembles word by
+  word
+- **reduced motion**, asserted in both directions: the still hero replaces the
+  scrub, the film is never requested at all, the pour arrives already full, and
+  flipping the preference mid-session swaps each way without a reload
+- **complete without the film**: with the download blocked, the poster stays,
+  the loading ring becomes a scroll cue rather than spinning forever, and the
+  captions still carry the sequence
+- the docket shows the right day, open state and section name
+
 **Under the strict CSP**, both pages, desktop and mobile: stylesheet applies,
-all five font faces load, the script runs, the scroll sequence and the mobile
-nav both work, and the browser reports zero policy violations.
+all eight font faces load, the script runs, both scroll sequences and the mobile
+nav work, and the browser reports zero policy violations. The film is checked
+here too — that the whole 6s buffers from one Blob and that scrolling still
+moves it — since `connect-src` and `media-src` are the two lines the policy
+would otherwise break silently.
+
+One thing is filtered from the CSP harness and worth knowing about: Chromium
+reports a `requestfailed` on the `blob:` URL after the film is already fully
+buffered. It is duplicate-request bookkeeping, not a policy or network problem,
+and the assertions above are what prove it harmless.
 
 **Code**: `main.js` passes ESLint with no real findings; the stylesheet's
 braces balance, every `var()` resolves, and there are no unused tokens. The
@@ -427,25 +577,37 @@ kitchen, not as a template. Worth preserving if the site is extended:
   make a site look generated rather than designed. Depth comes from hairline
   rules, flat colour and whitespace.
 - **Type carries the page.** Playfair Display for headings and the wordmark,
-  Work Sans for everything else, and a short scale used consistently. The
+  Work Sans for everything else, IBM Plex Mono for the docket and small labels,
+  and a short scale used consistently. The mono is not decoration: it is the
+  kitchen-docket voice, and it should stay confined to labels, the docket and
+  numbers rather than spreading into body copy. The
   headline is allowed to be big; nothing else competes with it. Playfair is a
   high-contrast face, which is where the fanciness comes from — it needs less
   negative tracking and a little more leading than a chunky face would, and its
   **default oldstyle figures have to be overridden** wherever a number is read
   as a number, or `$0.00` renders with zeros that look like lowercase o's.
-- **The hero is type, not picture.** No illustration competing with the
-  headline, and no empty placeholder box pretending to be one. A photograph
-  belongs there eventually; until there is one, the type carries it.
+- **The hero is a film that reads as type.** The pour is the background; the
+  four lines are the point. The cup sits in the right third of frame precisely
+  so the left half stays clear for the copy — if the film is ever replaced,
+  that empty left half is the requirement to keep.
+- **The film argues rather than decorates.** It opens on the thing the customer
+  would otherwise have had ("Another cold sandwich.") before offering the
+  alternative. That is why the copy is worth scrolling through, and it is the
+  reason the sequence is four beats rather than one logo reveal.
 - **One accent, used sparingly.** Cream and cocoa do the work. Orange appears
   in the wordmark and on button hover, rust on the Gourmet label. That is all.
 - **Square-ish corners.** `--radius` is 4px. The rounded, pill-shaped version of
   this page looked like a template; the flatter one looks like a shop.
 - **Dark sections earn their place.** Only the 1L packs section and the footer
   are cocoa. Two dark bands in a cream page give it structure.
-- **Motion is either functional or absent.** The scrub sequence is the one real
-  flourish, and it carries content rather than decorating it. Beyond that: a
-  short fade-up on scroll and the drifting steam. Everything stops under
-  `prefers-reduced-motion`.
+- **Motion is either functional or absent.** Both scrubs carry content rather
+  than decorating it, and Hold to pour is the one place the visitor is invited
+  to do something. Beyond that: a short fade-up on scroll and the drifting
+  steam. Everything stops under `prefers-reduced-motion`, where Hold to pour
+  arrives already poured rather than demanding a hold.
+- **"Made this morning. Gone by three."** is a deliberate staccato pair, not a
+  sentence that wants joining. It is the line the whole brand rests on, and it
+  should survive any future copy edit intact.
 - **The food is the only illustration.** No icon sets, no stock photography.
 - **The menu reads like a menu.** Name, dotted leader, price — the layout on
   the shop's own board — rather than product cards with badges. Nav and group
