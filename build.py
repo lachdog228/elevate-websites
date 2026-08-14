@@ -23,17 +23,22 @@ DIST = ROOT / "dist"
 # ═══════════════════════════════════════════════════════════════════
 #  SITE CONFIG
 #
-#  ⚠️  PLACEHOLDERS BELOW — replace before going live.
-#  Anything still marked TODO is reported by the build as a warning and
+#  Anything still marked TODO_ is reported by the build as a warning and
 #  is deliberately left OUT of the structured data rather than faked,
-#  because invented contact details or an invented ABN in schema markup
-#  is a Google policy problem, not just a cosmetic one.
+#  because invented contact details in schema markup is a Google policy
+#  problem, not just a cosmetic one.
 # ═══════════════════════════════════════════════════════════════════
 ORIGIN = "https://elevatewebsites.co.site"
 
-PHONE_DISPLAY = "TODO_PHONE"      # e.g. "0412 345 678"
-PHONE_E164 = "TODO_PHONE_E164"    # e.g. "+61412345678"
-ABN = "TODO_ABN"                  # e.g. "12 345 678 901"
+PHONE_DISPLAY = "0480 214 918"
+PHONE_E164 = "+61480214918"
+
+# ABN is displayed as text only. Schema's identifier property expects the
+# actual registration number, so asserting one without having it would be
+# a false claim in machine-readable data — the footer note carries the
+# trust signal instead. Set ABN to the real number to emit it properly.
+ABN = ""
+ABN_NOTE = "ABN Registered"
 
 EMAIL = "lachlan@elevatewebsites.co.site"
 BUSINESS = "Elevate Website Designs"
@@ -254,7 +259,12 @@ def render_footer():
     contact_bits = [f'<li><a href="mailto:{EMAIL}">Email</a></li>']
     if has(PHONE_DISPLAY):
         contact_bits.insert(0, f'<li><a href="tel:{PHONE_E164}">{PHONE_DISPLAY}</a></li>')
-    abn_line = f" · ABN {ABN}" if has(ABN) else ""
+    if has(ABN):
+        abn_line = f" · ABN {ABN}"
+    elif ABN_NOTE:
+        abn_line = f" · {ABN_NOTE}"
+    else:
+        abn_line = ""
 
     return f"""<footer>
   <div class="footer-ghost" aria-hidden="true">ELEVATE</div>
@@ -485,17 +495,23 @@ def main():
 
     print(f"\n  Built {len(PAGES)} pages -> dist/")
 
-    warnings = []
+    warnings, notes = [], []
     if not has(PHONE_DISPLAY):
         warnings.append("PHONE_DISPLAY / PHONE_E164 still placeholder — no tel: links, "
                         "no telephone in LocalBusiness schema")
-    if not has(ABN):
-        warnings.append("ABN still placeholder — omitted from schema and footer")
+    if not has(ABN) and ABN_NOTE:
+        notes.append(f"ABN shown as '{ABN_NOTE}' text only; not asserted in structured data. "
+                     "Set ABN to the real number to emit it in schema.")
+
     if warnings:
         print("\n  ⚠️  INCOMPLETE BUSINESS DATA")
         for w in warnings:
             print(f"     - {w}")
         print("     Set these at the top of build.py and re-run.")
+    if notes:
+        print("\n  ℹ️  NOTES")
+        for n in notes:
+            print(f"     - {n}")
     return 0
 
 

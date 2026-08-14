@@ -6,26 +6,24 @@ design and local SEO for Torquay, Geelong and the Surf Coast.
 Every page is generated from one shared shell, so nav, footer, canonicals and
 structured data can't drift apart between pages.
 
-## Before you go live
+## Business details
 
-Two values in `build.py` are still placeholders. The build prints a warning
-while they are, and deliberately omits them from the structured data rather
-than inventing them — a fabricated phone number or ABN in schema markup is a
-Google policy problem, not a cosmetic one.
+Phone is set (`0480 214 918`) and appears in the nav, footer, contact page and
+the `telephone` property of the LocalBusiness schema.
+
+The ABN is displayed as the text "ABN Registered" in the footer and is
+deliberately **not** in the structured data. Schema's `identifier` property
+expects the actual registration number, so asserting one without having it
+would be a false claim in machine-readable data. To emit it properly:
 
 ```python
-PHONE_DISPLAY = "TODO_PHONE"      # e.g. "0412 345 678"
-PHONE_E164    = "TODO_PHONE_E164" # e.g. "+61412345678"
-ABN           = "TODO_ABN"        # e.g. "12 345 678 901"
+ABN = "12 345 678 901"   # in build.py — schema picks it up automatically
 ```
 
-Set them and re-run `python3 build.py`. That single change adds `tel:` links to
-the nav and footer, the phone number to the contact page, `telephone` to the
-LocalBusiness schema, and the ABN to the footer.
-
-Also worth doing: `src/pages/about.html` carries a TODO comment listing the
-personal details that would strengthen the page's E-E-A-T signals. Nothing was
-invented there either.
+Still worth doing: `src/pages/about.html` carries a TODO comment listing the
+personal details that would strengthen that page's E-E-A-T signals — how you
+got into this, how long you've been doing it, and a real photo. Nothing was
+invented there.
 
 ## Build
 
