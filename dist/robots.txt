@@ -1,0 +1,30 @@
+# Elevate Website Designs — https://elevatewebsites.co.site
+
+Sitemap: https://elevatewebsites.co.site/sitemap.xml
+
+User-agent: *
+Allow: /
+
+# AI assistants are allowed deliberately. People increasingly ask
+# ChatGPT, Perplexity and Google's AI Overviews for local business
+# recommendations, and a blocked site cannot be cited as a source.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /

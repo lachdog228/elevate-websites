@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════
+#  Netlify headers — security baseline + caching
+# ═══════════════════════════════════════════════════════════════
+
+/*
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Fingerprint-free asset paths, so cache these hard. Change a filename
+# to bust the cache rather than shortening this.
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/assets/css/*
+  Cache-Control: public, max-age=604800, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=604800, must-revalidate
+
+/assets/img/*
+  Cache-Control: public, max-age=2592000
+
+# HTML must revalidate so content edits go live immediately.
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

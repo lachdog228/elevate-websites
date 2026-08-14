@@ -1,0 +1,123 @@
+{{BREADCRUMBS}}
+
+<section id="hero" class="hero-compact">
+  <p class="eyebrow mono">Contact</p>
+  <h1 class="hero-h1">Get a free quote.</h1>
+  <p class="hero-sub">Tell me about your business and I'll come back with a plan and a fixed
+  price — within one business day, with no obligation.</p>
+</section>
+
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="fade-up">
+        <h2 class="section-heading">Let's chat.</h2>
+        <p class="section-sub">No sales sequence, no call centre. Your enquiry comes straight to
+        me and I'm the one who replies.</p>
+
+        <div class="contact-details">
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <span>Torquay, Victoria 3228 — serving the Surf Coast &amp; Geelong</span>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+          </div>
+
+          <div class="contact-item">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+            </div>
+            <span>Monday–Friday, 9am–5pm · reply within 1 business day</span>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p><strong>Not sure what you need?</strong> Send a couple of sentences about the business
+          anyway. I'll tell you what I'd do — including if the honest answer is that you don't need
+          a new website yet.</p>
+        </div>
+      </div>
+
+      <div class="fade-up">
+        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/contact/?sent=1">
+          <input type="hidden" name="form-name" value="contact" />
+          <p style="display:none" aria-hidden="true"><label>Leave this blank <input name="bot-field" /></label></p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="first-name">First Name</label>
+              <input type="text" id="first-name" name="first-name" class="form-input" placeholder="John" autocomplete="given-name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="last-name">Last Name</label>
+              <input type="text" id="last-name" name="last-name" class="form-input" placeholder="Smith" autocomplete="family-name" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Email Address</label>
+            <input type="email" id="email" name="email" class="form-input" placeholder="john@yourbusiness.com.au" autocomplete="email" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="phone">Phone <span style="text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" class="form-input" placeholder="0412 345 678" autocomplete="tel" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="business">Business Name</label>
+            <input type="text" id="business" name="business" class="form-input" placeholder="Smith Plumbing Torquay" autocomplete="organization" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="service">What do you need?</label>
+              <select id="service" name="service" class="form-select">
+                <option value="">Not sure yet</option>
+                <option value="New website">A new website</option>
+                <option value="Website redesign">A redesign of my site</option>
+                <option value="Local SEO">Local SEO</option>
+                <option value="Google Business Profile">Google Business Profile</option>
+                <option value="Maintenance">Website maintenance</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="area">Your area</label>
+              <select id="area" name="area" class="form-select">
+                <option value="">Select…</option>
+                <option value="Torquay">Torquay</option>
+                <option value="Jan Juc">Jan Juc</option>
+                <option value="Geelong">Geelong</option>
+                <option value="Armstrong Creek">Armstrong Creek</option>
+                <option value="Barwon Heads">Barwon Heads</option>
+                <option value="Ocean Grove">Ocean Grove</option>
+                <option value="Anglesea">Anglesea</option>
+                <option value="Aireys Inlet">Aireys Inlet</option>
+                <option value="Lorne">Lorne</option>
+                <option value="Winchelsea">Winchelsea</option>
+                <option value="Other">Somewhere else</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="message">Tell me about your project</label>
+            <textarea id="message" name="message" class="form-textarea" placeholder="A couple of sentences about your business and what you're after is plenty…" required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit">Send Enquiry →</button>
+          <p class="form-note">No obligation, and your details aren't shared with anyone.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{{FAQ}}

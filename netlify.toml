@@ -1,0 +1,15 @@
+[build]
+  command = "python3 build.py"
+  publish = "dist"
+
+# build.py uses only the Python standard library, so there is nothing to
+# install. validate.py needs beautifulsoup4 but is not part of the build.
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

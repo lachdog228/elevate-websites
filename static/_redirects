@@ -1,0 +1,29 @@
+# ═══════════════════════════════════════════════════════════════
+#  Netlify redirects
+#
+#  The previous build served the same page at two live URLs
+#  (/services AND /services.html, both returning 200 with no
+#  canonical). Google treats those as separate pages and splits the
+#  ranking signals between them. These 301s consolidate onto the
+#  extensionless URL and pass the accumulated signals across.
+# ═══════════════════════════════════════════════════════════════
+
+/index.html                 /                                 301!
+/services.html              /services                         301!
+/contact.html               /contact                          301!
+
+# Old single-page anchors -> the real pages that now cover them.
+/services.html#web-design   /services/web-design              301!
+/services.html#seo          /services/local-seo               301!
+/services.html#maintenance  /services/website-maintenance     301!
+/services.html#gbp          /services/google-business-profile 301!
+
+# Common shorthands people type or link to.
+/seo                        /services/local-seo               301
+/web-design                 /services/web-design              301
+/maintenance                /services/website-maintenance     301
+/google-business-profile    /services/google-business-profile 301
+/torquay                    /web-design-torquay               301
+/geelong                    /web-design-geelong               301
+/surf-coast                 /web-design-surf-coast            301
+/quote                      /contact                          301
