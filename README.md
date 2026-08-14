@@ -37,7 +37,7 @@ netlify.toml
 assets/
   css/styles.css          all styling, numbered sections, tokens at the top
   js/main.js              nav, scroll spy, the soup scrub, live open/closed status
-  fonts/*.woff2           Fraunces + Work Sans, latin subset, self-hosted
+  fonts/*.woff2           Playfair Display + Work Sans, latin subset, self-hosted
   img/soup-*.svg          the four soup illustrations
   img/takeaway-tub.svg    the 1L pack
   img/favicon.svg
@@ -50,7 +50,7 @@ python3 -m http.server 8000
 # then open http://localhost:8000
 ```
 
-Total page weight is about 150 KB, most of it fonts. All artwork is SVG, so it
+Total page weight is about 190 KB, most of it fonts. All artwork is SVG, so it
 is sharp at any size and costs a few kilobytes.
 
 ## Where the design came from
@@ -61,18 +61,22 @@ ONLY" signs, the neon `OPEN` in the window, and the warm wood and bone palette.
 
 | From the photo | Where it shows up |
 | --- | --- |
-| Cream / amber / orange / brown stripe band | The pot and the 1L tub |
-| Chunky 70s signage lettering | Fraunces 900 for every heading and the pot wordmark |
+| Cream / amber / orange / brown stripe band | The 1L tub, and the mark closing the hero |
+| Painted shopfront lettering | Playfair Display for the wordmark and every heading |
 | Neon `OPEN` in the window | The live open/closed line in the header and hours card |
 | "Takeaway only" card | The hero eyebrow |
 | Stacked 1L tubs on the back shelf | The chilled-packs illustration |
 
 **Note on imagery.** The client's photo itself was supplied as a reference, not
-as a file, so nothing on the site is that photograph. The artwork is
-hand-drawn SVG matching its palette and subject. If the client sends the real
-photos, the best places to use them are the hero (behind or instead of the pot),
-the four soup cards, and the fridge of 1L packs. Swapping a soup card is a
-one-line change — see below.
+as a file, so nothing on the site is that photograph. The remaining artwork —
+the four soups and the 1L tub — is hand-drawn SVG matching its palette.
+
+**The home page carries no illustration at all.** It is a full-height
+typographic statement, which is what a shop with good signage would do, and it
+is the right shape to drop a photograph into: a wide shot of the counter or the
+shopfront behind the headline would finish it. The other places real
+photography belongs are the four soups on the menu and the fridge of 1L packs.
+Swapping a soup illustration for a photo is a one-line `src` change.
 
 ## The scroll-scrubbed soup sequence
 
@@ -422,9 +426,16 @@ kitchen, not as a template. Worth preserving if the site is extended:
   hover. Those read as decoration for its own sake and are the fastest way to
   make a site look generated rather than designed. Depth comes from hairline
   rules, flat colour and whitespace.
-- **Type carries the page.** Fraunces 900 for headings, Work Sans for
-  everything else, and a short scale used consistently. The headline is allowed
-  to be big; nothing else competes with it.
+- **Type carries the page.** Playfair Display for headings and the wordmark,
+  Work Sans for everything else, and a short scale used consistently. The
+  headline is allowed to be big; nothing else competes with it. Playfair is a
+  high-contrast face, which is where the fanciness comes from — it needs less
+  negative tracking and a little more leading than a chunky face would, and its
+  **default oldstyle figures have to be overridden** wherever a number is read
+  as a number, or `$0.00` renders with zeros that look like lowercase o's.
+- **The hero is type, not picture.** No illustration competing with the
+  headline, and no empty placeholder box pretending to be one. A photograph
+  belongs there eventually; until there is one, the type carries it.
 - **One accent, used sparingly.** Cream and cocoa do the work. Orange appears
   in the wordmark and on button hover, rust on the Gourmet label. That is all.
 - **Square-ish corners.** `--radius` is 4px. The rounded, pill-shaped version of

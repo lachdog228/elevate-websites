@@ -20,14 +20,19 @@
 /* ── 1. Fonts ────────────────────────────────────────────────────── */
 
 @font-face {
-  font-family: 'Fraunces';
-  src: url('../fonts/fraunces-700.woff2') format('woff2');
-  font-weight: 700; font-style: normal; font-display: swap;
+  font-family: 'Playfair Display';
+  src: url('../fonts/playfair-display-500.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: 'Fraunces';
-  src: url('../fonts/fraunces-900.woff2') format('woff2');
-  font-weight: 900; font-style: normal; font-display: swap;
+  font-family: 'Playfair Display';
+  src: url('../fonts/playfair-display-600.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../fonts/playfair-display-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
 }
 @font-face {
   font-family: 'Work Sans';
@@ -68,7 +73,7 @@
   --rule-firm: rgba(74, 44, 24, .3);
   --rule-dark: rgba(244, 231, 211, .16);
 
-  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-display: 'Playfair Display', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
   --font-body: 'Work Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   --wrap: 1200px;
@@ -109,9 +114,12 @@ img, svg { max-width: 100%; height: auto; display: block; }
 
 h1, h2, h3 {
   font-family: var(--font-display);
-  font-weight: 900;
-  line-height: 1.06;
-  letter-spacing: -.025em;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.012em;
+  /* the display face defaults to oldstyle figures, which sit below the
+     cap line and read as lowercase o's inside a price */
+  font-variant-numeric: lining-nums;
   margin: 0;
   text-wrap: balance;
 }
@@ -151,6 +159,12 @@ a { color: inherit; }
   transition: transform .2s var(--ease);
 }
 .skip-link:focus { transform: translate(-50%, 0); }
+
+/* Anywhere a figure has to be read as a figure. */
+.menu-price, .menu-name, .soup-price, .pack-price,
+.soups-index button span, .hours td, .placeholder {
+  font-variant-numeric: lining-nums tabular-nums;
+}
 
 /* placeholder chips — impossible to miss before the real details land */
 .placeholder {
@@ -236,7 +250,7 @@ a { color: inherit; }
 .wordmark-icon { display: block; width: 1.85rem; flex: none; color: var(--orange); }
 .wordmark-text {
   font-family: var(--font-display);
-  font-weight: 900;
+  font-weight: 700;
   font-size: 1.24rem;
   letter-spacing: -.03em;
   line-height: 1;
@@ -333,49 +347,53 @@ a { color: inherit; }
 
 /* ── 6. Hero ─────────────────────────────────────────────────────── */
 
-.hero { padding-block: clamp(3rem, 7vw, 6rem) clamp(3.5rem, 8vw, 7rem); }
-
-.hero-inner {
+/* No illustration: the headline is the whole hero, given room to be one.
+   A full-height statement is what a shop with good signage would do. */
+.hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
+  place-items: center;
+  min-height: min(84svh, 760px);
+  padding-block: clamp(3.5rem, 9vw, 6.5rem);
+  text-align: center;
+  border-bottom: 1px solid var(--rule);
 }
+.hero-inner { max-width: 58rem; }
 
 .eyebrow {
-  font-size: .82rem;
+  font-size: .76rem;
+  font-weight: 500;
+  letter-spacing: .17em;
+  text-transform: uppercase;
   color: var(--ink-dim);
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.1rem;
-  border-bottom: 1px solid var(--rule);
+  margin-bottom: 1.7rem;
 }
 
 .hero h1 {
-  font-size: clamp(2.7rem, 1.6rem + 4.6vw, 4.6rem);
-  max-width: 12ch;
-  margin-bottom: 1.5rem;
+  font-size: clamp(2.9rem, 1.7rem + 5.4vw, 5.8rem);
+  line-height: 1.06;
+  margin-bottom: 1.7rem;
 }
 
 .lede {
-  font-size: clamp(1.02rem, .98rem + .26vw, 1.16rem);
+  font-size: clamp(1.04rem, .99rem + .3vw, 1.2rem);
   color: var(--ink-soft);
-  max-width: 46ch;
-  margin-bottom: 2.2rem;
+  max-width: 50ch;
+  margin-inline: auto;
+  margin-bottom: 2.4rem;
 }
 
-.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: center; }
 
-.hero-art { display: grid; place-items: center; }
-.pot {
-  width: min(100%, 440px);
-  filter: drop-shadow(0 26px 24px rgba(46, 29, 18, .16));
+/* the stripe band from the shop's stoneware, used once */
+.hero-mark {
+  display: flex;
+  width: 132px;
+  margin: clamp(3rem, 7vw, 5rem) auto 0;
 }
-.pot-wordmark text {
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 34px;
-  letter-spacing: -.03em;
-}
+.hero-mark i { flex: 1; height: 4px; }
+.hero-mark i:nth-child(1) { background: var(--amber); }
+.hero-mark i:nth-child(2) { background: #DE7A24; }
+.hero-mark i:nth-child(3) { background: #6B4227; }
 
 /* ── 7. Section furniture ────────────────────────────────────────── */
 
@@ -466,7 +484,7 @@ a { color: inherit; }
   padding-top: 1.2rem;
   border-top: 1px solid var(--rule);
   font-family: var(--font-display);
-  font-weight: 900;
+  font-weight: 700;
   font-size: 1.5rem;
   color: var(--cocoa);
 }
@@ -569,14 +587,7 @@ a { color: inherit; }
   border-bottom: 1px solid var(--rule);
   text-align: center;
 }
-.page-head .eyebrow {
-  border-bottom: 0;
-  padding-bottom: 0;
-  margin-bottom: 1.2rem;
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  font-size: .76rem;
-}
+.page-head .eyebrow { margin-bottom: 1.2rem; }
 .page-head h1 {
   font-size: clamp(2.8rem, 1.6rem + 5vw, 5rem);
   letter-spacing: -.03em;
@@ -712,7 +723,7 @@ a { color: inherit; }
   gap: .4rem .9rem;
   margin-bottom: 1.2rem;
   font-family: var(--font-display);
-  font-weight: 900;
+  font-weight: 700;
   font-size: 1.9rem;
 }
 .pack-price-label {
@@ -891,21 +902,10 @@ a { color: inherit; }
 }
 .reveal.is-visible { opacity: 1; transform: none; }
 
-.steam path { opacity: .4; }
-.steam .steam-1 { animation: steam 6s ease-in-out infinite; }
-.steam .steam-2 { animation: steam 7s ease-in-out .8s infinite; }
-.steam .steam-3 { animation: steam 6.5s ease-in-out 1.6s infinite; }
-@keyframes steam {
-  0%, 100% { opacity: .2; transform: translateY(6px) scaleY(.94); }
-  50%      { opacity: .6; transform: translateY(-6px) scaleY(1.05); }
-}
 
 /* ── 14. Responsive ──────────────────────────────────────────────── */
 
 @media (max-width: 1000px) {
-  .hero-inner { grid-template-columns: 1fr; }
-  .hero-art { order: -1; }
-  .pot { width: min(72%, 340px); }
   .takeaway-inner, .about-inner { grid-template-columns: 1fr; }
   .takeaway-art { order: -1; }
   .takeaway-art img { width: min(55%, 250px); }
@@ -961,7 +961,6 @@ a { color: inherit; }
   html { scroll-padding-top: 5rem; }
   .wordmark-text { font-size: 1.12rem; }
   .wordmark-icon { width: 1.6rem; }
-  .pot { width: min(78%, 290px); }
   .hero-actions .btn, .menu-cta .btn { width: 100%; }
   .footer-inner { grid-template-columns: 1fr; }
   .footer-base { flex-direction: column; }

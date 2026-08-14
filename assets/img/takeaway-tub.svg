@@ -28,7 +28,7 @@
     <rect x="60" y="217" width="200" height="9" fill="#EFA83A"/>
     <!-- 1 L mark -->
     <g fill="#4A2C18">
-      <text x="160" y="196" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-weight="900" font-size="46">1L</text>
+      <text x="160" y="196" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-weight="700" font-size="46">1L</text>
     </g>
     <rect x="60" y="60" width="200" height="220" fill="url(#tub-shade)"/>
   </g>
