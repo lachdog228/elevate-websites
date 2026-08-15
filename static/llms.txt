@@ -12,7 +12,8 @@ Barwon Heads, Ocean Grove, Anglesea, Aireys Inlet, Lorne and Winchelsea.
 Websites are hand-coded rather than built on page builders or templates,
 which keeps them fast and reduces the security surface. Typical builds
 run one to three weeks and are quoted as a fixed price in writing before
-work starts. Clients own their site, domain and hosting outright.
+work starts. Domain registration, hosting, SSL and renewals are managed on
+the client's behalf, so there is nothing technical for them to administer.
 
 ## Services
 

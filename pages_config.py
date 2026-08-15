@@ -44,7 +44,8 @@ PAGES = [
              "your Google Business Profile, reviews and time — which is what the "
              "<a href=\"/services/local-seo\">local SEO service</a> covers.</p>"),
             ("What happens after the site goes live?",
-             "<p>You own the site and the domain outright. I'm available for changes and support "
+             "<p>I take care of the domain and hosting from there, so there's nothing technical "
+             "for you to manage. I'm available for changes and support "
              "afterwards, either ad-hoc or on a "
              "<a href=\"/services/website-maintenance\">maintenance plan</a> that covers updates, "
              "backups, security patching and uptime monitoring.</p>"),
@@ -108,9 +109,10 @@ PAGES = [
              "often someone standing in their kitchen looking for a number to call. The mobile "
              "layout gets designed first for that reason.</p>"),
             ("Do you provide hosting and the domain?",
-             "<p>I'll set up hosting and connect your domain as part of the build. You own both "
-             "outright and they stay in your name — I don't hold your domain hostage. Hosting for "
-             "a site this size is typically free to very cheap.</p>"),
+             "<p>Yes — I take care of both. Domain registration, DNS, hosting, SSL certificates "
+             "and renewals are all managed as part of the service, so there's no control panel to "
+             "log into and no renewal notice to miss. If you already have a domain you want to "
+             "keep using, that's no problem either.</p>"),
             ("What do you need from me to get started?",
              "<p>A conversation about the business, any photos or logos you have, and your service "
              "details. That's genuinely it. I write the copy, source or optimise imagery, and come "
