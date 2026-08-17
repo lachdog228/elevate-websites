@@ -73,7 +73,7 @@
 
     // A resize past the breakpoint must not leave the body scroll-locked.
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 900 && burger.getAttribute("aria-expanded") === "true") {
+      if (window.innerWidth > 1080 && burger.getAttribute("aria-expanded") === "true") {
         setOpen(false);
       }
     });

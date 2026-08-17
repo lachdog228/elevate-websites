@@ -452,7 +452,8 @@ a:hover { color: var(--amber-lift); }
   line-height: 1;
 }
 
-@media (max-width: 400px) {
+/* The full lockup needs room; below that the OZCAR mark carries it alone. */
+@media (max-width: 560px) {
   .brand__sub { display: none; }
 }
 
@@ -527,7 +528,7 @@ a:hover { color: var(--amber-lift); }
 .burger[aria-expanded="true"] span::before { transform: translateY(6px) rotate(45deg); }
 .burger[aria-expanded="true"] span::after { transform: translateY(-6px) rotate(-45deg); }
 
-@media (max-width: 900px) {
+@media (max-width: 1080px) {
   .nav, .header__cta .btn--ghost { display: none; }
   .burger { display: flex; }
 }

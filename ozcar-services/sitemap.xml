@@ -9,7 +9,11 @@
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.ozcarservices.com.au/towing-transport.html</loc>
+    <loc>https://www.ozcarservices.com.au/towing.html</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.ozcarservices.com.au/vehicle-transport.html</loc>
     <priority>0.9</priority>
   </url>
   <url>

@@ -5,7 +5,7 @@ HTML, CSS, JavaScript, fonts and images, with no shared root-level build.
 
 | Directory | Client | Status |
 | --- | --- | --- |
-| [`ozcar-services/`](ozcar-services/) | OZCAR Services — trailer hire and towing, Leopold VIC | Built; needs the real domain, a form endpoint and the trailer specs before going live |
+| [`ozcar-services/`](ozcar-services/) | OZCAR Services — trailer hire and towing, Leopold VIC | Built (5 pages); needs the real photos, domain, a form endpoint and the trailer specs before going live |
 
 Each site has its own `README.md` covering local preview, handover steps and
 anything left to confirm. Start there.

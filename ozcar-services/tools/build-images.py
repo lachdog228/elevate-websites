@@ -52,6 +52,7 @@ RECIPES = {
     "towing":            ("towing",        4 / 3, CARD,                0.40, 74),
     "towing-wide":       ("towing",       21 / 9, BANNER,              0.40, 68),
     "transport":         ("transport",     4 / 3, CARD,                0.50, 66),
+    "transport-wide":    ("transport",    21 / 9, BANNER,              0.50, 66),
     "coast":             ("coast",        21 / 9, (1920, 1280, 800),   0.50, 68),
 }
 
