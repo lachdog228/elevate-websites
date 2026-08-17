@@ -38,6 +38,7 @@ assets/
   img/*.webp  *.jpg           built renditions — do not edit by hand
   img/src/*.jpg               the full-size source photographs
 tools/build-images.py         rebuilds assets/img from assets/img/src
+tools/make-zip.sh             packs a deploy zip for Netlify Drop
 ```
 
 Local preview:
@@ -102,6 +103,37 @@ Six values on `trailer-hire.html` are unknown and are shown as amber
 
 Replace the whole `<span class="tbc">[to confirm]</span>` — brackets and all —
 with the real figure. Nothing else on the site is a placeholder.
+
+## Deploying
+
+### Netlify drag-and-drop
+
+```bash
+bash tools/make-zip.sh
+```
+
+That writes `ozcar-services-netlify.zip` (60 files, ~4.8 MB) with the site at
+the **root** of the archive, which is what Netlify Drop expects. Drop it on
+<https://app.netlify.com/drop> and it is live.
+
+The archive leaves out the full-size source photographs in `assets/img/src`,
+the build tooling and this README — only what gets served goes in. It also
+carries its own `netlify.toml` with the cache and security headers but no
+`publish` key, because in a dropped zip the archive root already *is* the
+publish directory. (The repo-root `netlify.toml` keeps `publish =
+"ozcar-services"` for git-connected deploys.)
+
+Netlify Forms works with drop deploys — it scans the deployed HTML for
+`data-netlify="true"` — so the enquiry form starts collecting on upload. Check
+**Forms** in the site dashboard after the first submission.
+
+Re-run the script after changing anything; the zip is regenerated from scratch
+and is gitignored.
+
+### Git-connected deploy
+
+Point Netlify at the repo and it reads the root `netlify.toml`, which publishes
+`ozcar-services/`. No build command is needed.
 
 ## Adding a trailer
 

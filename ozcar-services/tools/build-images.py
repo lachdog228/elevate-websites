@@ -98,6 +98,19 @@ def build(name: str, stem: str, ratio: float, widths: tuple[int, ...],
     return average_hex(base)
 
 
+def prune(expected: set[str]) -> list[str]:
+    """Delete renditions left behind by an earlier, different recipe.
+
+    Changing a recipe's widths otherwise leaves the old files sitting in
+    assets/img, where they get shipped and nothing references them.
+    """
+    keep = expected | {"og-card.jpg", "favicon.svg"}
+    stale = sorted(f for f in OUT.iterdir() if f.is_file() and f.name not in keep)
+    for f in stale:
+        f.unlink()
+    return [f.name for f in stale]
+
+
 def build_open_graph() -> None:
     """1200x630 social preview card, cropped from the hero photograph."""
     with Image.open(SRC / "hero.jpg") as raw:
@@ -111,13 +124,19 @@ def main() -> None:
     print(f"sources: {SRC}\noutput:  {OUT}\n")
 
     tones = {}
+    expected: set[str] = set()
     for name, (stem, ratio, widths, anchor, quality) in RECIPES.items():
         tones[name] = build(name, stem, ratio, widths, anchor, quality)
+        expected.update(f"{name}-{w}.{ext}" for w in widths for ext in ("webp", "jpg"))
         sizes = ", ".join(str(w) for w in widths)
         print(f"  {name:<19} {sizes:<20} q{quality}  placeholder {tones[name]}")
 
     build_open_graph()
     print("  og-card       1200x630")
+
+    removed = prune(expected)
+    if removed:
+        print(f"\nremoved {len(removed)} stale rendition(s): {', '.join(removed)}")
 
     total = sum(f.stat().st_size for f in OUT.glob("*") if f.is_file())
     print(f"\n{len(list(OUT.glob('*.webp')))} webp + fallbacks, {total / 1024:.0f} KB total")
