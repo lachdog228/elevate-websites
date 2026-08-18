@@ -112,7 +112,7 @@ with the real figure. Nothing else on the site is a placeholder.
 bash tools/make-zip.sh
 ```
 
-That writes `ozcar-services-netlify.zip` (60 files, ~4.8 MB) with the site at
+That writes `ozcar-services-netlify.zip` (58 files, ~4.4 MB) with the site at
 the **root** of the archive, which is what Netlify Drop expects. Drop it on
 <https://app.netlify.com/drop> and it is live.
 
@@ -160,11 +160,19 @@ of the four select options is dropped into the message field instead, so
 
 ## Photographs
 
-**The photos currently on the site are placeholders.** Free-licence stock from
-Unsplash, chosen to match the real work. Four genuine OZCAR photographs have
-been supplied but did not reach the build environment as files, so they could
-not be processed. Swapping them in is the single biggest improvement available
-to this site.
+**One real photo is in; the rest are still placeholders.** `machinery.jpg` —
+the tractor strapped down on the OZCAR trailer — is genuine and now carries the
+vehicle transport service card on the home page and the split image on the
+vehicle transport page. Everything else is free-licence stock from Unsplash,
+chosen to match the real work.
+
+> **`machinery.jpg` is a 387×280 thumbnail, not the camera original.** That is
+> roughly an eighth of the width the site's largest slots want, so it is capped
+> at 720px wide (`SMALL_CARD` in the recipes) and kept out of every hero and
+> banner, where a 5× upscale would be obvious. It looks acceptable at card size
+> and soft on a high-DPI screen. Replacing it with the original off the phone
+> costs nothing and fixes that — same filename, re-run the script, then widen
+> its recipe from `SMALL_CARD` to `CARD`.
 
 ### Dropping the real photos in
 
@@ -179,7 +187,8 @@ python3 tools/build-images.py
 | --- | --- | --- |
 | `assets/img/src/hero.jpg` | The tan Hilux strapped on the OZCAR trailer at dusk, under the streetlight | Home hero, trailer hire hero, social card |
 | `assets/img/src/trailer-hire.jpg` | The empty tandem flat-top trailer with the checker-plate toolbox, parked on the roadside | Trailer hire service card and trailer card |
-| `assets/img/src/transport.jpg` | The red tractor strapped down on the trailer, in front of the billboard | Vehicle transport card and hero |
+| `assets/img/src/machinery.jpg` | **In use, but low-res.** The red tractor strapped down on the trailer. Replace with the full-size original | Vehicle transport card (home + transport page) |
+| `assets/img/src/transport.jpg` | Optional — any vehicle-on-trailer shot | Vehicle transport page hero banner |
 | `assets/img/src/towing.jpg` | *Still needed* — a towing job, ideally a vehicle being loaded | Towing service card and hero |
 | `assets/img/src/coast.jpg` | Optional — any local coast or highway shot | Service-area band, contact hero |
 

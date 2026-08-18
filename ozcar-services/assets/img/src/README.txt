@@ -44,3 +44,15 @@ shown while the photo loads. Update those to match.
 
 If a crop comes out badly framed, adjust the `anchor` for that recipe in
 tools/build-images.py: 0.0 keeps the top, 0.5 the middle, 1.0 the bottom.
+
+--- UPDATE ---------------------------------------------------------------
+
+machinery.jpg is now a REAL OZCAR photo (the tractor on the trailer) and is
+live on the site. It is only 387x280 though — a thumbnail, not the original —
+so its recipe is capped at 720px wide and it is kept out of every hero banner.
+Replacing it with the full-size version off the phone is worth doing: same
+filename, re-run build-images.py, then change its recipe from SMALL_CARD to
+CARD in tools/build-images.py.
+
+Still wanted at full resolution: the Hilux at dusk (hero.jpg), the empty
+trailer with the toolbox (trailer-hire.jpg), and a towing shot (towing.jpg).

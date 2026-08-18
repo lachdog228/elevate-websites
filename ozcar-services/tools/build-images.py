@@ -42,6 +42,9 @@ OUT = ROOT / "assets" / "img"
 # again because noise is expensive to encode.
 BANNER = (1920, 1280, 800)
 CARD = (1120, 720, 480)
+# A source too small for the full card ladder. Offering widths it cannot fill
+# only invites the browser to download an upscale that looks worse.
+SMALL_CARD = (720, 480)
 
 RECIPES = {
     # The hero source is already a wide letterbox crop, so it stays at 21:9
@@ -51,8 +54,13 @@ RECIPES = {
     "trailer-hire":      ("trailer-hire",  4 / 3, CARD,                0.50, 74),
     "towing":            ("towing",        4 / 3, CARD,                0.40, 74),
     "towing-wide":       ("towing",       21 / 9, BANNER,              0.40, 68),
-    "transport":         ("transport",     4 / 3, CARD,                0.50, 66),
+    # Only the wide banner rendition is still used; the card slot it used to
+    # fill now carries the business's own machinery photo.
     "transport-wide":    ("transport",    21 / 9, BANNER,              0.50, 66),
+    # The business's own photo of a tractor on the trailer. It arrived as a
+    # 387px thumbnail, so it is capped at 720 and given a high quality setting
+    # to spend bits on the upscale rather than the compression.
+    "machinery":         ("machinery",     4 / 3, SMALL_CARD,          0.50, 82),
     "coast":             ("coast",        21 / 9, (1920, 1280, 800),   0.50, 68),
 }
 
