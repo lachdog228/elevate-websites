@@ -27,7 +27,15 @@ third-party requests, where a React build would ship 100 KB+ of JavaScript to
 render text that never changes. Everything the brief asked for from an
 animation library is done with CSS transitions driven by `IntersectionObserver`.
 
-To deploy: point Netlify at this repo. There is no build command.
+### Deploying
+
+There is no build command. Two ways:
+
+- **Drag and drop** — unzip `airmech-repairs-site.zip` and drop the folder's
+  *contents* onto https://app.netlify.com/drop. `index.html` must sit at the top
+  level of what you drop, not inside a wrapper folder.
+- **Connect the repo** — point Netlify at this branch. Leave the build command
+  empty and the publish directory as `.`; `netlify.toml` handles the rest.
 
 ### Editing it
 
@@ -60,14 +68,33 @@ Design tokens all live in `:root`. Change `--blue` and the whole site follows.
 
 ## The enquiry form
 
-Wired for **Netlify Forms** (`data-netlify="true"`, honeypot on
-`company-website`). It works with no backend once deployed to Netlify — form
-submissions appear under the site's Forms tab. Set up a notification there to
-forward them to `Airmechrepairs@outlook.com.au`.
+No forms backend, no third-party service, nothing to wire up. The form
+validates inline, then hands the enquiry to the visitor's own mail client as a
+pre-filled draft addressed to `Airmechrepairs@outlook.com.au` — every field laid
+out in the body, so nothing gets retyped:
 
-Validation runs client-side with inline error states; on submit it posts in the
-background so it can show an inline confirmation, and falls back to a normal
-form POST if that fails, so an enquiry is never silently lost.
+```
+Name: Dave Nguyen
+Business: Nguyen & Co Painting
+Email: dave@nguyenpainting.com.au
+Phone: 0412 345 678
+Equipment / brand: Graco 395 PC Pro
+Needs help with: Repairs
+
+Message:
+Pressure drops off after about ten minutes and it starts spitting.
+```
+
+The visitor still presses send in their own mail app, so enquiries arrive as
+ordinary email from their real address — replying is just replying.
+
+The confirmation panel carries an **Open the email again** link holding the same
+draft, in case the mail client didn't launch, and the address is shown in plain
+text beside it. With JavaScript off, the form notes that and points at the email
+address directly.
+
+To change the recipient, edit `MAIL` at the top of the form block in the
+`<script>` (and the `mailto:` links elsewhere in the markup).
 
 ## Before launch
 
@@ -95,6 +122,7 @@ Checked in headless Chromium at 1920, 1440, 1280, 820 and 390px:
 - header scroll state, mobile drawer (open, Escape, link tap, focus trap,
   scroll lock), service row hover, scroll-spy
 - form: empty submit flags all five required fields and moves focus to the
-  first, invalid email caught on blur, errors clear on correction
+  first, invalid email caught on blur, errors clear on correction, and a valid
+  submit builds a correctly addressed draft with every field in the body
 - `prefers-reduced-motion` leaves all content visible immediately
 - headings run h1 → h2 → h3 with no level jumps; every control is labelled

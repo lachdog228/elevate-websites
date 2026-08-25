@@ -777,7 +777,6 @@ body.is-locked{overflow:hidden}
   padding-top:var(--s6);border-top:1px solid var(--line)}
 .form__note{font-size:var(--f1);color:var(--text-3);max-width:34ch;margin:0}
 .form__btn{margin-left:auto}
-.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form__ok{
   display:none;gap:var(--s4);align-items:flex-start;
   border:1px solid var(--blue);background:var(--blue-wash);
@@ -788,7 +787,8 @@ body.is-locked{overflow:hidden}
 .form__ok p{margin:0;font-size:var(--f2);color:var(--text)}
 .form__ok b{display:block;font-family:Archivo;font-variation-settings:"wdth" 104;
   font-weight:750;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}
-.btn[aria-busy="true"]{pointer-events:none;opacity:.72}
+.form__again{color:var(--blue);font-weight:600;border-bottom:1px solid currentColor}
+.form__again:hover{color:var(--blue-lift)}
 
 /* ---------- 11 Footer ---------- */
 .ft{background:var(--ink);color:var(--on-dark-2);padding-block:var(--s9) var(--s6)}
@@ -1619,12 +1619,12 @@ body.is-locked{overflow:hidden}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="12" cy="12" r="10"/><path d="m7.5 12.4 3 3 6-6.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <p><b>Enquiry sent</b>Thanks — your enquiry has been received. You'll get a reply at the email address you gave.</p>
+            <p><b>Your enquiry is ready to send</b>Your email app should have opened with everything filled in — check it over and hit send.
+              Nothing happened? <a class="form__again" id="mailAgain" href="mailto:Airmechrepairs@outlook.com.au">Open the email again</a>,
+              or write to Airmechrepairs@outlook.com.au.</p>
           </div>
 
-          <form id="enquiry" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="company-website" novalidate>
-            <input type="hidden" name="form-name" value="enquiry">
-            <p class="hp"><label>Leave this empty <input name="company-website" tabindex="-1" autocomplete="off"></label></p>
+          <form id="enquiry" name="enquiry" novalidate>
 
             <div class="form__grid">
               <div class="f">
@@ -1671,7 +1671,8 @@ body.is-locked{overflow:hidden}
             </div>
 
             <div class="form__foot">
-              <p class="form__note">Your details are only used to answer this enquiry.</p>
+              <p class="form__note">Opens in your email app with the details filled in.
+                <noscript><br>JavaScript is off — please email Airmechrepairs@outlook.com.au directly.</noscript></p>
               <button class="btn form__btn" type="submit" id="submitBtn">
                 <span>Send Enquiry</span>
                 <svg width="15" height="10" viewBox="0 0 15 10" fill="none" aria-hidden="true"><path d="M0 5h13M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
@@ -1889,11 +1890,10 @@ body.is-locked{overflow:hidden}
   spy();
 
   /* ---------- Enquiry form ---------- */
+  var MAIL = "Airmechrepairs@outlook.com.au";
   var form = document.getElementById("enquiry");
   if (form) {
     var okBox = document.getElementById("formOk");
-    var btn = document.getElementById("submitBtn");
-    var btnLabel = btn.querySelector("span");
     var rules = {
       name:      { id: "fName",  test: function (v) { return v.trim().length > 1; } },
       email:     { id: "fEmail", test: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); } },
@@ -1930,39 +1930,47 @@ body.is-locked{overflow:hidden}
     });
 
     form.addEventListener("submit", function (e) {
+      e.preventDefault();
       var keys = Object.keys(rules);
       var bad = keys.filter(function (k) { return !check(k); });
       if (bad.length) {
-        e.preventDefault();
         var first = document.getElementById(rules[bad[0]].id);
         first.focus({ preventScroll: true });
         first.scrollIntoView({ block: "center", behavior: reduce.matches ? "auto" : "smooth" });
         return;
       }
-      /* Progressive enhancement: post in the background so we can show an
-         inline confirmation. Without JS the same form posts normally. */
-      if (!window.fetch || !window.FormData || !window.URLSearchParams) return;
-      e.preventDefault();
-      btn.setAttribute("aria-busy", "true");
-      btnLabel.textContent = "Sending…";
-      fetch(form.getAttribute("action") || "/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(new FormData(form)).toString()
-      }).then(function (res) {
-        if (!res.ok) throw new Error(res.status);
-        form.reset();
-        okBox.classList.add("is-on");
-        okBox.scrollIntoView({ block: "center", behavior: reduce.matches ? "auto" : "smooth" });
-        btnLabel.textContent = "Send Enquiry";
-      }).catch(function () {
-        /* Fall back to a plain submit so an enquiry is never silently lost. */
-        btnLabel.textContent = "Send Enquiry";
-        form.removeAttribute("data-js");
-        HTMLFormElement.prototype.submit.call(form);
-      }).then(function () {
-        btn.removeAttribute("aria-busy");
-      });
+
+      /* No forms backend: hand the enquiry to the visitor's mail client with
+         every field already laid out, so nothing is retyped and nothing is
+         lost to a service that has to be wired up first. */
+      var val = function (id) { return document.getElementById(id).value.trim(); };
+      var subject = "Equipment enquiry — " + (val("fGear") || val("fName"));
+      var body = [
+        "Name: " + val("fName"),
+        "Business: " + (val("fBiz") || "—"),
+        "Email: " + val("fEmail"),
+        "Phone: " + (val("fPhone") || "—"),
+        "Equipment / brand: " + val("fGear"),
+        "Needs help with: " + val("fNeed"),
+        "",
+        "Message:",
+        val("fMsg"),
+        "",
+        "— Sent from the Airmech Repairs website"
+      ].join("\r\n");
+
+      var href = "mailto:" + MAIL +
+        "?subject=" + encodeURIComponent(subject) +
+        "&body=" + encodeURIComponent(body);
+
+      /* Put the same draft behind a visible link first — if the mail client
+         never opens, the visitor still has a one-click way to get it. */
+      var again = document.getElementById("mailAgain");
+      if (again) again.href = href;
+      window.location.href = href;
+
+      okBox.classList.add("is-on");
+      okBox.scrollIntoView({ block: "center", behavior: reduce.matches ? "auto" : "smooth" });
     });
   }
 
