@@ -1,4 +1,5 @@
-# Static single-page site. No build step.
+# Static multi-page site. No build command — the HTML is committed.
+# (Regenerate locally with `python3 build.py` after editing src/.)
 [build]
   publish = "."
 
@@ -8,9 +9,9 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
 
-# Fonts are content-hashed by name and never change; the HTML must stay fresh.
+# Fonts are versioned by name and never change.
 [[headers]]
   for = "/assets/fonts/*"
   [headers.values]
@@ -21,7 +22,19 @@
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
+# CSS and JS are shared across every page — cached, but revalidated daily so a
+# deploy is picked up without a hard refresh.
 [[headers]]
-  for = "/index.html"
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400, must-revalidate"
+
+[[headers]]
+  for = "/*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"

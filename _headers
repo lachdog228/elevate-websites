@@ -1,5 +1,4 @@
-# Same rules as netlify.toml, kept here so a drag-and-drop deploy
-# (which does not always read netlify.toml) still gets them.
+# Mirrors netlify.toml so a drag-and-drop deploy gets the same headers.
 /*
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
@@ -12,5 +11,11 @@
 /assets/img/*
   Cache-Control: public, max-age=604800
 
-/index.html
+/assets/css/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/assets/js/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/*.html
   Cache-Control: public, max-age=0, must-revalidate
