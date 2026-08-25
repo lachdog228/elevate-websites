@@ -12,7 +12,7 @@ STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
 
 mkdir -p "$STAGE/assets/fonts" "$STAGE/assets/img" "$STAGE/assets/css" "$STAGE/assets/js"
-cp index.html 404.html netlify.toml robots.txt sitemap.xml _headers "$STAGE/"
+cp index.html netlify.toml robots.txt sitemap.xml _headers "$STAGE/"
 for d in services about service-area contact; do
   mkdir -p "$STAGE/$d"
   cp "$d/index.html" "$STAGE/$d/"

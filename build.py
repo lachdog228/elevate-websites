@@ -125,7 +125,7 @@ PAGES = [
                     "across Ocean Grove, Geelong and the Bellarine Peninsula. Fast diagnosis, quality "
                     "workmanship, less downtime.",
         jsonld=[BUSINESS],
-        body=["hero", "trust", "about", "services", "why", "area", "cta"],
+        body=["hero", "trust", "about", "services", "area", "cta"],
     ),
     dict(
         out="services/index.html",
@@ -153,7 +153,7 @@ PAGES = [
                 "Built around trades and businesses that depend on reliable equipment — and lose money every "
                 "hour it sits idle."),
         jsonld=[crumbs("About", "/about/")],
-        body=["about", "why", "trust", "cta"],
+        body=["about", "why", "cta"],
     ),
     dict(
         out="service-area/index.html",
@@ -167,7 +167,7 @@ PAGES = [
                 "Based in Ocean Grove and servicing professional customers throughout Geelong, the Bellarine "
                 "Peninsula and the areas around them."),
         jsonld=[crumbs("Service Area", "/service-area/")],
-        body=["area-full", "trust", "cta"],
+        body=["area-full", "cta"],
     ),
     dict(
         out="contact/index.html",
@@ -185,16 +185,6 @@ PAGES = [
                  "mainEntity": {"@id": f"{SITE}/#business"}},
                 crumbs("Contact", "/contact/")],
         body=["contact-details", "cta"],
-    ),
-    dict(
-        out="404.html",
-        path="/404.html",
-        nav=None,
-        noindex=True,
-        title="Page not found | Airmech Repairs",
-        description="That page doesn't exist. Head back to the Airmech Repairs home page.",
-        jsonld=[],
-        body=["notfound"],
     ),
 ]
 
@@ -247,7 +237,7 @@ def main():
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         f"{urls}\n</urlset>\n"
     )
-    print(f"  {'sitemap.xml':26}          {len(PAGES) - 1} urls")
+    print(f"  {'sitemap.xml':26}          {sum(1 for p in PAGES if not p.get('noindex'))} urls")
 
 
 if __name__ == "__main__":

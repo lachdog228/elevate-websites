@@ -9,15 +9,18 @@ Geelong, the Bellarine Peninsula and surrounding areas.
 
 | URL              | What it's for                                                        |
 |------------------|----------------------------------------------------------------------|
-| `/`              | Hero, trust strip, about preview, services overview, why, service area preview, CTA |
+| `/`              | Hero, three-point trust strip, about preview, services overview, service area preview, CTA |
 | `/services/`     | The five services in detail, brands serviced, the 4-step process     |
-| `/about/`        | Who it's for and how the work is set up, why professionals choose it |
+| `/about/`        | Who it's for, how the work is set up, why professionals choose it    |
 | `/service-area/` | Map, suburb list, where Airmech travels                              |
-| `/contact/`      | Contact details and what to include in an email                      |
-| `/404.html`      | Not-found page                                                       |
+| `/contact/`      | Contact details — email, location, service area                      |
 
-There is no enquiry form. The contact page gives the email address directly,
-with a short list of what to include so the first reply can be useful.
+There is no enquiry form and no 404 page.
+
+**One value block per page.** "Quality workmanship" was originally being made
+three times on the home page alone (hero beats, trust strip, then the why
+section), so each block now appears exactly once site-wide: the hero beats in
+the hero, the trust strip on home, and the four expanded reasons on About.
 
 ## What's here
 
@@ -30,8 +33,7 @@ index.html          ┐
 services/           │
 about/              ├ generated — do not hand-edit, they get overwritten
 service-area/       │
-contact/            │
-404.html            ┘
+contact/            ┘
 sitemap.xml         generated
 assets/css/site.css shared stylesheet
 assets/js/site.js   shared behaviour
@@ -103,8 +105,9 @@ can never contain stale HTML).
 2. **Set the real domain.** `SITE` at the top of `build.py` drives every
    canonical, Open Graph URL and the sitemap. It currently assumes
    `https://airmechrepairs.com.au`.
-3. **Add a phone number** if the client wants calls — there's a natural slot in
-   the contact cards and the JSON-LD `telephone` field in `build.py`.
+3. **Add a phone number** if the client wants calls — the contact page is built
+   from stacked cards, so a Phone card slots straight in above Email; the
+   JSON-LD `telephone` field in `build.py` takes it too.
 4. **Confirm the suburb list** matches where they'll actually travel.
 
 Nothing on the site claims a turnaround time, price, warranty or manufacturer
