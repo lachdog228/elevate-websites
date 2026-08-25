@@ -336,56 +336,12 @@ a:focus-visible,button:focus-visible{
 @keyframes slide{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* ============================================================
-   FACTS
-   ============================================================ */
-.facts{padding-block:var(--section-y); background:var(--ink);}
-.section-head{max-width:52ch; margin-bottom:clamp(32px,4.5vw,52px);}
-.section-head h2{font-size:clamp(32px,5vw,58px);}
-.section-head p{margin-top:14px; color:var(--on-dark-muted); font-size:16.5px;}
-
-.facts__grid{
-  display:grid; gap:1px; background:var(--hairline);
-  border:1px solid var(--hairline);
-  grid-template-columns:1fr;
-}
-@media(min-width:620px){
-  .facts__grid{grid-template-columns:repeat(2,1fr);}
-  .facts__grid > :last-child{grid-column:span 2;}
-}
-@media(min-width:960px){
-  .facts__grid{grid-template-columns:repeat(3,1fr);}
-  .facts__grid > :last-child{grid-column:span 2;}
-}
-.fact{
-  background:var(--ink-2); padding:clamp(24px,3vw,32px);
-  transition:background var(--med) var(--ease);
-}
-.fact:hover{background:var(--ink-3);}
-.fact__num{
-  font-family:var(--display); font-weight:800; font-size:13px;
-  letter-spacing:0.16em; color:var(--red-bright); display:block; margin-bottom:14px;
-}
-.fact__label{
-  font-family:var(--display); font-weight:700; font-size:22px;
-  text-transform:uppercase; letter-spacing:0.03em; color:var(--paper);
-}
-.fact__value{margin-top:8px; font-size:15.5px; color:var(--on-dark-muted);}
-.fineprint{
-  margin-top:22px; font-size:13px; letter-spacing:0.02em;
-  color:var(--on-dark-faint);
-}
-
-/* ============================================================
    BOOK  (light panel)
    ============================================================ */
 .book{
   background:var(--paper); color:var(--on-light);
   padding-block:var(--section-y);
   position:relative;
-}
-.book::before{
-  content:''; position:absolute; inset:0 0 auto 0; height:6px;
-  background:linear-gradient(90deg, var(--red) 0 34%, var(--ink) 34% 67%, var(--ocean) 67% 100%);
 }
 .book__grid{
   display:grid; gap:clamp(36px,5vw,72px);
@@ -419,6 +375,11 @@ a:focus-visible,button:focus-visible{
   text-transform:uppercase; color:var(--on-light-muted); display:block;
 }
 .contact-row__value{font-weight:600; color:var(--ocean); text-decoration:underline; text-underline-offset:3px;}
+
+.fineprint{
+  margin-top:24px; font-size:13px; letter-spacing:0.02em;
+  color:var(--on-light-muted);
+}
 
 .qr{
   text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px;
@@ -574,46 +535,6 @@ a:focus-visible,button:focus-visible{
     </div>
   </div>
 
-  <!-- ── FACTS ───────────────────────────────────────────── -->
-  <section class="facts" aria-labelledby="facts-title">
-    <div class="shell">
-      <div class="section-head reveal">
-        <h2 id="facts-title">Good to know</h2>
-        <p>The details, before you book.</p>
-      </div>
-
-      <div class="facts__grid">
-        <div class="fact reveal">
-          <span class="fact__num">01</span>
-          <h3 class="fact__label">The car</h3>
-          <p class="fact__value">BMW Z4 convertible, automatic.</p>
-        </div>
-        <div class="fact reveal" style="--d:70ms">
-          <span class="fact__num">02</span>
-          <h3 class="fact__label">Hours</h3>
-          <p class="fact__value">Rental period is 6am – 8pm.</p>
-        </div>
-        <div class="fact reveal" style="--d:140ms">
-          <span class="fact__num">03</span>
-          <h3 class="fact__label">Minimum hire</h3>
-          <p class="fact__value">Minimum 1 day rental.</p>
-        </div>
-        <div class="fact reveal" style="--d:210ms">
-          <span class="fact__num">04</span>
-          <h3 class="fact__label">Pick-up &amp; return</h3>
-          <p class="fact__value">Car is collected from and returned to Torquay.</p>
-        </div>
-        <div class="fact reveal" style="--d:280ms">
-          <span class="fact__num">05</span>
-          <h3 class="fact__label">Drivers</h3>
-          <p class="fact__value">Driver must be over 25 with a full licence and qualify with our insurer.</p>
-        </div>
-      </div>
-
-      <p class="fineprint">*Conditions apply.</p>
-    </div>
-  </section>
-
   <!-- ── BOOK ────────────────────────────────────────────── -->
   <section class="book on-light" id="book" aria-labelledby="book-title">
     <div class="shell book__grid">
@@ -649,9 +570,11 @@ a:focus-visible,button:focus-visible{
             </span>
           </a>
         </div>
+
+        <p class="fineprint reveal" style="--d:260ms">*Conditions apply.</p>
       </div>
 
-      <a class="qr reveal" style="--d:260ms" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
+      <a class="qr reveal" style="--d:320ms" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
         <img src="{{QR_IMG}}" width="172" height="172"
              alt="QR code linking to the Drive Mate booking page">
         <span class="qr__label">Scan to book</span>

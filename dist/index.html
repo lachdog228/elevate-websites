@@ -336,56 +336,12 @@ a:focus-visible,button:focus-visible{
 @keyframes slide{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
 
 /* ============================================================
-   FACTS
-   ============================================================ */
-.facts{padding-block:var(--section-y); background:var(--ink);}
-.section-head{max-width:52ch; margin-bottom:clamp(32px,4.5vw,52px);}
-.section-head h2{font-size:clamp(32px,5vw,58px);}
-.section-head p{margin-top:14px; color:var(--on-dark-muted); font-size:16.5px;}
-
-.facts__grid{
-  display:grid; gap:1px; background:var(--hairline);
-  border:1px solid var(--hairline);
-  grid-template-columns:1fr;
-}
-@media(min-width:620px){
-  .facts__grid{grid-template-columns:repeat(2,1fr);}
-  .facts__grid > :last-child{grid-column:span 2;}
-}
-@media(min-width:960px){
-  .facts__grid{grid-template-columns:repeat(3,1fr);}
-  .facts__grid > :last-child{grid-column:span 2;}
-}
-.fact{
-  background:var(--ink-2); padding:clamp(24px,3vw,32px);
-  transition:background var(--med) var(--ease);
-}
-.fact:hover{background:var(--ink-3);}
-.fact__num{
-  font-family:var(--display); font-weight:800; font-size:13px;
-  letter-spacing:0.16em; color:var(--red-bright); display:block; margin-bottom:14px;
-}
-.fact__label{
-  font-family:var(--display); font-weight:700; font-size:22px;
-  text-transform:uppercase; letter-spacing:0.03em; color:var(--paper);
-}
-.fact__value{margin-top:8px; font-size:15.5px; color:var(--on-dark-muted);}
-.fineprint{
-  margin-top:22px; font-size:13px; letter-spacing:0.02em;
-  color:var(--on-dark-faint);
-}
-
-/* ============================================================
    BOOK  (light panel)
    ============================================================ */
 .book{
   background:var(--paper); color:var(--on-light);
   padding-block:var(--section-y);
   position:relative;
-}
-.book::before{
-  content:''; position:absolute; inset:0 0 auto 0; height:6px;
-  background:linear-gradient(90deg, var(--red) 0 34%, var(--ink) 34% 67%, var(--ocean) 67% 100%);
 }
 .book__grid{
   display:grid; gap:clamp(36px,5vw,72px);
@@ -419,6 +375,11 @@ a:focus-visible,button:focus-visible{
   text-transform:uppercase; color:var(--on-light-muted); display:block;
 }
 .contact-row__value{font-weight:600; color:var(--ocean); text-decoration:underline; text-underline-offset:3px;}
+
+.fineprint{
+  margin-top:24px; font-size:13px; letter-spacing:0.02em;
+  color:var(--on-light-muted);
+}
 
 .qr{
   text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px;
@@ -574,46 +535,6 @@ a:focus-visible,button:focus-visible{
     </div>
   </div>
 
-  <!-- ── FACTS ───────────────────────────────────────────── -->
-  <section class="facts" aria-labelledby="facts-title">
-    <div class="shell">
-      <div class="section-head reveal">
-        <h2 id="facts-title">Good to know</h2>
-        <p>The details, before you book.</p>
-      </div>
-
-      <div class="facts__grid">
-        <div class="fact reveal">
-          <span class="fact__num">01</span>
-          <h3 class="fact__label">The car</h3>
-          <p class="fact__value">BMW Z4 convertible, automatic.</p>
-        </div>
-        <div class="fact reveal" style="--d:70ms">
-          <span class="fact__num">02</span>
-          <h3 class="fact__label">Hours</h3>
-          <p class="fact__value">Rental period is 6am – 8pm.</p>
-        </div>
-        <div class="fact reveal" style="--d:140ms">
-          <span class="fact__num">03</span>
-          <h3 class="fact__label">Minimum hire</h3>
-          <p class="fact__value">Minimum 1 day rental.</p>
-        </div>
-        <div class="fact reveal" style="--d:210ms">
-          <span class="fact__num">04</span>
-          <h3 class="fact__label">Pick-up &amp; return</h3>
-          <p class="fact__value">Car is collected from and returned to Torquay.</p>
-        </div>
-        <div class="fact reveal" style="--d:280ms">
-          <span class="fact__num">05</span>
-          <h3 class="fact__label">Drivers</h3>
-          <p class="fact__value">Driver must be over 25 with a full licence and qualify with our insurer.</p>
-        </div>
-      </div>
-
-      <p class="fineprint">*Conditions apply.</p>
-    </div>
-  </section>
-
   <!-- ── BOOK ────────────────────────────────────────────── -->
   <section class="book on-light" id="book" aria-labelledby="book-title">
     <div class="shell book__grid">
@@ -649,9 +570,11 @@ a:focus-visible,button:focus-visible{
             </span>
           </a>
         </div>
+
+        <p class="fineprint reveal" style="--d:260ms">*Conditions apply.</p>
       </div>
 
-      <a class="qr reveal" style="--d:260ms" href="https://drivemate.au/l/bmw/66da8fc9-2b0c-46a0-acb6-a475f9c3715f" target="_blank" rel="noopener">
+      <a class="qr reveal" style="--d:320ms" href="https://drivemate.au/l/bmw/66da8fc9-2b0c-46a0-acb6-a475f9c3715f" target="_blank" rel="noopener">
         <img src="data:image/png;base64,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Vmfb3ylT52rF2b5HK/z5BgCAiPgGAICI+AYAgIj4BgCAiPgGAICI+AYAgIj4BgCAiPgGAICI+AYAgIj4BgCAiPgGAICI+AYAgIj4BgCAiPgGAICI+AYAgIj4BgCAiPgGAICI+AYAgIj4BgCAyGV6AvAXXG/3j699PR8j107NecXUuCum9mhHU2fSOv9tO77rduQZfJ8/3wAAEBHfAAAQEd8AABAR3wAAEBHfAAAQEd8AABAR3wAAEBHfAAAQEd8AABAR3wAAEBHfAAAQEd8AABAR3wAAEBHfAAAQEd8AABAR3wAAEBHfAAAQEd8AABAR3wAAELlMT6D2ej6mp8C/ONseXW/3j6+1Vu9bWaupcXec847jTjnb/U4523ty6n59y97nzzcAAETENwAARMQ3AABExDcAAETENwAARMQ3AABExDcAAETENwAARMQ3AABExDcAAETENwAARMQ3AABExDcAAETENwAARMQ3AABExDcAAETENwAARMQ3AABExDcAAEQu0xP4xPV2n54Cv9TK2Xg9Hz84k2bcsz0LU3u0YmqPdlyrKTuu1Y5z3vFZMOf3Tc15x2fBn28AAIiIbwAAiIhvAACIiG8AAIiIbwAAiIhvAACIiG8AAIiIbwAAiIhvAACIiG8AAIiIbwAAiIhvAACIiG8AAIiIbwAAiIhvAACIiG8AAIiIbwAAiIhvAACIiG8AAIh8HccxPQcAADgFf74BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAgIr4BACAivgEAICK+AQAg8j81B5ZYiHLKjAAAAABJRU5ErkJggg==" width="172" height="172"
              alt="QR code linking to the Drive Mate booking page">
         <span class="qr__label">Scan to book</span>
