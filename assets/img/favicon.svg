@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Airmech Repairs">
+  <rect width="64" height="64" fill="#0A0D14"/>
+  <g transform="skewX(-11)">
+    <text x="36" y="41" text-anchor="middle" font-family="Archivo, Arial Black, Helvetica, Arial, sans-serif"
+          font-size="30" font-weight="900" letter-spacing="-1.4" fill="#FFFFFF">A<tspan fill="#FFFFFF">M</tspan></text>
+  </g>
+  <path d="M10 49C22 45 42 45 54 49 42 47 22 47 10 49Z" fill="#4C7BF0"/>
+</svg>

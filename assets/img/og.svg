@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="g" cx="76%" cy="18%" r="62%">
+      <stop offset="0%" stop-color="#1B3FA8" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#1B3FA8" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="64" height="64" patternUnits="userSpaceOnUse">
+      <path d="M64 0H0v64" fill="none" stroke="#FFFFFF" stroke-opacity=".05" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#0A0D14"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <g transform="translate(88,132) skewX(-11)">
+    <text font-family="Archivo, Arial Black, Helvetica, Arial, sans-serif" font-size="76" font-weight="900" letter-spacing="-2.6">
+      <tspan fill="#4C7BF0">AIR</tspan><tspan fill="#FFFFFF">MECH</tspan>
+    </text>
+  </g>
+  <path d="M88 152C168 141 320 141 400 152 320 147 168 147 88 152Z" fill="#4C7BF0"/>
+  <text x="88" y="286" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="66" font-weight="800"
+        letter-spacing="-1.6" fill="#FFFFFF">AIRLESS SPRAY EQUIPMENT</text>
+  <text x="88" y="360" font-family="Archivo, Helvetica, Arial, sans-serif" font-size="66" font-weight="800"
+        letter-spacing="-1.6" fill="#4C7BF0">REPAIRS &amp; SERVICING</text>
+  <path d="M88 420h1024" stroke="#232B3A" stroke-width="1"/>
+  <text x="88" y="474" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#A9B3C4">Ocean Grove, Victoria — servicing Geelong, the Bellarine Peninsula</text>
+  <text x="88" y="512" font-family="Helvetica, Arial, sans-serif" font-size="27" fill="#A9B3C4">and surrounding areas.</text>
+  <g font-family="Archivo, Helvetica, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="3" fill="#77839A">
+    <text x="88" y="576">FAST DIAGNOSIS</text><text x="356" y="576">QUALITY WORKMANSHIP</text><text x="716" y="576">LESS DOWNTIME</text>
+  </g>
+</svg>

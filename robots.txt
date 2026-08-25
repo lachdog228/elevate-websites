@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://airmechrepairs.com.au/sitemap.xml
