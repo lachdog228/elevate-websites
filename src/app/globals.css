@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   M. McCrohan — Painting & Decorating
+   Design system: warm neutral ground, charcoal ink, one clay accent.
+   Two scales only. Nothing is sized ad hoc.
+   ------------------------------------------------------------------ */
+
+@theme {
+  /* Colour — every pair below is checked to WCAG AA (see README) */
+  --color-bone: #f6f3ee;        /* page ground, warm white */
+  --color-bone-deep: #ece7df;   /* alternating band */
+  --color-paper: #ffffff;
+  --color-ink: #17150f;         /* 16.49:1 on bone */
+  --color-graphite: #3d3a33;    /* 10.25:1 on bone */
+  --color-stone: #665f55;       /* 5.69:1 on bone, 5.12:1 on bone-deep */
+  --color-line: #e4dfd6;
+  --color-line-strong: #d3ccc0;
+  --color-clay: #90512c;        /* 5.58:1 on bone, 5.02:1 on bone-deep */
+  --color-clay-light: #dda87e;  /* 8.67:1 on ink — accent on dark surfaces */
+
+  /* Type */
+  --font-display: var(--font-instrument-serif), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  :root {
+    /* Section rhythm and page gutter — one source of truth */
+    --sec: clamp(5rem, 11vw, 9.5rem);
+    --gut: clamp(1.25rem, 5vw, 4.5rem);
+    --measure: 62ch;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* sticky header height + breathing room */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bone);
+    color: var(--color-graphite);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 400;
+    line-height: 1.02;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* A single, unmistakable focus ring everywhere */
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-bone);
+  }
+}
+
+@layer components {
+  /* Small uppercase label that marks each section */
+  .eyebrow {
+    font-size: 0.6875rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--color-stone);
+  }
+
+  /* Display sizes — heroes and section headings, from one fluid scale */
+  .display-xl { font-size: clamp(3rem, 9.5vw, 7.5rem); }
+  .display-lg { font-size: clamp(2.25rem, 5.6vw, 4.25rem); }
+  .display-md { font-size: clamp(1.75rem, 3.2vw, 2.5rem); }
+
+  .lede {
+    font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+    line-height: 1.6;
+    color: var(--color-graphite);
+    max-width: var(--measure);
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 88rem;
+    margin-inline: auto;
+    padding-inline: var(--gut);
+  }
+
+  .hairline { border-top: 1px solid var(--color-line); }
+}
+
+/* Reduced motion: land everything in its final state, immediately. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
