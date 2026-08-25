@@ -10,7 +10,7 @@ Geelong, the Bellarine Peninsula and surrounding areas.
 | URL              | What it's for                                                        |
 |------------------|----------------------------------------------------------------------|
 | `/`              | Hero, three-point trust strip, about preview, services overview, service area preview, CTA |
-| `/services/`     | The five services in detail, brands serviced, the 4-step process     |
+| `/services/`     | The six services in detail, brands serviced, the 4-step process      |
 | `/about/`        | Who it's for, how the work is set up, why professionals choose it    |
 | `/service-area/` | Map, suburb list, where Airmech travels                              |
 | `/contact/`      | Contact details — email, location, service area                      |
@@ -95,6 +95,22 @@ can never contain stale HTML).
   of it collapses under `prefers-reduced-motion: reduce`. Content is visible by
   default and only hidden once JS confirms it can observe it, so no-JS visitors
   and crawlers always see the full page.
+
+## Services
+
+The six services the business actually offers, as supplied by the client:
+
+1. Airless spray gun repairs
+2. Routine servicing
+3. Warranty repairs
+4. Fault diagnosis
+5. Genuine replacement parts
+6. Performance testing
+
+They live in one place — `SERVICES` at the top of `build.py` drives the JSON-LD
+`OfferCatalog`; the visible copy is in `src/sections/services.html` (home
+overview) and `src/sections/services-detail.html` (services page). Change a
+service and all three need updating.
 
 ## Before launch
 

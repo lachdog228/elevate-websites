@@ -49,8 +49,9 @@ BUSINESS = {
     "@id": f"{SITE}/#business",
     "name": "Airmech Repairs",
     "alternateName": "Airmech Repairs — Airless Spray Equipment Repairs & Servicing",
-    "description": "Diagnosis, repair, servicing and maintenance of airless spray equipment for painters, "
-                   "decorators, maintenance contractors and construction professionals.",
+    "description": "Airless spray gun repairs, routine servicing, warranty repairs, fault diagnosis, "
+                   "genuine replacement parts and performance testing for painters, decorators, "
+                   "maintenance contractors and construction professionals.",
     "url": f"{SITE}/",
     "email": EMAIL,
     "image": f"{SITE}/assets/img/og.jpg",
@@ -68,17 +69,19 @@ BUSINESS = {
     "knowsAbout": [
         "Airless spray gun repairs",
         "Airless spray equipment servicing",
-        "Spray equipment fault finding",
-        "Airless sprayer maintenance",
+        "Genuine airless spray parts",
+        "Airless spray gun fault diagnosis",
+        "Airless spray gun performance testing",
     ],
 }
 
 SERVICES = [
-    ("Equipment Diagnosis", "Identify faults and determine what your equipment needs."),
-    ("Repairs", "Professional repair work to get airless spray equipment operating correctly again."),
-    ("Servicing & Maintenance", "Routine servicing and maintenance to help keep equipment performing reliably."),
-    ("Fault Finding", "Investigating equipment problems and identifying the underlying issue."),
-    ("Equipment Performance Checks", "Assessing equipment operation and identifying potential issues."),
+    ("Airless Spray Gun Repairs", "Repair work to get airless spray guns operating correctly again."),
+    ("Routine Servicing", "Regular servicing to keep equipment running reliably between jobs."),
+    ("Warranty Repairs", "Warranty repair work on eligible equipment."),
+    ("Fault Diagnosis", "Find the fault and work out what the equipment actually needs."),
+    ("Genuine Replacement Parts", "Genuine parts fitted, so the repair holds up on the job."),
+    ("Performance Testing", "Testing output and operation to confirm the equipment is performing as it should."),
 ]
 
 SERVICE_CATALOG = {
@@ -132,12 +135,12 @@ PAGES = [
         path="/services/",
         nav="services",
         title="Airless Spray Equipment Servicing & Repairs | Airmech Repairs",
-        description="Diagnosis, repairs, servicing, fault finding and performance checks for airless spray "
-                    "equipment. Graco and other major brands, serviced from Ocean Grove.",
+        description="Airless spray gun repairs, routine servicing, warranty repairs, fault diagnosis, genuine "
+                    "replacement parts and performance testing. Graco and other major brands, from Ocean Grove.",
         header=("Services",
                 "Airless spray equipment <br>repairs &amp; servicing",
-                "Diagnosis, repairs, routine servicing, fault finding and performance checks — for the airless "
-                "spray equipment your work depends on."),
+                "Repairs, routine servicing, warranty work, fault diagnosis, genuine replacement parts and "
+                "performance testing — for the airless spray equipment your work depends on."),
         jsonld=[SERVICE_CATALOG, crumbs("Services", "/services/")],
         body=["services-detail", "equipment", "process", "cta"],
     ),
@@ -174,7 +177,7 @@ PAGES = [
         path="/contact/",
         nav="contact",
         title="Contact Airmech Repairs | Airless Spray Equipment Repairs, Ocean Grove",
-        description="Contact Airmech Repairs about airless spray equipment repairs, servicing or maintenance. "
+        description="Contact Airmech Repairs about airless spray gun repairs, servicing, warranty work or parts. "
                     "Email Airmechrepairs@outlook.com.au — Ocean Grove, Geelong and the Bellarine Peninsula.",
         header=("Contact",
                 "Contact Airmech Repairs",
