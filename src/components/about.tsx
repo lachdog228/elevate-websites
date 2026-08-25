@@ -44,10 +44,9 @@ export function About() {
             <Reveal delay={0.16}>
               <div className="mt-8 space-y-5 text-[1.0625rem] leading-relaxed text-graphite [max-width:var(--measure)]">
                 <p>
-                  {business.legalName} is a painting and decorating business
-                  working out of Leopold, on the edge of the Bellarine. Interior
-                  and exterior, new work and repaints — homes across Geelong and
-                  the peninsula.
+                  {business.legalName} works out of Leopold, on the edge of the
+                  Bellarine. Interior and exterior, new work and repaints, for
+                  homes across Geelong and the peninsula.
                 </p>
                 <p>
                   The work is straightforward: proper preparation, clean lines,
