@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Great Ocean Road Sports Cars | BMW Z4 Convertible Hire, Torquay VIC</title>
+<meta name="description" content="Hire a genuine sports car and drive the Great Ocean Road. From $300/day. Book via Drivemate.">
+<link rel="canonical" href="https://greatoceanroadsportscarhire.netlify.app/">
+<meta name="theme-color" content="#0B0F12">
+
+<!-- Social preview (works when /assets is deployed alongside index.html) -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Great Ocean Road Sports Cars">
+<meta property="og:description" content="Hire a genuine sports car and drive the Great Ocean Road. From $300/day. Book via Drivemate.">
+<meta property="og:url" content="https://greatoceanroadsportscarhire.netlify.app/">
+<meta property="og:image" content="https://greatoceanroadsportscarhire.netlify.app/assets/img/hero-z4.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230B0F12'/%3E%3Cpath d='M7 21c5-1 6-8 11-9 3.6-.7 6 .9 7 2' stroke='%23FF4438' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='24' r='2.6' fill='%23FBF7EE'/%3E%3Ccircle cx='23' cy='24' r='2.6' fill='%23FBF7EE'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutoRental",
+  "name": "Great Ocean Road Sports Cars",
+  "description": "Hire a genuine sports car and drive the Great Ocean Road. From $300/day.",
+  "url": "https://greatoceanroadsportscarhire.netlify.app/",
+  "telephone": "+61437006700",
+  "email": "greg@gorsc.com.au",
+  "address": { "@type": "PostalAddress", "addressLocality": "Torquay", "addressRegion": "VIC", "addressCountry": "AU" },
+  "openingHours": "Mo-Su 06:00-20:00"
+}
+</script>
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  /* surfaces */
+  --ink:        #0B0F12;
+  --ink-2:      #12181D;
+  --ink-3:      #1A2228;
+  --paper:      #FBF7EE;
+  --sand:       #F2ECE0;
+
+  /* brand */
+  --red:        #D62B20;   /* CTA fill — 4.65:1 with --paper label */
+  --red-deep:   #B32318;
+  --red-bright: #FF4438;   /* accent on dark — 5.62:1 on --ink */
+  --flame:      #FF6B4A;   /* 6.83:1 on --ink */
+  --cyan:       #7FE0EF;   /* 12.66:1 on --ink */
+  --ocean:      #0E5F70;   /* link colour on light — 6.80:1 on --paper */
+
+  /* text */
+  --on-dark:        var(--paper);
+  --on-dark-muted:  rgba(251,247,238,0.66);  /* ~8:1 on --ink */
+  --on-dark-faint:  rgba(251,247,238,0.55);  /* ~5.9:1 on --ink */
+  --on-light:       var(--ink);
+  --on-light-muted: rgba(11,15,18,0.70);     /* ~7:1 on --paper */
+
+  --hairline: rgba(251,247,238,0.14);
+  --hairline-light: rgba(11,15,18,0.14);
+
+  /* type */
+  --display: 'Barlow Condensed', 'Arial Narrow', system-ui, sans-serif;
+  --body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* rhythm */
+  --gut: clamp(20px, 5vw, 40px);
+  --shell: 1180px;
+  --section-y: clamp(60px, 8vw, 104px);
+
+  /* motion */
+  --ease: cubic-bezier(.2,.7,.3,1);
+  --fast: 160ms;
+  --med: 300ms;
+
+  --z-nav: 60;
+  --z-bar: 70;
+}
+
+/* ============================================================
+   RESET / BASE
+   ============================================================ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%;}
+body{
+  background:var(--ink);
+  color:var(--on-dark);
+  font-family:var(--body);
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  padding-top:64px;                 /* fixed nav compensation */
+  padding-bottom:env(safe-area-inset-bottom);
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+
+h1,h2,h3,.display{
+  font-family:var(--display);
+  font-weight:800;
+  text-transform:uppercase;
+  line-height:0.94;
+  letter-spacing:0.005em;
+}
+
+/* focus — never removed, always visible */
+a:focus-visible,button:focus-visible{
+  outline:3px solid var(--cyan);
+  outline-offset:3px;
+  border-radius:2px;
+}
+.on-light a:focus-visible{outline-color:var(--ocean);}
+
+.shell{max-width:var(--shell); margin-inline:auto; padding-inline:var(--gut); width:100%;}
+
+.skip-link{
+  position:absolute; left:12px; top:-100px;
+  background:var(--paper); color:var(--ink);
+  padding:12px 20px; font-weight:700; z-index:200;
+  transition:top var(--fast) var(--ease);
+}
+.skip-link:focus{top:12px;}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ============================================================
+   BUTTONS  (min target 48px)
+   ============================================================ */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  min-height:52px; padding:0 30px;
+  font-family:var(--body); font-size:15px; font-weight:700;
+  text-transform:uppercase; letter-spacing:0.07em;
+  border:2px solid transparent; cursor:pointer;
+  transition:transform var(--fast) var(--ease),
+             background-color var(--fast) var(--ease),
+             border-color var(--fast) var(--ease),
+             color var(--fast) var(--ease),
+             box-shadow var(--fast) var(--ease);
+}
+.btn svg{flex:none;}
+.btn--primary{
+  background:var(--red); color:var(--paper);
+  box-shadow:0 8px 24px rgba(214,43,32,0.32);
+}
+.btn--primary:hover{background:var(--red-deep); transform:translateY(-2px);
+  box-shadow:0 12px 30px rgba(214,43,32,0.42);}
+.btn--primary:active{transform:translateY(0);}
+
+.btn--ghost{
+  background:transparent; color:var(--paper);
+  border-color:rgba(251,247,238,0.38);
+}
+.btn--ghost:hover{border-color:var(--paper); background:rgba(251,247,238,0.08); transform:translateY(-2px);}
+
+.on-light .btn--ghost{color:var(--ink); border-color:rgba(11,15,18,0.30);}
+.on-light .btn--ghost:hover{border-color:var(--ink); background:rgba(11,15,18,0.05);}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav{
+  position:fixed; inset:0 0 auto 0; z-index:var(--z-nav);
+  height:64px;
+  display:flex; align-items:center;
+  background:rgba(11,15,18,0.72);
+  backdrop-filter:blur(14px) saturate(150%);
+  -webkit-backdrop-filter:blur(14px) saturate(150%);
+  border-bottom:1px solid var(--hairline);
+  transition:background var(--med) var(--ease), border-color var(--med) var(--ease);
+}
+.nav.is-stuck{background:rgba(11,15,18,0.94); border-bottom-color:rgba(255,68,56,0.5);}
+.nav__inner{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+
+.brand{display:flex; flex-direction:column; line-height:1.1;}
+.brand__top{
+  font-size:10.5px; font-weight:600; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--on-dark-muted);
+}
+.brand__main{
+  font-family:var(--display); font-weight:800; font-size:19px;
+  letter-spacing:0.04em; text-transform:uppercase; color:var(--paper);
+}
+.brand__main::after{
+  content:''; display:block; height:2px; width:100%;
+  background:var(--red-bright); margin-top:2px;
+}
+
+.nav__actions{display:flex; align-items:center; gap:14px;}
+.nav__tel{
+  display:inline-flex; align-items:center; gap:8px;
+  min-height:44px; padding:0 6px;
+  font-size:14px; font-weight:600; letter-spacing:0.02em;
+  color:var(--on-dark-muted);
+  transition:color var(--fast) var(--ease);
+}
+.nav__tel:hover{color:var(--paper);}
+.nav__cta{min-height:42px; padding:0 20px; font-size:12.5px; letter-spacing:0.09em;}
+@media(max-width:720px){ .nav__tel{display:none;} }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative; overflow:hidden;
+  padding-block:clamp(48px,7vw,88px) clamp(56px,8vw,104px);
+}
+.hero__glow{
+  position:absolute; inset:-10% -10% auto -10%; height:130%;
+  z-index:0; pointer-events:none;
+  background:
+    radial-gradient(60% 55% at 74% 34%, rgba(255,68,56,0.22) 0%, rgba(255,68,56,0) 62%),
+    radial-gradient(52% 48% at 16% 8%,  rgba(18,118,138,0.30) 0%, rgba(18,118,138,0) 60%),
+    radial-gradient(70% 60% at 50% 108%, rgba(127,224,239,0.12) 0%, rgba(127,224,239,0) 60%);
+}
+.hero__grid-lines{
+  position:absolute; inset:0; z-index:0; pointer-events:none; opacity:.5;
+  background-image:linear-gradient(90deg, var(--hairline) 1px, transparent 1px);
+  background-size:calc(100% / 6) 100%;
+  mask-image:linear-gradient(180deg, transparent, #000 25%, #000 70%, transparent);
+  -webkit-mask-image:linear-gradient(180deg, transparent, #000 25%, #000 70%, transparent);
+}
+.hero__inner{
+  position:relative; z-index:1;
+  display:grid; gap:clamp(36px,5vw,64px);
+  grid-template-columns:minmax(0,1.05fr) minmax(0,0.95fr);
+  align-items:center;
+}
+@media(max-width:940px){
+  .hero__inner{grid-template-columns:1fr;}
+}
+
+.eyebrow{
+  display:inline-flex; align-items:center; gap:11px;
+  font-size:11.5px; font-weight:700; letter-spacing:0.2em;
+  text-transform:uppercase; color:var(--cyan); margin-bottom:20px;
+}
+.eyebrow::before{content:''; width:30px; height:2px; background:var(--cyan);}
+
+.hero h1{
+  font-size:clamp(50px, 9.2vw, 108px);
+  letter-spacing:-0.005em;
+}
+.hero h1 .line2{display:block; color:var(--red-bright);}
+
+.hero__tagline{
+  font-family:var(--display); font-weight:700; text-transform:none;
+  font-size:clamp(26px,4.2vw,42px); line-height:1.05;
+  margin-top:18px; color:var(--paper);
+}
+.hero__tagline em{font-style:normal; color:var(--flame);}
+
+.hero__sub{
+  margin-top:18px; max-width:44ch;
+  font-size:clamp(15.5px,1.5vw,17.5px);
+  color:var(--on-dark-muted);
+}
+.hero__actions{display:flex; flex-wrap:wrap; gap:14px; margin-top:32px;}
+@media(max-width:420px){ .hero__actions .btn{width:100%;} }
+
+/* price medallion */
+.medallion{
+  position:absolute; z-index:3; right:-26px; bottom:-26px;
+  width:150px; height:150px; border-radius:50%;
+  display:grid; place-content:center; text-align:center;
+  background:var(--ink); border:3px solid var(--red-bright);
+  box-shadow:0 16px 40px rgba(0,0,0,0.55);
+  transform:rotate(-9deg);
+}
+.medallion span{
+  display:block; font-size:10.5px; font-weight:700;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--on-dark-muted);
+}
+.medallion b{
+  display:block; font-family:var(--display); font-weight:800;
+  font-size:48px; line-height:1; color:var(--red-bright); margin-block:2px;
+}
+@media(max-width:940px){ .medallion{right:-14px; bottom:-20px; width:120px; height:120px;} .medallion b{font-size:38px;} }
+@media(max-width:420px){ .medallion{width:104px; height:104px; right:-8px;} .medallion b{font-size:32px;} .medallion span{font-size:9px;} }
+
+/* photo — framed, never upscaled past its native 647px */
+.shot{max-width:620px; margin-inline:auto; width:100%;}
+.shot__stage{position:relative;}
+.shot__frame{
+  position:relative; overflow:hidden;
+  border:1px solid rgba(251,247,238,0.16);
+  box-shadow:0 30px 70px rgba(0,0,0,0.55);
+  background:var(--ink-2);
+}
+.shot__frame img{
+  width:100%; height:auto; aspect-ratio:647/591; object-fit:cover;
+}
+.shot__frame::after{  /* corner tick */
+  content:''; position:absolute; right:0; top:0;
+  border-left:56px solid transparent; border-top:56px solid var(--red);
+}
+.shot__caption{
+  display:flex; align-items:center; gap:10px;
+  margin-top:42px; font-size:11.5px; font-weight:600;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--on-dark-faint);
+}
+.shot__caption::before{content:''; width:18px; height:1px; background:currentColor;}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.strip{
+  background:var(--red); color:var(--paper);
+  border-block:1px solid rgba(0,0,0,0.18);
+  overflow:hidden; padding-block:13px;
+}
+.strip__track{
+  display:flex; width:max-content; gap:0;
+  animation:slide 38s linear infinite;
+}
+.strip__group{
+  display:flex; align-items:center; flex:none;
+  font-family:var(--display); font-weight:700; font-size:19px;
+  letter-spacing:0.16em; text-transform:uppercase; white-space:nowrap;
+}
+.strip__group span{padding-inline:22px;}
+.strip__group i{
+  font-style:normal; opacity:.62; font-size:14px;
+}
+@keyframes slide{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+/* ============================================================
+   FACTS
+   ============================================================ */
+.facts{padding-block:var(--section-y); background:var(--ink);}
+.section-head{max-width:52ch; margin-bottom:clamp(32px,4.5vw,52px);}
+.section-head h2{font-size:clamp(32px,5vw,58px);}
+.section-head p{margin-top:14px; color:var(--on-dark-muted); font-size:16.5px;}
+
+.facts__grid{
+  display:grid; gap:1px; background:var(--hairline);
+  border:1px solid var(--hairline);
+  grid-template-columns:1fr;
+}
+@media(min-width:620px){
+  .facts__grid{grid-template-columns:repeat(2,1fr);}
+  .facts__grid > :last-child{grid-column:span 2;}
+}
+@media(min-width:960px){
+  .facts__grid{grid-template-columns:repeat(3,1fr);}
+  .facts__grid > :last-child{grid-column:span 2;}
+}
+.fact{
+  background:var(--ink-2); padding:clamp(24px,3vw,32px);
+  transition:background var(--med) var(--ease);
+}
+.fact:hover{background:var(--ink-3);}
+.fact__num{
+  font-family:var(--display); font-weight:800; font-size:13px;
+  letter-spacing:0.16em; color:var(--red-bright); display:block; margin-bottom:14px;
+}
+.fact__label{
+  font-family:var(--display); font-weight:700; font-size:22px;
+  text-transform:uppercase; letter-spacing:0.03em; color:var(--paper);
+}
+.fact__value{margin-top:8px; font-size:15.5px; color:var(--on-dark-muted);}
+.fineprint{
+  margin-top:22px; font-size:13px; letter-spacing:0.02em;
+  color:var(--on-dark-faint);
+}
+
+/* ============================================================
+   BOOK  (light panel)
+   ============================================================ */
+.book{
+  background:var(--paper); color:var(--on-light);
+  padding-block:var(--section-y);
+  position:relative;
+}
+.book::before{
+  content:''; position:absolute; inset:0 0 auto 0; height:6px;
+  background:linear-gradient(90deg, var(--red) 0 34%, var(--ink) 34% 67%, var(--ocean) 67% 100%);
+}
+.book__grid{
+  display:grid; gap:clamp(36px,5vw,72px);
+  grid-template-columns:minmax(0,1fr) auto; align-items:center;
+}
+@media(max-width:820px){
+  .book__grid{grid-template-columns:1fr; justify-items:start;}
+}
+.book h2{font-size:clamp(34px,5.4vw,64px); color:var(--ink);}
+.book__lede{
+  margin-top:14px; max-width:46ch; font-size:16.5px; color:var(--on-light-muted);
+}
+.book__cta{margin-top:28px;}
+
+.contact-list{margin-top:28px; display:grid; gap:2px;}
+.contact-row{
+  display:flex; align-items:center; gap:14px;
+  min-height:52px; padding:8px 0;
+  border-top:1px solid var(--hairline-light);
+  font-size:16px;
+  transition:padding-left var(--fast) var(--ease);
+}
+.contact-row:last-child{border-bottom:1px solid var(--hairline-light);}
+.contact-row:hover{padding-left:8px;}
+.contact-row__icon{
+  flex:none; width:38px; height:38px; display:grid; place-content:center;
+  background:var(--sand); color:var(--ink); border-radius:50%;
+}
+.contact-row__label{
+  font-size:11px; font-weight:700; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--on-light-muted); display:block;
+}
+.contact-row__value{font-weight:600; color:var(--ocean); text-decoration:underline; text-underline-offset:3px;}
+
+.qr{
+  text-align:center; display:flex; flex-direction:column; align-items:center; gap:12px;
+  padding:22px; background:#fff; border:1px solid var(--hairline-light);
+  box-shadow:0 18px 40px rgba(11,15,18,0.10);
+}
+.qr img{width:172px; height:172px;}
+.qr__label{
+  font-size:11.5px; font-weight:700; letter-spacing:0.16em;
+  text-transform:uppercase; color:var(--on-light-muted);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer{
+  background:var(--ink); border-top:1px solid var(--hairline);
+  padding-block:34px;
+  font-size:13.5px; color:var(--on-dark-muted);
+}
+.footer__inner{display:flex; flex-wrap:wrap; gap:14px 26px; justify-content:space-between; align-items:center;}
+.footer a{
+  display:inline-block; padding-block:5px;
+  text-decoration:underline; text-underline-offset:3px;
+}
+.footer a:hover{color:var(--paper);}
+@media(max-width:600px){ .footer__inner{justify-content:center; text-align:center;} }
+
+/* ============================================================
+   MOBILE STICKY CTA BAR
+   ============================================================ */
+.bar{
+  position:fixed; inset:auto 0 0 0; z-index:var(--z-bar);
+  display:none; gap:1px;
+  background:var(--hairline);
+  border-top:1px solid var(--hairline);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bar a{
+  flex:1; display:flex; align-items:center; justify-content:center; gap:9px;
+  min-height:58px; font-size:13.5px; font-weight:700;
+  letter-spacing:0.09em; text-transform:uppercase;
+}
+.bar__call{background:var(--ink-2); color:var(--paper);}
+.bar__book{background:var(--red); color:var(--paper);}
+@media(max-width:720px){
+  .bar{display:flex;}
+  body{padding-bottom:calc(58px + env(safe-area-inset-bottom));}
+}
+
+/* ============================================================
+   REVEAL MOTION
+   ============================================================ */
+.reveal{opacity:0; transform:translateY(22px);}
+.reveal.is-in{
+  opacity:1; transform:none;
+  transition:opacity 620ms var(--ease), transform 620ms var(--ease);
+  transition-delay:var(--d, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{
+    animation-duration:0.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.001ms !important;
+  }
+  .reveal{opacity:1; transform:none;}
+  .strip__track{animation:none;}
+}
+::selection{background:var(--red); color:var(--paper);}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ── NAV ───────────────────────────────────────────────── -->
+<nav class="nav" id="nav" aria-label="Primary">
+  <div class="shell nav__inner">
+    <a href="#main" class="brand" aria-label="Great Ocean Road Sports Cars — home">
+      <span class="brand__top">Great Ocean Road</span>
+      <span class="brand__main">Sports Cars</span>
+    </a>
+    <div class="nav__actions">
+      <a class="nav__tel" href="tel:0437006700">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.65 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.3 1.85.52 2.81.65A2 2 0 0 1 22 16.92z"/></svg>
+        0437 006700
+      </a>
+      <a class="btn btn--primary nav__cta" href="{{BOOKING_URL}}" target="_blank" rel="noopener">Book Now</a>
+    </div>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ── HERO ────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__grid-lines" aria-hidden="true"></div>
+
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <p class="eyebrow reveal">Torquay, Victoria</p>
+        <h1 class="reveal" style="--d:60ms">
+          Great Ocean Road
+          <span class="line2">Sports Cars</span>
+        </h1>
+        <p class="hero__tagline reveal" style="--d:140ms">Best way to see <em>koalas</em>!</p>
+        <p class="hero__sub reveal" style="--d:200ms">
+          A genuine sports car, right at the start of the Great Ocean Road.
+          Drop the top and drive it properly.
+        </p>
+        <div class="hero__actions reveal" style="--d:260ms">
+          <a class="btn btn--primary" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
+            Book via Drive Mate
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="tel:0437006700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.65 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.3 1.85.52 2.81.65A2 2 0 0 1 22 16.92z"/></svg>
+            Call Greg 0437 006700
+          </a>
+        </div>
+      </div>
+
+      <div class="shot reveal" style="--d:180ms">
+        <div class="shot__stage">
+          <div class="shot__frame">
+            <img src="{{HERO_IMG}}" width="647" height="591"
+                 alt="Red BMW Z4 roadster with the roof down, parked at a lookout above the ocean on the Great Ocean Road.">
+          </div>
+          <div class="medallion" aria-hidden="true">
+            <span>From</span>
+            <b>$300</b>
+            <span>Per day*</span>
+          </div>
+          <p class="sr-only">Hire from $300 per day. Conditions apply.</p>
+        </div>
+        <p class="shot__caption">BMW Z4 convertible · Torquay, VIC</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── MARQUEE ─────────────────────────────────────────── -->
+  <div class="strip" aria-hidden="true">
+    <div class="strip__track">
+      <div class="strip__group">
+        <span>BMW Z4</span><i>◆</i><span>Convertible</span><i>◆</i><span>Automatic</span><i>◆</i><span>Top Down</span><i>◆</i><span>Great Ocean Road</span><i>◆</i><span>Torquay, VIC</span><i>◆</i>
+      </div>
+      <div class="strip__group">
+        <span>BMW Z4</span><i>◆</i><span>Convertible</span><i>◆</i><span>Automatic</span><i>◆</i><span>Top Down</span><i>◆</i><span>Great Ocean Road</span><i>◆</i><span>Torquay, VIC</span><i>◆</i>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FACTS ───────────────────────────────────────────── -->
+  <section class="facts" aria-labelledby="facts-title">
+    <div class="shell">
+      <div class="section-head reveal">
+        <h2 id="facts-title">Good to know</h2>
+        <p>The details, before you book.</p>
+      </div>
+
+      <div class="facts__grid">
+        <div class="fact reveal">
+          <span class="fact__num">01</span>
+          <h3 class="fact__label">The car</h3>
+          <p class="fact__value">BMW Z4 convertible, automatic.</p>
+        </div>
+        <div class="fact reveal" style="--d:70ms">
+          <span class="fact__num">02</span>
+          <h3 class="fact__label">Hours</h3>
+          <p class="fact__value">Rental period is 6am – 8pm.</p>
+        </div>
+        <div class="fact reveal" style="--d:140ms">
+          <span class="fact__num">03</span>
+          <h3 class="fact__label">Minimum hire</h3>
+          <p class="fact__value">Minimum 1 day rental.</p>
+        </div>
+        <div class="fact reveal" style="--d:210ms">
+          <span class="fact__num">04</span>
+          <h3 class="fact__label">Pick-up &amp; return</h3>
+          <p class="fact__value">Car is collected from and returned to Torquay.</p>
+        </div>
+        <div class="fact reveal" style="--d:280ms">
+          <span class="fact__num">05</span>
+          <h3 class="fact__label">Drivers</h3>
+          <p class="fact__value">Driver must be over 25 with a full licence and qualify with our insurer.</p>
+        </div>
+      </div>
+
+      <p class="fineprint">*Conditions apply.</p>
+    </div>
+  </section>
+
+  <!-- ── BOOK ────────────────────────────────────────────── -->
+  <section class="book on-light" id="book" aria-labelledby="book-title">
+    <div class="shell book__grid">
+      <div>
+        <h2 id="book-title" class="reveal">Ready to drive it?</h2>
+        <p class="book__lede reveal" style="--d:70ms">
+          Book directly through Drive Mate, or call/email if you've got questions first.
+        </p>
+        <div class="book__cta reveal" style="--d:140ms">
+          <a class="btn btn--primary" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
+            Book via Drive Mate
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="contact-list reveal" style="--d:200ms">
+          <a class="contact-row" href="tel:0437006700">
+            <span class="contact-row__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.65 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.3 1.85.52 2.81.65A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+            <span>
+              <span class="contact-row__label">Call Greg</span>
+              <span class="contact-row__value">0437 006700</span>
+            </span>
+          </a>
+          <a class="contact-row" href="mailto:greg@gorsc.com.au">
+            <span class="contact-row__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+            </span>
+            <span>
+              <span class="contact-row__label">Email</span>
+              <span class="contact-row__value">greg@gorsc.com.au</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <a class="qr reveal" style="--d:260ms" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
+        <img src="{{QR_IMG}}" width="172" height="172"
+             alt="QR code linking to the Drive Mate booking page">
+        <span class="qr__label">Scan to book</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="shell footer__inner">
+    <span>© 2026 Great Ocean Road Sports Cars. Torquay, VIC.</span>
+    <span>
+      <a href="tel:0437006700">0437 006700</a> ·
+      <a href="mailto:greg@gorsc.com.au">greg@gorsc.com.au</a>
+    </span>
+  </div>
+</footer>
+
+<!-- ── MOBILE STICKY CTA ──────────────────────────────────── -->
+<nav class="bar" aria-label="Quick actions">
+  <a class="bar__call" href="tel:0437006700">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.35 1.9.65 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.3 1.85.52 2.81.65A2 2 0 0 1 22 16.92z"/></svg>
+    Call Greg
+  </a>
+  <a class="bar__book" href="{{BOOKING_URL}}" target="_blank" rel="noopener">
+    Book Now
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  </a>
+</nav>
+
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  /* Scroll reveal — final state is rendered immediately when motion is reduced
+     or when IntersectionObserver is unavailable. */
+  var items = document.querySelectorAll('.reveal');
+  if (reduce.matches || !('IntersectionObserver' in window)) {
+    items.forEach(function (el) { el.classList.add('is-in'); });
+  } else {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    items.forEach(function (el) { io.observe(el); });
+  }
+
+  /* Nav solidifies once the hero starts scrolling away. */
+  var nav = document.getElementById('nav');
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      nav.classList.toggle('is-stuck', window.scrollY > 40);
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
