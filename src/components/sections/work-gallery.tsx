@@ -1,14 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
-import { gallery } from "@/lib/business";
-import { Reveal } from "./ui/reveal";
-import { SectionHeading } from "./ui/section-heading";
+import Link from "next/link";
+import { ArrowRight, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { gallery, type GalleryItem } from "@/lib/business";
+import { Reveal } from "../ui/reveal";
+import { SectionHeading } from "../ui/section-heading";
 
-export function Work() {
+type Props = {
+  /** Which frames to show. Defaults to the whole gallery. */
+  items?: readonly GalleryItem[];
+  eyebrow?: string;
+  title?: ReactNode;
+  lede?: string;
+  /** Renders a link through to the full gallery underneath. */
+  moreHref?: string;
+};
+
+export function WorkGallery({
+  items = gallery,
+  eyebrow = "Our Work",
+  title,
+  lede = "Interiors, exteriors and the details in between.",
+  moreHref,
+}: Props) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const reduced = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -18,9 +35,9 @@ export function Work() {
   const step = useCallback(
     (delta: number) =>
       setOpenIndex((current) =>
-        current === null ? current : (current + delta + gallery.length) % gallery.length,
+        current === null ? current : (current + delta + items.length) % items.length,
       ),
-    [],
+    [items.length],
   );
 
   useEffect(() => {
@@ -46,28 +63,29 @@ export function Work() {
     };
   }, [openIndex, close, step]);
 
-  const active = openIndex === null ? null : gallery[openIndex];
+  const active = openIndex === null ? null : items[openIndex];
 
   return (
-    <section id="work" className="bg-bone py-[var(--sec)]">
+    <section className="bg-bone py-[var(--sec)]">
       <div className="shell">
         <SectionHeading
-          eyebrow="Our Work"
+          eyebrow={eyebrow}
           title={
-            <>
-              Finishes worth <span className="italic text-clay">looking at</span>
-            </>
+            title ?? (
+              <>
+                Finishes worth{" "}
+                <span className="italic text-clay">looking at</span>
+              </>
+            )
           }
         >
-          <p className="lede">
-            Interiors, exteriors and the details in between.
-          </p>
+          <p className="lede">{lede}</p>
         </SectionHeading>
 
         {/* Composed spread: each frame has a footprint chosen for the
             photograph in it, so the grid never leaves a hole to explain. */}
         <div className="mt-16 grid grid-cols-1 gap-3 sm:grid-cols-12 sm:gap-4 lg:mt-20">
-          {gallery.map((item, index) => (
+          {items.map((item, index) => (
             <Reveal
               key={item.src}
               delay={(index % 3) * 0.08}
@@ -109,6 +127,22 @@ export function Work() {
             </Reveal>
           ))}
         </div>
+
+        {moreHref ? (
+          <Reveal delay={0.12}>
+            <Link
+              href={moreHref}
+              className="group mt-12 inline-flex min-h-11 items-center gap-3 border-b border-line-strong pb-2 text-[0.75rem] uppercase tracking-[0.18em] text-ink transition-colors hover:border-clay hover:text-clay"
+            >
+              See the full gallery
+              <ArrowRight
+                aria-hidden
+                className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+                strokeWidth={1.5}
+              />
+            </Link>
+          </Reveal>
+        ) : null}
       </div>
 
       {/* Lightbox */}
@@ -129,7 +163,7 @@ export function Work() {
               <p className="text-[0.6875rem] uppercase tracking-[0.18em] text-bone/70">
                 {active.caption}
                 <span className="ml-3 text-bone/40">
-                  {(openIndex ?? 0) + 1} / {gallery.length}
+                  {(openIndex ?? 0) + 1} / {items.length}
                 </span>
               </p>
               <button

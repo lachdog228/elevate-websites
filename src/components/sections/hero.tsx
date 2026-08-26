@@ -4,8 +4,8 @@ import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowDown, Star } from "lucide-react";
 import { business } from "@/lib/business";
-import { ButtonLink } from "./ui/button";
-import { RevealOnLoad } from "./ui/reveal";
+import { ButtonLink } from "../ui/button";
+import { RevealOnLoad } from "../ui/reveal";
 
 export function Hero() {
   const reduced = useReducedMotion();
@@ -66,10 +66,10 @@ export function Hero() {
 
           <RevealOnLoad delay={0.64}>
             <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
-              <ButtonLink href="#contact" variant="invert">
+              <ButtonLink href="/contact" variant="invert">
                 Request a Quote
               </ButtonLink>
-              <ButtonLink href="#work" variant="light">
+              <ButtonLink href="/work" variant="light">
                 View Our Work
               </ButtonLink>
             </div>
@@ -99,7 +99,7 @@ export function Hero() {
             </div>
 
             <a
-              href="#about"
+              href="#intro"
               className="group inline-flex min-h-11 items-center gap-2.5 text-[0.75rem] uppercase tracking-[0.18em] text-bone/90 transition-colors hover:text-bone"
             >
               Scroll

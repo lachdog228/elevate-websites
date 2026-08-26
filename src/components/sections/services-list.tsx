@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { services } from "@/lib/business";
-import { Reveal } from "./ui/reveal";
-import { SectionHeading } from "./ui/section-heading";
+import { Reveal } from "../ui/reveal";
+import { SectionHeading } from "../ui/section-heading";
 
-export function Services() {
+export function ServicesList() {
   return (
-    <section id="services" className="bg-bone-deep py-[var(--sec)]">
+    <section className="bg-bone-deep py-[var(--sec)]">
       <div className="shell">
         <SectionHeading
           eyebrow="Services"
@@ -25,8 +26,8 @@ export function Services() {
         <ul className="mt-16 border-t border-line-strong lg:mt-20">
           {services.map((service, index) => (
             <Reveal as="li" key={service.title} delay={index * 0.08}>
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 className="group relative flex items-start gap-6 border-b border-line-strong py-9 transition-colors duration-300 hover:bg-bone sm:gap-10 sm:py-11 lg:items-center"
               >
                 <span className="mt-1 font-sans text-[0.75rem] tracking-[0.18em] text-clay lg:mt-0">
@@ -63,10 +64,24 @@ export function Services() {
                   strokeWidth={1.25}
                 />
                 <span className="sr-only">— request a quote for {service.title}</span>
-              </a>
+              </Link>
             </Reveal>
           ))}
         </ul>
+
+        <Reveal delay={0.12}>
+          <Link
+            href="/services"
+            className="group mt-12 inline-flex min-h-11 items-center gap-3 border-b border-line-strong pb-2 text-[0.75rem] uppercase tracking-[0.18em] text-ink transition-colors hover:border-clay hover:text-clay"
+          >
+            See what each one involves
+            <ArrowRight
+              aria-hidden
+              className="size-3.5 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={1.5}
+            />
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

@@ -41,11 +41,11 @@ export const mapsHref = `https://www.google.com/maps/search/?api=1&query=${encod
 )}`;
 
 export const navLinks = [
-  { label: "Home", href: "#top" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Our Work", href: "#work" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Our Work", href: "/work" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const services = [
@@ -53,7 +53,9 @@ export const services = [
     index: "01",
     title: "Interior Painting",
     description:
-      "Walls, ceilings, doors and trim — prepared properly, cut in by hand and finished clean. Furniture covered, surfaces protected, the room left tidy at the end of each day.",
+      "Walls, ceilings, doors and trim — prepared properly, cut in by hand and finished clean.",
+    detail:
+      "Most of the work happens before a finish coat goes on: filling, sanding, spot-priming, and masking everything that isn't meant to be painted. Furniture is covered and floors are protected, edges are cut in by hand rather than taped where the line matters, and the room is left tidy at the end of every day.",
     image: "/images/work-1.jpg",
     alt: "Afternoon light falling across a freshly painted interior wall",
   },
@@ -61,7 +63,9 @@ export const services = [
     index: "02",
     title: "Exterior Painting",
     description:
-      "Weatherboard, render and trim, prepared for the coastal weather the Bellarine throws at a house. Sound preparation first, then coats that are built to last.",
+      "Weatherboard, render and trim, prepared for the coastal weather the Bellarine throws at a house.",
+    detail:
+      "Salt air and westerly weather are hard on a house near the coast. Loose and flaking paint comes back to a sound edge, bare timber is primed, gaps are sealed, and the right product goes on the right surface — so the finish is still holding years later rather than lifting at the first wet winter.",
     image: "/images/work-3.jpg",
     alt: "Rendered house exterior painted in a clean off-white",
   },
@@ -69,7 +73,9 @@ export const services = [
     index: "03",
     title: "Repaints & Decorating",
     description:
-      "New work and repaints, plus the ongoing property maintenance that keeps a home looking cared for. A considered colour, applied carefully, changes a whole room.",
+      "New work and repaints, plus the ongoing property maintenance that keeps a home looking cared for.",
+    detail:
+      "A repaint is the cheapest way to change how a house feels. We work through colour with you against the light the room actually gets, then treat the trim, doors and ceilings as carefully as the walls — because that is usually what separates a room that looks freshly painted from one that looks properly finished.",
     image: "/images/work-2.jpg",
     alt: "Hallway with white walls and carefully painted door frames",
   },
@@ -114,3 +120,25 @@ export const gallery = [
     frame: "sm:col-span-12 aspect-16/9 sm:aspect-[3/1] lg:aspect-[4/1]",
   },
 ] as const;
+
+export type GalleryItem = {
+  readonly src: string;
+  readonly alt: string;
+  readonly caption: string;
+  /** Tailwind column span + aspect ratio for this frame's slot in the grid. */
+  readonly frame: string;
+};
+
+/**
+ * The home page shows the first three frames on their own, so they need
+ * footprints that balance as a row of three rather than slots in the six-up
+ * spread above.
+ */
+export const galleryPreview: readonly GalleryItem[] = [
+  { ...gallery[0], frame: "sm:col-span-6 lg:col-span-4 aspect-4/5" },
+  { ...gallery[1], frame: "sm:col-span-6 lg:col-span-4 aspect-4/5" },
+  {
+    ...gallery[2],
+    frame: "sm:col-span-12 lg:col-span-4 aspect-4/5 sm:aspect-16/9 lg:aspect-4/5",
+  },
+];

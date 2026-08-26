@@ -1,7 +1,7 @@
 # M. McCrohan — Painting & Decorating
 
-A short, conversion-focused brochure site for **M. McCrohan – Painting And
-Decorating**, Leopold VIC. One page, six sections, no filler.
+A short, conversion-focused site for **M. McCrohan – Painting And Decorating**,
+Leopold VIC. Five pages, no filler.
 
 > **Draft.** The site carries `noindex` and `robots.txt` disallows crawling,
 > because the photography is placeholder stock rather than the business's own
@@ -22,23 +22,50 @@ third-party requests at runtime — fonts are self-hosted by `next/font`.
 ```
 src/
   app/
-    layout.tsx        metadata, fonts, structured data, skip link
-    page.tsx          section order, nothing else
+    layout.tsx        header, footer, fonts, structured data, skip link
+    page.tsx          home
+    about/            services/            work/            contact/
+    not-found.tsx     404, in the same design
     globals.css       the whole design system (~1 screen)
     robots.ts         sitemap.ts
   components/
-    site-header.tsx   sticky nav + mobile panel
-    hero.tsx  about.tsx  services.tsx  work.tsx  reviews.tsx  contact.tsx
-    quote-form.tsx    site-footer.tsx
-    structured-data.tsx
+    site-header.tsx   sticky nav, route-aware, mobile panel
+    site-footer.tsx   page-header.tsx   quote-form.tsx   structured-data.tsx
+    sections/
+      hero.tsx            home only, full-bleed photograph
+      intro.tsx           home teaser -> /about
+      services-list.tsx   home rows -> /services
+      services-detail.tsx /services, alternating spreads
+      about-detail.tsx    /about
+      work-gallery.tsx    shared; takes the frames to show
+      reviews.tsx         shared; `compact` drops the pillars
+      contact-details.tsx /contact
+      cta-band.tsx        closes every page except /contact
     ui/               reveal.tsx  button.tsx  section-heading.tsx
   lib/
     business.ts       every fact about the business, in one file
+    metadata.ts       per-page title / description / canonical / OG
     site.ts           the draft switch + production origin
 public/
   __forms.html        static form declaration for Netlify's deploy-time scan
   images/             photography (placeholder — see below)
 ```
+
+## Pages
+
+| Route | Carries |
+|---|---|
+| `/` | Hero, a short intro, the three services, three work frames, the Google rating, closing CTA |
+| `/about` | The business, how the work is done, the rating, closing CTA |
+| `/services` | Each service as a full spread with its photograph, closing CTA |
+| `/work` | The full six-frame gallery with a lightbox, closing CTA |
+| `/contact` | Phone, hours, address, and the quote form |
+
+Home is a landing page, not a table of contents: each section says enough to
+stand on its own and links through to the page that covers it properly. Every
+page except `/contact` ends with the same call to action, so the next step is
+never more than one screen away.
+
 
 ## Design system
 
@@ -65,7 +92,9 @@ take a size outside that scale.
 
 **Rhythm** — `--sec` is the section padding, `--gut` the page gutter, `--measure`
 the reading width. Sections alternate `bone` / `bone-deep`, with `ink` for the
-reviews band, so the page has a beat without needing dividers.
+reviews band and each page's masthead, so pages have a beat without needing
+dividers. On home the header sits transparent over the hero photograph and
+turns solid on scroll; everywhere else it is solid from the start.
 
 ## Motion
 
@@ -80,11 +109,13 @@ loops, parallaxes, or moves unprompted.
 
 One primary action — get a quote — repeated at every depth:
 
-1. Sticky header: phone (desktop), a call icon (mobile), Request a Quote.
+1. Sticky header, on every page: phone (desktop), a call icon (mobile),
+   Request a Quote.
 2. Hero: Request a Quote / View Our Work, with the Google rating underneath.
-3. Every service row links to the quote form.
-4. About and Contact both repeat the CTA pair.
-5. Contact: the phone number set large and tappable, plus a four-field form.
+3. Every service row and every service spread links to the quote form.
+4. Every page except `/contact` closes with the CTA band — the phone number
+   set large, Call Now, and Request a Quote.
+5. `/contact`: the number again at display size, plus a four-field form.
 
 ## Forms
 
@@ -167,11 +198,13 @@ change — `gallery[].frame` in `src/lib/business.ts` controls each footprint.
 
 ## SEO
 
-Title, meta description, one `h1`, `h2` per section, `en-AU`, and
-`HousePainter` structured data built from `business.ts` — address, phone,
-opening hours, areas served, and the 5.0/3 aggregate rating. Every image has
-descriptive alt text. Geelong, Leopold and the Bellarine appear where they
-read naturally; nothing is stuffed.
+Each route has its own title, meta description and canonical URL, built in
+`src/lib/metadata.ts`; the sitemap is generated from `navLinks`, so adding a
+page to the nav adds it to the sitemap. One `h1` per page, `h2` per section,
+`en-AU`, and `HousePainter` structured data built from `business.ts` —
+address, phone, opening hours, areas served, and the 5.0/3 aggregate rating.
+Every image has descriptive alt text. Geelong, Leopold and the Bellarine
+appear where they read naturally; nothing is stuffed.
 
 There is no embedded map — the address links to Google Maps instead, which
 keeps the page free of third-party requests. Add an iframe if the trade-off
@@ -179,7 +212,8 @@ should go the other way.
 
 ## Verified
 
-Checked in Chromium at 320 / 390 / 768 / 1024 / 1440px, and with
+Every route (`/`, `/about`, `/services`, `/work`, `/contact`, and a 404)
+checked in Chromium at 390 / 768 / 1440px, plus 320px and
 `prefers-reduced-motion: reduce`:
 
 - No console errors, no failed requests, no horizontal overflow
@@ -189,7 +223,10 @@ Checked in Chromium at 320 / 390 / 768 / 1024 / 1440px, and with
 - Heading order h1→h2→h3 with no skipped levels, exactly one `h1`
 - Every image has alt text; every input has a real `<label>`
 - No tap target under 40px
-- Mobile menu: opens, locks scroll, closes on Escape, returns focus
+- Mobile menu: opens, locks scroll, closes on Escape, returns focus, and
+  closes itself on navigation without leaving the page locked
+- The nav marks the current page with `aria-current="page"`, on exactly one
+  link per route
 - Lightbox: opens, arrow keys move between images, Escape closes and unlocks
 - Form: an empty submit is blocked with three inline errors and no request;
   a valid submit POSTs the expected urlencoded body to `/__forms.html` and

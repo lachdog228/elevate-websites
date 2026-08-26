@@ -1,6 +1,6 @@
 import { Star, ArrowUpRight } from "lucide-react";
 import { business, mapsHref } from "@/lib/business";
-import { Reveal } from "./ui/reveal";
+import { Reveal } from "../ui/reveal";
 
 const pillars = [
   {
@@ -17,19 +17,27 @@ const pillars = [
   },
 ];
 
-export function Reviews() {
+type Props = {
+  /**
+   * Drops the three pillars and keeps the rating alone. Used on /about, which
+   * covers the same ground in more detail under "How we work".
+   */
+  compact?: boolean;
+};
+
+export function Reviews({ compact = false }: Props) {
   return (
-    <section className="bg-ink py-[var(--sec)] text-bone">
+    <section className={`bg-ink text-bone ${compact ? "py-[calc(var(--sec)*0.62)]" : "py-[var(--sec)]"}`}>
       <div className="shell">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
+        <div className={compact ? "" : "grid gap-14 lg:grid-cols-12 lg:gap-20"}>
           {/* Rating */}
-          <div className="lg:col-span-5">
+          <div className={compact ? "" : "lg:col-span-5"}>
             <Reveal>
               <p className="eyebrow text-bone/60">Reviews</p>
             </Reveal>
 
             <Reveal delay={0.08}>
-              <div className="mt-7 flex items-end gap-5">
+              <div className="mt-7 flex flex-wrap items-end gap-5">
                 <span className="font-display text-[5.5rem] leading-[0.8] text-bone">
                   {business.rating.value.toFixed(1)}
                 </span>
@@ -51,7 +59,7 @@ export function Reviews() {
             </Reveal>
 
             <Reveal delay={0.16}>
-              <p className="mt-7 text-[1.0625rem] leading-relaxed text-bone/80 [max-width:38ch]">
+              <p className={`mt-7 text-[1.0625rem] leading-relaxed text-bone/80 ${compact ? "[max-width:52ch]" : "[max-width:38ch]"}`}>
                 Every review left for {business.name} on {business.rating.source}{" "}
                 is a five — {business.rating.count} of {business.rating.count}.
               </p>
@@ -75,6 +83,7 @@ export function Reviews() {
           </div>
 
           {/* Trust statement */}
+          {compact ? null : (
           <div className="lg:col-span-7">
             <Reveal delay={0.12}>
               <h2 className="display-md text-bone">
@@ -97,6 +106,7 @@ export function Reviews() {
               ))}
             </dl>
           </div>
+          )}
         </div>
       </div>
     </section>
