@@ -29,13 +29,15 @@ src/
   components/
     site-header.tsx   sticky nav + mobile panel
     hero.tsx  about.tsx  services.tsx  work.tsx  reviews.tsx  contact.tsx
-    quote-form.tsx    sent-banner.tsx  site-footer.tsx
+    quote-form.tsx    site-footer.tsx
     structured-data.tsx
     ui/               reveal.tsx  button.tsx  section-heading.tsx
   lib/
     business.ts       every fact about the business, in one file
     site.ts           the draft switch + production origin
-public/images/        photography (placeholder — see below)
+public/
+  __forms.html        static form declaration for Netlify's deploy-time scan
+  images/             photography (placeholder — see below)
 ```
 
 ## Design system
@@ -86,11 +88,24 @@ One primary action — get a quote — repeated at every depth:
 
 ## Forms
 
-Netlify Forms — no endpoint to configure. The form posts `form-name=quote`,
-carries a `company` honeypot, and redirects to `/?sent=1#contact`, where
-`SentBanner` shows the confirmation. Client-side validation only blocks
-obviously bad input (missing name, a phone under 8 digits, a malformed email,
-an empty message); delivery and real validation are Netlify's.
+Netlify Forms — no endpoint to configure. `@netlify/plugin-nextjs` v5 no longer
+scans prerendered Next.js HTML for forms, so the form is declared twice:
+
+- `public/__forms.html` — a hidden static form Netlify finds at deploy time.
+  It is the source of truth for which fields get recorded.
+- `src/components/quote-form.tsx` — the real form, which POSTs
+  `application/x-www-form-urlencoded` to `/__forms.html` via `fetch` and
+  handles its own sending / sent / error states without navigating.
+
+**Keep the field names in the two files in sync.** Netlify only records fields
+that appear in `__forms.html`; anything the React form sends that isn't
+declared there is silently dropped.
+
+A `company` honeypot is declared via `netlify-honeypot` on the static form.
+Client-side validation only blocks obviously bad input (missing name, a phone
+under 8 digits, a malformed email, an empty message); delivery and real
+validation are Netlify's. On failure the form keeps what was typed and offers
+the phone number instead.
 
 Submissions land under **Forms** in the Netlify dashboard — set up email
 notifications there.
@@ -176,4 +191,7 @@ Checked in Chromium at 320 / 390 / 768 / 1024 / 1440px, and with
 - No tap target under 40px
 - Mobile menu: opens, locks scroll, closes on Escape, returns focus
 - Lightbox: opens, arrow keys move between images, Escape closes and unlocks
-- Form: an empty submit is blocked with three inline errors beside their fields
+- Form: an empty submit is blocked with three inline errors and no request;
+  a valid submit POSTs the expected urlencoded body to `/__forms.html` and
+  shows the sent state without navigating; a 500 surfaces a recovery message
+  and keeps what was typed

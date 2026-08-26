@@ -1,10 +1,8 @@
-import { Suspense } from "react";
 import { Phone, MapPin, Clock } from "lucide-react";
 import { business, addressLine, mapsHref } from "@/lib/business";
 import { Reveal } from "./ui/reveal";
 import { ButtonLink } from "./ui/button";
 import { QuoteForm } from "./quote-form";
-import { SentBanner } from "./sent-banner";
 
 export function Contact() {
   return (
@@ -105,9 +103,6 @@ export function Contact() {
                   We&apos;ll get back to you with a time to come and measure up.
                 </p>
                 <div className="mt-10">
-                  <Suspense fallback={null}>
-                    <SentBanner />
-                  </Suspense>
                   <QuoteForm />
                 </div>
               </div>

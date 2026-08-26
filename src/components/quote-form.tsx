@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Check } from "lucide-react";
+import { Check, AlertCircle } from "lucide-react";
+import { business } from "@/lib/business";
 import { SubmitButton } from "./ui/button";
 
 type Field = {
@@ -22,61 +23,105 @@ const fields: Field[] = [
 const inputClass =
   "min-h-12 w-full border-0 border-b border-line-strong bg-transparent px-0 py-3 " +
   "text-[1rem] text-ink transition-colors duration-200 " +
-  "placeholder:text-stone/60 focus:border-clay focus:outline-none";
+  "placeholder:text-stone/60 focus:border-clay focus:outline-none " +
+  "disabled:opacity-60";
+
+type Status = "idle" | "sending" | "sent" | "error";
+
+/** Only obviously bad input is caught here; Netlify does the real validation. */
+function validate(data: FormData) {
+  const errors: Record<string, string> = {};
+
+  if (!String(data.get("name") ?? "").trim()) {
+    errors.name = "Please tell us your name.";
+  }
+
+  const phone = String(data.get("phone") ?? "").replace(/\D/g, "");
+  if (phone.length < 8) {
+    errors.phone = "Please enter a phone number we can reach you on.";
+  }
+
+  const email = String(data.get("email") ?? "").trim();
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errors.email = "That email address doesn't look right.";
+  }
+
+  if (!String(data.get("message") ?? "").trim()) {
+    errors.message = "A sentence or two about the job is enough.";
+  }
+
+  return errors;
+}
 
 export function QuoteForm() {
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
   /**
-   * Netlify Forms handles delivery. This only catches obviously bad input
-   * before the round trip — the real validation is server-side at Netlify.
+   * Netlify Forms handles delivery. The runtime no longer reads forms out of
+   * prerendered Next.js pages, so the submission is POSTed to the static
+   * declaration in public/__forms.html instead of navigating.
    */
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
     const form = event.currentTarget;
     const data = new FormData(form);
-    const next: Record<string, string> = {};
+    const found = validate(data);
+    setErrors(found);
 
-    if (!String(data.get("name") ?? "").trim()) {
-      next.name = "Please tell us your name.";
-    }
-
-    const phone = String(data.get("phone") ?? "").replace(/\D/g, "");
-    if (phone.length < 8) {
-      next.phone = "Please enter a phone number we can reach you on.";
-    }
-
-    const email = String(data.get("email") ?? "").trim();
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      next.email = "That email address doesn't look right.";
-    }
-
-    if (!String(data.get("message") ?? "").trim()) {
-      next.message = "A sentence or two about the job is enough.";
-    }
-
-    setErrors(next);
-
-    if (Object.keys(next).length > 0) {
-      event.preventDefault();
-      form.querySelector<HTMLElement>(`[name="${Object.keys(next)[0]}"]`)?.focus();
+    if (Object.keys(found).length > 0) {
+      form.querySelector<HTMLElement>(`[name="${Object.keys(found)[0]}"]`)?.focus();
       return;
     }
 
-    setSent(true);
+    setStatus("sending");
+
+    try {
+      const body = new URLSearchParams();
+      for (const [key, value] of data.entries()) {
+        body.append(key, typeof value === "string" ? value : value.name);
+      }
+
+      const response = await fetch("/__forms.html", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString(),
+      });
+
+      if (!response.ok) throw new Error(`Netlify responded ${response.status}`);
+
+      form.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   }
 
+  if (status === "sent") {
+    return (
+      <div role="status" className="border-l-2 border-clay bg-bone-deep px-6 py-7">
+        <Check aria-hidden className="size-5 text-clay" strokeWidth={2} />
+        <p className="mt-4 font-display text-2xl text-ink">Thanks — that&apos;s sent.</p>
+        <p className="mt-2 text-[0.9375rem] text-stone">
+          We&apos;ll be in touch shortly to arrange a time. If it&apos;s urgent,
+          call{" "}
+          <a
+            href={business.phoneHref}
+            className="text-graphite underline decoration-line-strong underline-offset-4 transition-colors hover:text-clay"
+          >
+            {business.phone}
+          </a>
+          .
+        </p>
+      </div>
+    );
+  }
+
+  const sending = status === "sending";
+
   return (
-    <form
-      name="quote"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="company"
-      action="/?sent=1#contact"
-      onSubmit={onSubmit}
-      noValidate
-      className="space-y-8"
-    >
+    <form name="quote" onSubmit={onSubmit} noValidate className="space-y-8">
       <input type="hidden" name="form-name" value="quote" />
 
       {/* Honeypot — hidden from people, tempting to bots */}
@@ -90,10 +135,7 @@ export function QuoteForm() {
       <div className="grid gap-8 sm:grid-cols-2">
         {fields.map((field) => (
           <div key={field.name} className={field.name === "email" ? "sm:col-span-2" : ""}>
-            <label
-              htmlFor={field.name}
-              className="eyebrow block text-graphite"
-            >
+            <label htmlFor={field.name} className="eyebrow block text-graphite">
               {field.label}
               {!field.required ? (
                 <span className="ml-2 normal-case tracking-normal text-stone">
@@ -107,6 +149,7 @@ export function QuoteForm() {
               type={field.type}
               inputMode={field.inputMode}
               autoComplete={field.autoComplete}
+              disabled={sending}
               aria-invalid={Boolean(errors[field.name])}
               aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
               className={inputClass}
@@ -128,6 +171,7 @@ export function QuoteForm() {
           id="message"
           name="message"
           rows={4}
+          disabled={sending}
           placeholder="What needs painting, and roughly when?"
           aria-invalid={Boolean(errors.message)}
           aria-describedby={errors.message ? "message-error" : undefined}
@@ -141,11 +185,20 @@ export function QuoteForm() {
       </div>
 
       <div className="flex flex-wrap items-center gap-6 pt-2">
-        <SubmitButton>Send Enquiry</SubmitButton>
-        {sent ? (
-          <p className="inline-flex items-center gap-2 text-sm text-stone" role="status">
-            <Check aria-hidden className="size-4 text-clay" strokeWidth={2} />
-            Sending…
+        <SubmitButton disabled={sending} aria-busy={sending} className="disabled:opacity-70">
+          {sending ? "Sending…" : "Send Enquiry"}
+        </SubmitButton>
+
+        {status === "error" ? (
+          <p role="alert" className="flex items-start gap-2 text-sm text-clay">
+            <AlertCircle aria-hidden className="mt-0.5 size-4 shrink-0" strokeWidth={2} />
+            <span>
+              That didn&apos;t send. Please try again, or call{" "}
+              <a href={business.phoneHref} className="underline underline-offset-4">
+                {business.phone}
+              </a>
+              .
+            </span>
           </p>
         ) : null}
       </div>

@@ -1,0 +1,23 @@
+<!--
+  Netlify Forms detection.
+
+  @netlify/plugin-nextjs v5 no longer parses prerendered Next.js HTML for
+  forms, so the form has to be declared in a static file that Netlify scans at
+  deploy time. src/components/quote-form.tsx POSTs to this path.
+
+  Keep the field names here in sync with the React form — Netlify only records
+  fields it finds below.
+-->
+<html>
+  <head></head>
+  <body>
+    <form name="quote" data-netlify="true" netlify-honeypot="company" hidden>
+      <input type="hidden" name="form-name" value="quote" />
+      <input name="name" type="text" />
+      <input name="phone" type="tel" />
+      <input name="email" type="email" />
+      <textarea name="message"></textarea>
+      <input name="company" type="text" />
+    </form>
+  </body>
+</html>
