@@ -8,10 +8,25 @@ export function SiteFooter() {
       <div className="shell">
         <div className="flex flex-col gap-10 border-b border-bone/15 pb-10 md:flex-row md:items-start md:justify-between">
           <div>
-            <p className="font-display text-3xl">M. McCrohan</p>
-            <p className="mt-2 text-[0.8125rem] uppercase tracking-[0.18em] text-bone/55">
-              {business.tagline}
-            </p>
+            {/* The mark, not the full lockup: the lockup stacks its type under
+                the artwork, which is unreadable at any height a footer allows. */}
+            <div className="flex items-center gap-4">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/logo-mark.svg"
+                alt=""
+                aria-hidden
+                width={39}
+                height={48}
+                className="h-12 w-auto invert"
+              />
+              <div>
+                <p className="font-display text-3xl leading-none">M. McCrohan</p>
+                <p className="mt-2 text-[0.8125rem] uppercase tracking-[0.18em] text-bone/60">
+                  {business.tagline}
+                </p>
+              </div>
+            </div>
           </div>
 
           <nav aria-label="Footer">

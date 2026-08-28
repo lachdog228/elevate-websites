@@ -86,6 +86,24 @@ export function SiteHeader() {
             className="group -ml-0.5 flex min-h-11 items-center gap-2"
             aria-label={`${business.legalName} — home`}
           >
+            {/* Plain <img>: an SVG needs no optimising, and next/image would
+                require dangerouslyAllowSVG to serve it. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-mark.svg"
+              alt=""
+              aria-hidden
+              width={26}
+              height={32}
+              className={[
+                "h-7 w-auto transition-[filter] duration-300 sm:h-8",
+                // The mark is solid black artwork; inverting it is what makes
+                // it readable over the hero photograph.
+                // The artwork is pure black, so inverting it gives exactly
+                // bone-white for the header over the hero photograph.
+                solid ? "" : "invert",
+              ].join(" ")}
+            />
             <span
               className={[
                 "font-display text-2xl leading-none transition-colors duration-300 sm:text-[1.75rem]",

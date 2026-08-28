@@ -57,7 +57,7 @@ public/
 |---|---|
 | `/` | Hero, a short intro, the three services, three work frames, the Google rating, closing CTA |
 | `/about` | The business, how the work is done, the rating, closing CTA |
-| `/services` | Each service as a full spread with its photograph, closing CTA |
+| `/services` | Each of the five services as a full spread with its photograph, closing CTA |
 | `/work` | The full six-frame gallery with a lightbox, closing CTA |
 | `/contact` | Phone, hours, address, and the quote form |
 
@@ -141,6 +141,25 @@ the phone number instead.
 Submissions land under **Forms** in the Netlify dashboard — set up email
 notifications there.
 
+## Branding
+
+`public/logo-mark.svg` and `public/logo-lockup.svg` are the business's own logo,
+vectorised from the artwork on its Facebook page (`potrace`, then `currentColor`
+so it takes the colour around it). The artwork is pure black, so the header and
+footer invert it to sit on dark ground. `public/favicon.svg` is the mark on the
+ink tile.
+
+The header and footer pair the **mark** with the typeset wordmark rather than
+using the full lockup: the lockup stacks "M.MCCROHAN / Painting & Maintenance"
+underneath the artwork, and at any height a header or footer allows, that type
+is too small to read. The full lockup is kept in `public/` for print and social.
+
+**One thing to settle:** the logo reads *Painting & Maintenance*, while the
+Google Business Profile and Facebook page are both named *Painting &
+Decorating*. The site uses "Painting & Decorating" — it matches the Google
+listing that local search runs on — but that is the business's call, and
+`business.tagline` in `src/lib/business.ts` is the single place to change it.
+
 ## Content provenance
 
 Every fact on the page is in `src/lib/business.ts` and traces to M. McCrohan's
@@ -148,6 +167,12 @@ own public listings: the Google Business Profile (5.0 from 3 reviews, hours,
 address, phone, "Painting" and "Property maintenance"), the Facebook page
 (`facebook.com/paintergeelong` — interior and exterior, new work and repaints),
 and the Yellow Pages / Localsearch / TradiesNearYou entries.
+
+Two services — **Maintenance & Carpentry** and **Project Management** — come
+straight from the owner, who described specialising in maintenance and
+carpentry and project-managing trades for clients who don't have time to
+oversee the work. That is a primary source, and it matches the logo's own
+"Painting & Maintenance" tagline.
 
 **Deliberately left out**, because no primary source confirms them: years in
 business, trade qualifications, Master Painters membership, insurance, and any
@@ -160,7 +185,7 @@ No testimonial on this site is invented.
 
 ## Photography
 
-**The images in `public/images/` are placeholders.** M. McCrohan's own photos
+**The images in `public/images/` are placeholders.** (The logo is not — see Branding above.) M. McCrohan's own photos
 are not publicly retrievable — the Facebook page is behind a login wall, the
 Google Business Profile site (`mmpaintinggeelong.business.site`) is gone, and
 the directory listings carry no gallery.
@@ -180,8 +205,10 @@ specific McCrohan project, address or client.
 | `work-4.jpg` | gallery | mk. s |
 | `work-5.jpg` | gallery | Alex Tyson |
 | `work-6.jpg` | gallery | Wesley Tingey |
+| `work-7.jpg` | maintenance & carpentry service | Minh Đức |
+| `work-8.jpg` | project management service | immo RENOVATION |
 
-Replace all eight with the business's own photographs before launch. Keep the
+Replace all ten with the business's own photographs before launch. Keep the
 filenames and the aspect ratios roughly as they are and nothing else needs to
 change — `gallery[].frame` in `src/lib/business.ts` controls each footprint.
 

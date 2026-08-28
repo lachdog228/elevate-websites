@@ -17,10 +17,7 @@ export function ServicesList() {
             </>
           }
         >
-          <p className="lede">
-            Three kinds of work, all of it residential, all of it finished to the
-            same standard.
-          </p>
+          <p className="lede">Painting, carpentry and the coordination that keeps a job moving — all of it finished to the same standard.</p>
         </SectionHeading>
 
         <ul className="mt-16 border-t border-line-strong lg:mt-20">

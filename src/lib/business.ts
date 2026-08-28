@@ -79,6 +79,26 @@ export const services = [
     image: "/images/work-2.jpg",
     alt: "Hallway with white walls and carefully painted door frames",
   },
+  {
+    index: "04",
+    title: "Maintenance & Carpentry",
+    description:
+      "Repairs, replacements and the timber work that goes with keeping a house in good order.",
+    detail:
+      "A house always has a list: a rotten sill, a door that no longer closes, decking that has gone soft, trim that needs replacing before it can be painted. Maintenance and carpentry are a specialty here, which means the repair and the finish are handled by the same person — no waiting on a second trade to make good before the painting can start.",
+    image: "/images/work-7.jpg",
+    alt: "Hand-planing a length of timber on a workbench",
+  },
+  {
+    index: "05",
+    title: "Project Management",
+    description:
+      "Organising and overseeing the other trades, for clients who don't have the time to do it themselves.",
+    detail:
+      "On a larger job the painting is only part of it. We can organise the trades a project needs and oversee the work as it goes — scheduling them in the right order, being on site to answer the questions that come up, and keeping the job moving. It suits owners who can't be there during the day and would rather deal with one person than five.",
+    image: "/images/work-8.jpg",
+    alt: "Kitchen masked and protected during a renovation",
+  },
 ] as const;
 
 export const gallery = [

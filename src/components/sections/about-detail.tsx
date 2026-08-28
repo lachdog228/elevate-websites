@@ -5,7 +5,7 @@ import { Reveal } from "../ui/reveal";
 const marks = [
   { label: "Based in", value: "Leopold" },
   { label: "Serving", value: "Geelong & the Bellarine" },
-  { label: "Work", value: "Interior & exterior" },
+  { label: "Work", value: "Painting & maintenance" },
 ];
 
 const approach = [
@@ -47,8 +47,15 @@ export function AboutDetail() {
               <div className="space-y-5 text-[1.0625rem] leading-relaxed text-graphite [max-width:var(--measure)]">
                 <p>
                   {business.legalName} works out of Leopold, on the edge of the
-                  Bellarine. Interior and exterior, new work and repaints, for
-                  homes across Geelong and the peninsula.
+                  Bellarine. Interior and exterior painting, new work and
+                  repaints, for homes across Geelong and the peninsula.
+                </p>
+                <p>
+                  Alongside the painting, the business specialises in
+                  maintenance and carpentry — and takes on project management
+                  for clients who don&apos;t have the time to oversee the work
+                  themselves, organising the trades a job needs and keeping it
+                  moving.
                 </p>
                 <p>
                   The work is straightforward: proper preparation, clean lines,

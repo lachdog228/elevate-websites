@@ -21,7 +21,7 @@ export default function ServicesPage() {
             What we <span className="italic text-clay-light">do</span>
           </>
         }
-        lede="Three kinds of work, all of it residential, all of it finished to the same standard."
+        lede="Painting, carpentry and the coordination that keeps a job moving — all of it finished to the same standard."
       />
       <ServicesDetail />
       <CtaBand />

@@ -41,8 +41,8 @@ export function Intro() {
             <Reveal delay={0.16}>
               <p className="lede mt-8">
                 {business.legalName} works out of Leopold, on the edge of the
-                Bellarine. Interior and exterior, new work and repaints, for
-                homes across Geelong and the peninsula.
+                Bellarine — painting inside and out, maintenance and carpentry,
+                and project management for owners who can&apos;t be on site.
               </p>
             </Reveal>
 
