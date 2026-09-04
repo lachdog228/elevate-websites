@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: replace with the live domain
+Sitemap: https://www.demarzibrothers.com.au/sitemap.xml
