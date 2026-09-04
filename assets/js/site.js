@@ -142,11 +142,16 @@
     });
   }
 
-  /* --- Services cursor preview ---------------------------------------------
-     Fine pointers only. A single fixed element holds every preview image;
-     hovering a row cross-fades to that row's image while the element eases
-     toward the cursor. Position is written once per frame.                  */
-  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 900px)');
+  /* --- Services hover preview ----------------------------------------------
+     Fine pointers on wide screens only. A single fixed element holds every
+     preview image; hovering a row cross-fades to that row's image while the
+     element eases to the row's height. It is pinned to the right margin and
+     tracks the pointer vertically only — following the cursor in both axes
+     put the picture on top of the label being read. Position is written
+     once per frame, off a rAF loop that stops when there is nothing to do.
+     The width below must match the `min-width` in site.css that hides the
+     static thumbnail. */
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1080px)');
   var rows = Array.prototype.slice.call(document.querySelectorAll('.service[data-preview]'));
 
   if (rows.length && finePointer.matches && !reduceMotion.matches) {
@@ -164,20 +169,26 @@
     });
     document.body.appendChild(preview);
 
-    var target = { x: 0, y: 0 };
-    var current = { x: 0, y: 0 };
+    var targetY = 0;
+    var currentY = 0;
     var active = false;
     var raf = null;
 
+    /* Keep the picture fully on screen even when the pointer is near the
+       top or bottom edge of a tall row. */
+    function clampY(y) {
+      var half = preview.offsetHeight / 2;
+      return Math.min(Math.max(y, half + 8), window.innerHeight - half - 8);
+    }
+
     function frame() {
       /* Lerp toward the pointer — the lag is what makes it feel considered. */
-      current.x += (target.x - current.x) * 0.12;
-      current.y += (target.y - current.y) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
       preview.style.transform =
-        'translate3d(' + current.x.toFixed(1) + 'px,' + current.y.toFixed(1) + 'px,0)' +
-        ' translate(-50%,-50%) scale(' + (active ? 1 : 0.94) + ')';
+        'translate3d(0,' + currentY.toFixed(1) + 'px,0) translateY(-50%)' +
+        ' scale(' + (active ? 1 : 0.94) + ')';
 
-      if (active || Math.abs(target.x - current.x) > 0.5 || Math.abs(target.y - current.y) > 0.5) {
+      if (active || Math.abs(targetY - currentY) > 0.5) {
         raf = requestAnimationFrame(frame);
       } else {
         raf = null;
@@ -187,16 +198,15 @@
     function start() { if (raf === null) raf = requestAnimationFrame(frame); }
 
     document.getElementById('services-list').addEventListener('pointermove', function (e) {
-      target.x = e.clientX;
-      target.y = e.clientY;
+      targetY = clampY(e.clientY);
       start();
     });
 
     rows.forEach(function (row, i) {
       row.addEventListener('pointerenter', function (e) {
-        /* Jump straight to the cursor the first time so it doesn't fly in
-           from the last row's position. */
-        if (!active) { current.x = target.x = e.clientX; current.y = target.y = e.clientY; }
+        /* Settle straight onto the first row entered, rather than sliding
+           in from wherever the previous hover ended. */
+        if (!active) currentY = targetY = clampY(e.clientY);
         active = true;
         preview.classList.add('is-visible');
         images.forEach(function (img, j) { img.classList.toggle('is-active', i === j); });

@@ -73,7 +73,7 @@ filename**, at roughly the same dimensions. No code changes are needed.
 | `work-05.webp` | Gallery, full-width | 1800 × 900 (2:1) | The widest, most impressive shot |
 | `work-06.webp` | Gallery, tall portrait | 900 × 1150 (3:4) | Structural or architectural |
 | `work-04.webp` | Gallery, square | 800 × 800 (1:1) | A close finish detail |
-| `og-image.jpg` | Link previews (Facebook, LinkedIn, iMessage) | 1200 × 630 | Best single photo — must be JPG |
+| `og-image.jpg` | Link previews (Facebook, LinkedIn, iMessage) | 1200 × 630 | **Already branded** — the wordmark is set into the image. See below before replacing. |
 
 To convert and resize a batch of photos:
 
@@ -91,6 +91,12 @@ PY
 
 Then update the `alt` text on the matching `<img>` in `index.html` so it
 describes the new photo. Alt text matters for both screen readers and search.
+
+**The link preview image is a special case.** `og-image.jpg` is a composite:
+a photo with a dark gradient and the "DeMarzi Brothers and Sons" wordmark set
+into it, so shared links look branded rather than like a stray photo. Dropping
+a plain photo over it loses that. To rebuild it with a new photo, run
+`tools/make-og-image.py` after pointing it at the new source file.
 
 The gallery captions ("Off-form walls", "Board-formed soffit", …) describe the
 finish shown, not a named project. Once the real photos are in, they can stay
@@ -152,7 +158,10 @@ readable with JavaScript disabled.
 
 **Change a service.** Find the `<li class="service">` block in `index.html`.
 Update the `<h3>`, the `<p>`, the `data-preview` path and the thumbnail `<img>`
-— the number updates by hand in `service__num`.
+— the number is typed by hand in `service__num`. `data-preview` is the image
+that appears on the right when the row is hovered on a wide screen; the
+thumbnail `<img>` is what shows instead on narrower screens and on touch, so
+point both at the same file.
 
 **Add or remove a gallery image.** Each plate is a `<figure class="work-item
 work-item--X">`. The letter (`a`–`e`) sets its size and grid position in
