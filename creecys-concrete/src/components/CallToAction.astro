@@ -1,0 +1,209 @@
+---
+import { Image } from 'astro:assets';
+import ctaImage from '../assets/images/cta.jpg';
+import { site, telHref, mailHref } from '../data/site';
+---
+
+<section class="cta" id="contact" aria-labelledby="cta-title">
+  <div class="cta__media">
+    <Image
+      src={ctaImage}
+      alt="The fine granular surface of a finished concrete slab"
+      widths={[768, 1280, 1920, 2400]}
+      sizes="100vw"
+      quality={74}
+      loading="lazy"
+      class="cta__image"
+    />
+    <div class="cta__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="cta__body shell">
+    <p class="eyebrow cta__eyebrow" data-reveal>Get started</p>
+
+    <h2 id="cta-title" data-reveal style="--reveal-delay:80ms">
+      Ready to start your project?
+    </h2>
+
+    <p class="cta__lead" data-reveal style="--reveal-delay:140ms">
+      Get in touch with {site.name} today to discuss your project and request a
+      quote.
+    </p>
+
+    <div class="cta__actions" data-reveal style="--reveal-delay:200ms">
+      <a class="btn btn--light" href={telHref}>
+        Request a Quote
+        <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="cta__email" href={mailHref}>{site.email}</a>
+    </div>
+
+    <dl class="cta__meta" data-reveal style="--reveal-delay:260ms">
+      <div>
+        <dt>Phone</dt>
+        <dd><a href={telHref}>{site.phone}</a></dd>
+      </div>
+      <div>
+        <dt>Service area</dt>
+        <dd>{site.serviceAreaShort}</dd>
+      </div>
+      <div>
+        <dt>Hours</dt>
+        <dd>{site.hours}</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    display: grid;
+    align-items: center;
+    padding-block: clamp(5.5rem, 3rem + 9vw, 11rem);
+    color: #fff;
+    isolation: isolate;
+    overflow: clip;
+
+    /* Reuse the dark-surface tokens for focus rings and the eyebrow rule */
+    --accent: var(--accent-on-ink);
+  }
+
+  .cta__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .cta__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 45%;
+  }
+
+  .cta__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(
+        95% 130% at 50% 45%,
+        rgb(10 9 8 / 72%) 0%,
+        rgb(10 9 8 / 86%) 55%,
+        rgb(10 9 8 / 94%) 100%
+      );
+  }
+
+  .cta__body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .cta__eyebrow {
+    color: rgb(255 255 255 / 78%);
+    justify-content: center;
+  }
+
+  .cta h2 {
+    max-width: 16ch;
+    font-size: clamp(2.4rem, 1.3rem + 4.4vw, 5.75rem);
+  }
+
+  .cta__lead {
+    max-width: 42ch;
+    margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    font-size: var(--step-lead);
+    line-height: 1.55;
+    color: rgb(255 255 255 / 82%);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 2rem;
+    margin-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .cta__email {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: rgb(255 255 255 / 88%);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(255 255 255 / 35%);
+    padding-bottom: 0.2rem;
+    transition:
+      border-color var(--dur) var(--ease-out),
+      color var(--dur) var(--ease-out);
+  }
+
+  .cta__email:hover,
+  .cta__email:focus-visible {
+    color: #fff;
+    border-color: var(--accent-on-ink);
+  }
+
+  /* ---- Meta rail ------------------------------------------------------- */
+
+  .cta__meta {
+    display: grid;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 58rem;
+    margin: clamp(3.5rem, 2rem + 4vw, 6rem) 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgb(255 255 255 / 20%);
+  }
+
+  .cta__meta div {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .cta__meta dt {
+    font-family: var(--font-display);
+    font-size: var(--step-label);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 62%);
+  }
+
+  .cta__meta dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .cta__meta a {
+    display: inline-block;
+    padding-block: 0.25rem;
+    text-decoration: none;
+    transition: color var(--dur) var(--ease-out);
+  }
+
+  .cta__meta a:hover {
+    color: var(--accent-on-ink);
+  }
+
+  @media (min-width: 40rem) {
+    .cta__meta {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .cta__actions .btn {
+      width: 100%;
+    }
+  }
+</style>

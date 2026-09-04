@@ -1,0 +1,413 @@
+---
+import Logo from './Logo.astro';
+import { nav, site, telHref } from '../data/site';
+---
+
+<header class="header" data-header>
+  <div class="header__inner shell">
+    <a class="header__brand" href="#top" aria-label={`${site.name} — back to top`}>
+      <Logo />
+    </a>
+
+    <nav class="header__nav" aria-label="Primary">
+      <ul class="header__links">
+        {
+          nav.map((item) => (
+            <li>
+              <a class="header__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href={telHref}>{site.phone}</a>
+      <a class="btn header__cta" href="#contact">Get a Quote</a>
+    </div>
+
+    <button
+      class="header__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <span class="visually-hidden">Menu</span>
+      <span class="header__toggle-bars" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="mobile-menu" data-menu hidden>
+  <nav class="menu__inner shell" aria-label="Mobile">
+    <ul class="menu__links">
+      {
+        nav.map((item, i) => (
+          <li style={`--i:${i}`}>
+            <a class="menu__link" href={item.href} data-menu-link>
+              <span class="menu__index">{String(i + 1).padStart(2, '0')}</span>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="menu__foot">
+      <a class="menu__phone" href={telHref}>{site.phone}</a>
+      <a class="btn btn--light menu__cta" href="#contact" data-menu-link>
+        Get a Quote
+        <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </nav>
+</div>
+
+<style>
+  /* ---- Bar ---------------------------------------------------------- */
+
+  .header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 100;
+    color: #fff;
+    transition:
+      background-color var(--dur) var(--ease-out),
+      color var(--dur) var(--ease-out),
+      box-shadow var(--dur) var(--ease-out);
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: var(--line);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 3rem);
+    height: clamp(4.5rem, 4rem + 1.6vw, 6rem);
+  }
+
+  .header__brand {
+    text-decoration: none;
+    margin-right: auto;
+  }
+
+  /* Over the hero photo the mark needs the lighter accent; it swaps back
+     once the bar goes solid. */
+  .header :global(.logo__mark) {
+    color: var(--accent-on-ink);
+    transition: color var(--dur) var(--ease-out);
+  }
+
+  .header.is-scrolled :global(.logo__mark) {
+    color: var(--accent);
+  }
+
+  /* Solid state once the hero is behind us */
+  .header.is-scrolled {
+    background: color-mix(in srgb, var(--paper) 95%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+    color: var(--ink);
+  }
+
+  .header.is-scrolled::after {
+    opacity: 1;
+  }
+
+  /* ---- Desktop links ------------------------------------------------ */
+
+  .header__links {
+    display: flex;
+    gap: clamp(1.4rem, 2.4vw, 2.6rem);
+    margin: 0;
+    list-style: none;
+    padding: 0;
+  }
+
+  .header__link {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-block: 0.5rem;
+  }
+
+  .header__link::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0.15rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .header__link:hover::after,
+  .header__link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .header__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .header__phone {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .header__cta {
+    --btn-bg: transparent;
+    --btn-fg: currentColor;
+    --btn-border: currentColor;
+    padding: 0.8rem 1.4rem;
+    min-height: 2.85rem;
+  }
+
+  .header.is-scrolled .header__cta {
+    --btn-bg: var(--ink);
+    --btn-fg: var(--paper);
+    --btn-border: var(--ink);
+  }
+
+  /* ---- Toggle ------------------------------------------------------- */
+
+  .header__toggle {
+    display: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-right: -0.7rem;
+    place-items: center;
+    color: inherit;
+  }
+
+  .header__toggle-bars {
+    display: block;
+    width: 1.5rem;
+    height: 0.75rem;
+    position: relative;
+  }
+
+  .header__toggle-bars i {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .header__toggle-bars i:first-child {
+    top: 0;
+  }
+
+  .header__toggle-bars i:last-child {
+    bottom: 0;
+  }
+
+  .header__toggle[aria-expanded='true'] .header__toggle-bars i:first-child {
+    transform: translateY(0.375rem) rotate(45deg);
+  }
+
+  .header__toggle[aria-expanded='true'] .header__toggle-bars i:last-child {
+    transform: translateY(-0.375rem) rotate(-45deg);
+  }
+
+  /* ---- Mobile overlay ----------------------------------------------- */
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    display: grid;
+    align-items: end;
+    background: var(--ink);
+    color: var(--paper);
+    padding-block: 7rem 3rem;
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease-out);
+  }
+
+  .menu.is-open {
+    opacity: 1;
+  }
+
+  .menu__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 3rem;
+    height: 100%;
+  }
+
+  .menu__links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line-on-ink);
+  }
+
+  .menu__links li {
+    border-bottom: 1px solid var(--line-on-ink);
+    opacity: 0;
+    transform: translateY(0.9rem);
+    transition:
+      opacity 500ms var(--ease-out),
+      transform 500ms var(--ease-out);
+    transition-delay: calc(var(--i) * 55ms + 80ms);
+  }
+
+  .menu.is-open .menu__links li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .menu__link {
+    display: flex;
+    align-items: baseline;
+    gap: 1.1rem;
+    padding-block: 1.15rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 1.2rem + 4vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    text-decoration: none;
+  }
+
+  .menu__index {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    color: var(--accent-on-ink);
+  }
+
+  .menu__foot {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    opacity: 0;
+    transition: opacity 500ms var(--ease-out) 320ms;
+  }
+
+  .menu.is-open .menu__foot {
+    opacity: 1;
+  }
+
+  .menu__phone {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .menu__cta {
+    justify-content: space-between;
+  }
+
+  /* ---- Breakpoint ---------------------------------------------------- */
+
+  @media (max-width: 62rem) {
+    .header__nav,
+    .header__actions {
+      display: none;
+    }
+
+    .header__toggle {
+      display: grid;
+    }
+  }
+
+  @media (min-width: 62.0625rem) {
+    .menu {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu,
+    .menu__links li,
+    .menu__foot {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  /* Solidify the bar once the hero has scrolled past. */
+  if (header) {
+    const sentinel = document.createElement('div');
+    sentinel.setAttribute('aria-hidden', 'true');
+    sentinel.style.cssText = 'position:absolute;top:0;height:80vh;width:1px;';
+    document.body.prepend(sentinel);
+
+    new IntersectionObserver(
+      ([entry]) => header.classList.toggle('is-scrolled', !entry.isIntersecting),
+      { threshold: 0 },
+    ).observe(sentinel);
+  }
+
+  /* Mobile menu. `hidden` is toggled so it stays out of the a11y tree. */
+  if (toggle && menu) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+
+      if (open) {
+        menu.hidden = false;
+        requestAnimationFrame(() => menu.classList.add('is-open'));
+      } else {
+        menu.classList.remove('is-open');
+        const done = () => {
+          if (toggle.getAttribute('aria-expanded') === 'false') menu.hidden = true;
+        };
+        menu.addEventListener('transitionend', done, { once: true });
+        setTimeout(done, 500);
+      }
+    };
+
+    toggle.addEventListener('click', () =>
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true'),
+    );
+
+    for (const link of menu.querySelectorAll('[data-menu-link]')) {
+      link.addEventListener('click', () => setOpen(false));
+    }
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    /* Close if the viewport grows past the mobile breakpoint. */
+    window.matchMedia('(min-width: 62.0625rem)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>

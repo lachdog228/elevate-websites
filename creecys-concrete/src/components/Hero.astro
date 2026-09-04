@@ -1,0 +1,325 @@
+---
+import { Image } from 'astro:assets';
+import heroImage from '../assets/images/hero.jpg';
+import { site } from '../data/site';
+---
+
+<section class="hero" id="top">
+  <div class="hero__media">
+    <div class="hero__media-inner" data-parallax>
+      <Image
+        src={heroImage}
+        alt="A broad, freshly finished concrete driveway sweeping toward a modern home"
+        widths={[768, 1280, 1920, 2560]}
+        sizes="100vw"
+        loading="eager"
+        fetchpriority="high"
+        quality={78}
+        class="hero__image"
+      />
+    </div>
+    <div class="hero__scrim" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__body shell">
+    <p class="eyebrow hero__eyebrow">{site.tagline}</p>
+
+    <h1 class="hero__title">
+      <span class="hero__line"><span>Concrete Work</span></span>
+      <span class="hero__line"><span>Built to Last.</span></span>
+    </h1>
+
+    <p class="hero__lead">
+      Driveways, slabs and finished concrete done properly — prepared with care,
+      poured to spec and left clean and square.
+    </p>
+
+    <div class="hero__actions">
+      <a class="btn btn--light" href="#contact">
+        Get a Quote
+        <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+      </a>
+      <a class="btn btn--on-image" href="#work">View Our Work</a>
+    </div>
+  </div>
+
+  <div class="hero__foot shell" aria-hidden="true">
+    <div class="hero__foot-inner">
+      <span class="hero__foot-scroll">Scroll</span>
+      <span class="hero__foot-list">
+        Driveways <i></i> Slabs <i></i> Exposed Aggregate <i></i> Paths
+      </span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 100svh;
+    padding-block: 9rem clamp(2.25rem, 1rem + 3vw, 3.5rem);
+    color: #fff;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* ---- Media -------------------------------------------------------- */
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .hero__media-inner {
+    position: absolute;
+    /* Overscan so the parallax shift never exposes an edge */
+    inset: -12% 0;
+    will-change: transform;
+  }
+
+  .hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 62%;
+    animation: hero-zoom 2.4s var(--ease-out) both;
+  }
+
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        to top,
+        rgb(10 9 8 / 88%) 0%,
+        rgb(10 9 8 / 62%) 32%,
+        rgb(10 9 8 / 22%) 62%,
+        rgb(10 9 8 / 40%) 100%
+      ),
+      linear-gradient(to right, rgb(10 9 8 / 45%) 0%, transparent 62%);
+  }
+
+  @keyframes hero-zoom {
+    from {
+      transform: scale(1.08);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  /* ---- Body --------------------------------------------------------- */
+
+  .hero__body {
+    width: 100%;
+  }
+
+  .hero__eyebrow {
+    color: rgb(255 255 255 / 78%);
+    margin-bottom: 1.5rem;
+    animation: hero-rise 900ms var(--ease-out) 200ms both;
+  }
+
+  .hero__eyebrow::before {
+    background: var(--accent-on-ink);
+  }
+
+  .hero__title {
+    max-width: 16ch;
+    margin-bottom: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+    text-shadow: 0 1px 40px rgb(0 0 0 / 25%);
+  }
+
+  /* Each line sits in its own mask and slides up from beneath it */
+  .hero__line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+  }
+
+  .hero__line > span {
+    display: block;
+    animation: hero-mask 1.15s var(--ease-out) both;
+  }
+
+  .hero__line:nth-child(1) > span {
+    animation-delay: 260ms;
+  }
+
+  .hero__line:nth-child(2) > span {
+    animation-delay: 380ms;
+  }
+
+  @keyframes hero-mask {
+    from {
+      transform: translateY(105%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .hero__lead {
+    max-width: 44ch;
+    font-size: var(--step-lead);
+    line-height: 1.55;
+    color: rgb(255 255 255 / 82%);
+    margin-bottom: clamp(2rem, 1.4rem + 2vw, 3rem);
+    animation: hero-rise 900ms var(--ease-out) 620ms both;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    animation: hero-rise 900ms var(--ease-out) 760ms both;
+  }
+
+  /* ---- Foot rule ----------------------------------------------------- */
+
+  .hero__foot {
+    width: 100%;
+    margin-top: clamp(3rem, 1rem + 7vw, 6.5rem);
+    animation: hero-rise 900ms var(--ease-out) 900ms both;
+  }
+
+  .hero__foot-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid rgb(255 255 255 / 22%);
+    font-family: var(--font-display);
+    font-size: var(--step-label);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 72%);
+  }
+
+  .hero__foot-scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .hero__foot-scroll::after {
+    content: '';
+    width: 1px;
+    height: 1.6rem;
+    background: linear-gradient(
+      to bottom,
+      var(--accent-on-ink),
+      transparent
+    );
+    animation: scroll-cue 2.4s var(--ease-io) infinite;
+    transform-origin: top;
+  }
+
+  @keyframes scroll-cue {
+    0%,
+    100% {
+      transform: scaleY(0.35);
+      opacity: 0.4;
+    }
+    45% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  .hero__foot-list {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .hero__foot-list i {
+    width: 3px;
+    height: 3px;
+    background: var(--accent-on-ink);
+    flex: none;
+  }
+
+  /* ---- Responsive ---------------------------------------------------- */
+
+  @media (max-width: 48rem) {
+    .hero {
+      min-height: 92svh;
+      padding-block: 7.5rem 2rem;
+    }
+
+    .hero__title {
+      max-width: 11ch;
+    }
+
+    .hero__actions .btn {
+      flex: 1 1 100%;
+    }
+
+    .hero__foot-list {
+      display: none;
+    }
+
+    .hero__foot-inner {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__image,
+    .hero__eyebrow,
+    .hero__line > span,
+    .hero__lead,
+    .hero__actions,
+    .hero__foot,
+    .hero__foot-scroll::after {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  /* Gentle parallax on the hero photo. Transform-only, rAF-throttled, and
+     skipped entirely when the user prefers reduced motion. */
+  const layer = document.querySelector<HTMLElement>('[data-parallax]');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  if (layer && !reduced.matches) {
+    let ticking = false;
+
+    const update = () => {
+      const offset = Math.min(window.scrollY, window.innerHeight);
+      layer.style.transform = `translate3d(0, ${offset * 0.18}px, 0)`;
+      ticking = false;
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+
+    update();
+  }
+</script>

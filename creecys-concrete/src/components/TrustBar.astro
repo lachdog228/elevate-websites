@@ -1,0 +1,80 @@
+---
+const points = [
+  { label: 'Quality Workmanship', note: 'Done once, done right' },
+  { label: 'Reliable Service', note: 'Turn up when we say' },
+  { label: 'Built to Last', note: 'Prepared and reinforced' },
+  { label: 'Free Quotes', note: 'No obligation' },
+];
+---
+
+<section class="trust on-ink" aria-label="Why work with us">
+  <ul class="trust__list shell">
+    {
+      points.map((point, i) => (
+        <li class="trust__item" data-reveal style={`--reveal-delay:${i * 90}ms`}>
+          <span class="trust__label">{point.label}</span>
+          <span class="trust__note">{point.note}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .trust {
+    border-bottom: 1px solid var(--line-on-ink);
+  }
+
+  .trust__list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    list-style: none;
+    margin: 0;
+    padding-block: clamp(2rem, 1.4rem + 2vw, 3.25rem);
+  }
+
+  .trust__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding-inline: clamp(1rem, 2.5vw, 2.5rem);
+    border-left: 1px solid var(--line-on-ink);
+  }
+
+  .trust__item:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .trust__label {
+    font-family: var(--font-display);
+    font-size: clamp(0.95rem, 0.88rem + 0.35vw, 1.15rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+  }
+
+  .trust__note {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 56rem) {
+    .trust__list {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem 0;
+    }
+
+    .trust__item:nth-child(odd) {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+
+  @media (max-width: 26rem) {
+    .trust__note {
+      font-size: 0.75rem;
+    }
+  }
+</style>

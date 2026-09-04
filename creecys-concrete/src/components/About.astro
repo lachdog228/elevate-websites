@@ -1,0 +1,163 @@
+---
+import { Image } from 'astro:assets';
+import aboutImage from '../assets/images/about.jpg';
+import { site } from '../data/site';
+---
+
+<section class="about section" id="about" aria-labelledby="about-title">
+  <div class="shell about__grid">
+    <figure class="about__figure" data-reveal>
+      <Image
+        src={aboutImage}
+        alt="A power screed levelling a fresh concrete pour against a formed edge"
+        widths={[520, 800, 1200]}
+        sizes="(min-width: 62rem) 42vw, 92vw"
+        quality={76}
+        loading="lazy"
+        class="about__image"
+      />
+    </figure>
+
+    <div class="about__body">
+      <p class="eyebrow" data-reveal>About {site.name}</p>
+
+      <h2 id="about-title" data-reveal style="--reveal-delay:60ms">
+        We take the finish personally.
+      </h2>
+
+      <div class="about__copy" data-reveal style="--reveal-delay:120ms">
+        <p>
+          Concrete is unforgiving. Get the base, the steel or the timing wrong
+          and it shows for the next thirty years. So we do the unglamorous part
+          properly — set out accurately, prepare thoroughly, and don't rush the
+          finish.
+        </p>
+        <p>
+          You'll get straight answers on what your job needs, a crew that turns
+          up when we say we will, and a site left clean at the end of it.
+        </p>
+      </div>
+
+      <ul class="about__points" data-reveal style="--reveal-delay:180ms">
+        <li>
+          <span class="about__point-title">Careful preparation</span>
+          <span class="about__point-note">
+            Base, formwork and reinforcement sorted before a truck is booked.
+          </span>
+        </li>
+        <li>
+          <span class="about__point-title">Clean, square finish</span>
+          <span class="about__point-note">
+            Level surfaces, tidy edges and joints cut where they belong.
+          </span>
+        </li>
+        <li>
+          <span class="about__point-title">Straightforward to deal with</span>
+          <span class="about__point-note">
+            Clear quotes, clear timelines and a call if anything changes.
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about {
+    background: var(--paper-2);
+  }
+
+  .about__grid {
+    display: grid;
+    gap: clamp(2.5rem, 1rem + 6vw, 6rem);
+    align-items: center;
+  }
+
+  /* ---- Figure -------------------------------------------------------- */
+
+  .about__figure {
+    margin: 0;
+    position: relative;
+  }
+
+  .about__image {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* A thin offset rule that reads as a drafting mark */
+  .about__figure::after {
+    content: '';
+    position: absolute;
+    inset: auto auto -1.25rem -1.25rem;
+    width: 45%;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  /* ---- Body ---------------------------------------------------------- */
+
+  .about__body h2 {
+    max-width: 15ch;
+  }
+
+  .about__copy {
+    display: grid;
+    gap: 1.15rem;
+    max-width: 50ch;
+    margin-top: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    color: var(--text-muted);
+    font-size: var(--step-lead);
+    line-height: 1.6;
+  }
+
+  .about__points {
+    list-style: none;
+    margin: clamp(2.25rem, 1.5rem + 2vw, 3.25rem) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .about__points li {
+    display: grid;
+    gap: 0.25rem;
+    padding-block: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about__point-title {
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .about__point-note {
+    font-size: 0.94rem;
+    color: var(--text-muted);
+    max-width: 48ch;
+  }
+
+  /* ---- Desktop -------------------------------------------------------- */
+
+  /* Keep the drafting mark inside the gutter on small screens */
+  @media (max-width: 48rem) {
+    .about__figure::after {
+      inset: auto auto -0.9rem 0;
+      width: 35%;
+    }
+  }
+
+  @media (min-width: 62rem) {
+    .about__grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+
+    .about__points li {
+      grid-template-columns: minmax(0, 13rem) minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+  }
+</style>

@@ -1,0 +1,385 @@
+/* ==========================================================================
+   CREECY'S CONCRETE — DESIGN SYSTEM
+   Warm concrete neutrals, an architectural grotesk, and a single burnt-ochre
+   accent used sparingly. Everything else is space and hierarchy.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. TOKENS
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Surface — warm greys pulled from cured concrete, never blue-grey */
+  --ink: #12100e;
+  --ink-800: #1c1916;
+  --ink-700: #2a2622;
+  --paper: #f3f1ed;
+  --paper-2: #e9e5df;
+  --white: #ffffff;
+
+  /* Text */
+  --text: var(--ink);
+  --text-muted: #676259; /* 5.4:1 on --paper, 4.8:1 on --paper-2 */
+  --text-on-ink: #f3f1ed;
+  --text-muted-on-ink: #a39c92; /* 7.0:1 on --ink */
+
+  /* Lines */
+  --line: #dbd5cc;
+  --line-strong: #c7c0b5;
+  --line-on-ink: rgb(255 255 255 / 14%);
+  --line-on-ink-strong: rgb(255 255 255 / 26%);
+
+  /* Accent — burnt ochre. 5.0:1 on --paper, 6.9:1 on --ink */
+  --accent: #9c5420;
+  --accent-on-ink: #d98a46;
+
+  /* Typography */
+  --font-display: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
+
+  --step-display: clamp(2.9rem, 1.1rem + 7.6vw, 7.75rem);
+  --step-h2: clamp(2.05rem, 1.25rem + 3.3vw, 4.25rem);
+  --step-h3: clamp(1.3rem, 1.1rem + 0.85vw, 1.85rem);
+  --step-lead: clamp(1.0625rem, 1rem + 0.4vw, 1.3rem);
+  --step-body: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-label: 0.72rem;
+
+  /* Layout */
+  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --measure: 1440px;
+  --section-y: clamp(5.5rem, 3rem + 8.5vw, 10.5rem);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 220ms;
+  --dur: 480ms;
+  --dur-slow: 900ms;
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  /* Clear the sticky header when jumping to an anchor */
+  scroll-padding-top: 6rem;
+}
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* Images carry intrinsic width/height attributes for CLS. Without this the
+   attribute height wins over any CSS `aspect-ratio` we set on them. */
+img {
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+ul[class],
+ol[class] {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-display);
+  letter-spacing: -0.045em;
+}
+
+h2 {
+  font-size: var(--step-h2);
+}
+
+h3 {
+  font-size: var(--step-h3);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.lead {
+  font-size: var(--step-lead);
+  line-height: 1.55;
+  color: var(--text-muted);
+  max-width: 46ch;
+}
+
+/* Small uppercase eyebrow, always preceded by a short accent rule */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-display);
+  font-size: var(--step-label);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.75rem;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 2.25rem;
+  height: 1px;
+  background: var(--accent);
+  flex: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. LAYOUT PRIMITIVES
+   -------------------------------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: var(--measure);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+/* Dark surfaces flip the whole text palette in one place */
+.on-ink {
+  background: var(--ink);
+  color: var(--text-on-ink);
+  --text: var(--text-on-ink);
+  --text-muted: var(--text-muted-on-ink);
+  --line: var(--line-on-ink);
+  --line-strong: var(--line-on-ink-strong);
+  --accent: var(--accent-on-ink);
+}
+
+/* --------------------------------------------------------------------------
+   5. BUTTONS
+   -------------------------------------------------------------------------- */
+
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--paper);
+  --btn-border: var(--ink);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 1.05rem 1.9rem;
+  min-height: 3.25rem;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+/* Wipe fill, revealed from the bottom on hover */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn:hover::after,
+.btn:focus-visible::after {
+  transform: scaleY(1);
+}
+
+.btn:hover,
+.btn:focus-visible {
+  color: var(--white);
+  border-color: var(--accent);
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--text);
+  --btn-border: var(--line-strong);
+}
+
+.btn--on-image {
+  --btn-bg: transparent;
+  --btn-fg: #fff;
+  --btn-border: rgb(255 255 255 / 45%);
+  backdrop-filter: blur(6px);
+}
+
+.btn--light {
+  --btn-bg: var(--paper);
+  --btn-fg: var(--ink);
+  --btn-border: var(--paper);
+}
+
+.btn .btn__arrow {
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.btn:hover .btn__arrow,
+.btn:focus-visible .btn__arrow {
+  transform: translateX(0.3rem);
+}
+
+/* --------------------------------------------------------------------------
+   6. FOCUS & ACCESSIBILITY
+   -------------------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.on-ink :focus-visible,
+.hero :focus-visible {
+  outline-color: var(--accent-on-ink);
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  padding: 0.9rem 1.4rem;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-110%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7. SCROLL REVEAL
+   Progressive enhancement: without JS `.js-reveal` is never added, so
+   content renders in its final state.
+   -------------------------------------------------------------------------- */
+
+.js-reveal [data-reveal] {
+  opacity: 0;
+  transform: translateY(1.75rem);
+  transition:
+    opacity var(--dur-slow) var(--ease-out),
+    transform var(--dur-slow) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.js-reveal [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js-reveal [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

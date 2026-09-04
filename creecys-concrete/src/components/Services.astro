@@ -1,0 +1,257 @@
+---
+import { Image } from 'astro:assets';
+import { services } from '../data/services';
+---
+
+<section class="services section" id="services" aria-labelledby="services-title">
+  <div class="shell">
+    <header class="services__intro" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2 id="services-title">A full range of concrete work.</h2>
+      <p class="lead services__lead">
+        From a single path to a full house slab — the same standard of
+        preparation, placement and finish on every job.
+      </p>
+    </header>
+
+    <div class="services__body" data-services>
+      {/* Desktop-only preview; the inline thumbs below cover smaller screens */}
+      <div class="services__preview" aria-hidden="true">
+        {
+          services.map((service, i) => (
+            <Image
+              src={service.image}
+              alt=""
+              widths={[440, 700, 900]}
+              sizes="(min-width: 62rem) 34vw, 0px"
+              quality={74}
+              loading="lazy"
+              class:list={['services__preview-img', { 'is-active': i === 0 }]}
+              data-preview={i}
+            />
+          ))
+        }
+      </div>
+
+      <ul class="services__items">
+        {
+          services.map((service, i) => (
+            <li
+              class="services__item"
+              data-service={i}
+              data-reveal
+              style={`--reveal-delay:${Math.min(i, 4) * 70}ms`}
+            >
+              <span class="services__index">{String(i + 1).padStart(2, '0')}</span>
+
+              <div class="services__text">
+                <h3 class="services__title">{service.title}</h3>
+                <p class="services__summary">{service.summary}</p>
+              </div>
+
+              <Image
+                src={service.image}
+                alt={service.alt}
+                widths={[400, 700]}
+                sizes="(min-width: 62rem) 0px, (min-width: 40rem) 30vw, 92vw"
+                quality={72}
+                loading="lazy"
+                class="services__thumb"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .services {
+    background: var(--paper);
+  }
+
+  /* ---- Intro -------------------------------------------------------- */
+
+  .services__intro {
+    max-width: 34ch;
+    margin-bottom: clamp(3rem, 1.5rem + 5vw, 6rem);
+  }
+
+  .services__intro h2 {
+    max-width: 12ch;
+  }
+
+  .services__lead {
+    margin-top: 1.5rem;
+  }
+
+  /* ---- Body --------------------------------------------------------- */
+
+  .services__body {
+    display: grid;
+    gap: clamp(2rem, 4vw, 4.5rem);
+  }
+
+  .services__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .services__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: clamp(1rem, 3vw, 2.25rem);
+    padding-block: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+    border-bottom: 1px solid var(--line);
+    transition: border-color var(--dur) var(--ease-out);
+  }
+
+  .services__index {
+    font-family: var(--font-display);
+    font-size: var(--step-label);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    padding-top: 0.6em;
+    transition: color var(--dur) var(--ease-out);
+  }
+
+  .services__title {
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .services__summary {
+    max-width: 44ch;
+    margin-top: 0.65rem;
+    color: var(--text-muted);
+    font-size: clamp(0.94rem, 0.9rem + 0.2vw, 1.0625rem);
+    line-height: 1.6;
+  }
+
+  .services__thumb {
+    width: clamp(6rem, 23vw, 13rem);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* ---- Sticky preview ------------------------------------------------ */
+
+  .services__preview {
+    display: none;
+    position: relative;
+    aspect-ratio: 3 / 4;
+    background: var(--paper-2);
+    overflow: hidden;
+  }
+
+  .services__preview-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.05);
+    transition:
+      opacity 650ms var(--ease-out),
+      transform 1200ms var(--ease-out);
+  }
+
+  .services__preview-img.is-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* ---- Desktop ------------------------------------------------------- */
+
+  @media (min-width: 62rem) {
+    .services__body {
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      align-items: start;
+    }
+
+    .services__preview {
+      display: block;
+      position: sticky;
+      top: clamp(7rem, 12vh, 9rem);
+    }
+
+    .services__thumb {
+      display: none;
+    }
+
+    .services__item {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .services__item:hover {
+      border-color: var(--line-strong);
+    }
+
+    .services__item:hover .services__index {
+      color: var(--accent);
+    }
+
+    .services__item:hover .services__title {
+      transform: translateX(0.6rem);
+    }
+  }
+
+  /* ---- Small screens -------------------------------------------------- */
+
+  @media (max-width: 40rem) {
+    .services__item {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-areas:
+        'index text'
+        'thumb thumb';
+      gap: 1rem;
+    }
+
+    .services__index {
+      grid-area: index;
+      padding-top: 0.5em;
+    }
+
+    .services__text {
+      grid-area: text;
+    }
+
+    .services__thumb {
+      grid-area: thumb;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      margin-top: 0.35rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .services__preview-img {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /* Swap the sticky preview as the pointer moves down the list.
+     Purely decorative — the panel is aria-hidden and every service already
+     carries its own labelled image for smaller screens. */
+  const root = document.querySelector<HTMLElement>('[data-services]');
+
+  if (root && window.matchMedia('(min-width: 62rem)').matches) {
+    const previews = root.querySelectorAll<HTMLElement>('[data-preview]');
+    const items = root.querySelectorAll<HTMLElement>('[data-service]');
+
+    const show = (index: number) => {
+      previews.forEach((img, i) => img.classList.toggle('is-active', i === index));
+    };
+
+    items.forEach((item, i) => {
+      item.addEventListener('pointerenter', () => show(i));
+    });
+  }
+</script>

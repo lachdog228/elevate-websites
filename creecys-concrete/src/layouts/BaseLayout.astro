@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/archivo';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+import { site, telHref } from '../data/site';
+import { services } from '../data/services';
+import ogImage from '../assets/images/hero.jpg';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.seo.title, description = site.seo.description } =
+  Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).href;
+const ogImageUrl = new URL(ogImage.src, Astro.site ?? site.url).href;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  name: site.name,
+  description: site.seo.description,
+  url: site.url,
+  telephone: site.phone,
+  email: site.email,
+  image: ogImageUrl,
+  areaServed: site.serviceArea,
+  priceRange: '$$',
+  makesOffer: services.map((service) => ({
+    '@type': 'Offer',
+    itemOffered: { '@type': 'Service', name: service.title },
+  })),
+};
+---
+
+<!doctype html>
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#12100e" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={site.seo.ogAlt} />
+    <meta property="og:locale" content="en_AU" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="me" href={telHref} />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+
+    <script>
+      // Reveal-on-scroll. Adds `js-reveal` first so the hidden state only ever
+      // applies when JS can also remove it.
+      const root = document.documentElement;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      if (!reduced.matches) {
+        root.classList.add('js-reveal');
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.05 },
+        );
+
+        for (const el of document.querySelectorAll('[data-reveal]')) {
+          observer.observe(el);
+        }
+      }
+    </script>
+  </body>
+</html>
