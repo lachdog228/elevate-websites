@@ -3,17 +3,52 @@
 A single-page marketing site for DeMarzi Brothers and Sons — concreting and civil works.
 
 Plain HTML, CSS and JavaScript. No build step, no framework, no dependencies.
-Open `index.html` in a browser, or upload the folder to any static host.
+
+**Everything that gets deployed lives in `site/`.** Nothing outside it is
+served — those files are the source notes and helper scripts.
 
 ```
-index.html              The whole page
-assets/css/site.css     Design system + all styles
-assets/js/site.js       Sticky nav, scroll reveals, mobile menu, service preview
-assets/fonts/           Self-hosted variable fonts (112 KB)
-assets/img/             Photography (WebP) + Open Graph image
-assets/favicon.svg      Browser tab icon
-robots.txt, sitemap.xml Search engine basics
+site/                        <- this folder is the website
+  index.html                 The whole page
+  assets/css/site.css        Design system + all styles
+  assets/js/site.js          Sticky nav, scroll reveals, mobile menu, hover preview
+  assets/fonts/              Self-hosted variable fonts (112 KB)
+  assets/img/                Photography (WebP) + Open Graph image
+  assets/favicon.svg         Browser tab icon
+  robots.txt, sitemap.xml    Search engine basics
+
+netlify.toml                 Publish directory + cache headers (Git deploys only)
+tools/make-og-image.py       Rebuilds the link-preview image
+README.md                    This file
 ```
+
+To preview it locally:
+
+```bash
+cd site && python3 -m http.server 8000    # then open http://localhost:8000
+```
+
+Opening `site/index.html` directly with `file://` will not work — the page
+uses absolute paths (`/assets/...`), which need a server root. Any static
+server, or Netlify, resolves them correctly.
+
+---
+
+## Deploying to Netlify
+
+**Drag and drop.** Go to <https://app.netlify.com/drop> and drag the **`site`
+folder** onto the page. That is the whole deploy — `index.html` sits at the
+folder's root, which is what Netlify expects. It is live in a few seconds on a
+`*.netlify.app` address.
+
+To update later, drag the folder again onto the same site's *Deploys* tab.
+
+**Connecting the Git repository instead** (so pushes deploy automatically):
+Netlify reads `netlify.toml`, which already sets the publish directory to
+`site` and leaves the build command empty. Nothing else to configure.
+
+Either way, add the real domain under *Domain management*, then update the
+domain placeholders listed below — Netlify does not rewrite them.
 
 ---
 
@@ -21,7 +56,7 @@ robots.txt, sitemap.xml Search engine basics
 
 Nothing below is a verified fact about the business. Everything is either a
 placeholder or an assumption that needs Frank's confirmation. Search
-`index.html` for `TODO` to find each one in place.
+`site/index.html` for `TODO` to find each one in place.
 
 ### 1. Contact details — required
 
@@ -41,13 +76,13 @@ A quick way to do the repeatable ones:
 
 ```bash
 # Phone (both the link and the visible text)
-sed -i 's/+61400000000/+61YOURNUMBER/g; s/0400 000 000/04XX XXX XXX/g' index.html
+sed -i 's/+61400000000/+61YOURNUMBER/g; s/0400 000 000/04XX XXX XXX/g' site/index.html
 # Email
-sed -i 's/hello@demarzibrothers.com.au/YOUR@EMAIL.com.au/g' index.html
+sed -i 's/hello@demarzibrothers.com.au/YOUR@EMAIL.com.au/g' site/index.html
 # Service area
-sed -i 's/Your service area/Geelong and the Bellarine/g' index.html
+sed -i 's/Your service area/Geelong and the Bellarine/g' site/index.html
 # Domain (index.html, robots.txt and sitemap.xml)
-sed -i 's|https://www.demarzibrothers.com.au|https://yourdomain.com.au|g' index.html robots.txt sitemap.xml
+sed -i 's|https://www.demarzibrothers.com.au|https://yourdomain.com.au|g' site/index.html site/robots.txt site/sitemap.xml
 ```
 
 ### 2. Photography — required
@@ -56,8 +91,9 @@ sed -i 's|https://www.demarzibrothers.com.au|https://yourdomain.com.au|g' index.
 it is DeMarzi's work.** It is there so the layout is finished and so the real
 photos can be dropped straight in.
 
-To replace one, save the new photo over the existing file **using the same
-filename**, at roughly the same dimensions. No code changes are needed.
+To replace one, save the new photo over the existing file in `site/assets/img/`
+**using the same filename**, at roughly the same dimensions. No code changes
+are needed.
 
 | File | Where it appears | Size | Should show |
 |---|---|---|---|
@@ -85,12 +121,13 @@ from PIL import Image, ImageOps
 JOBS = [("DSC_0101.jpg", "hero-entry", 1200, 1500)]
 for src, name, w, h in JOBS:
     im = ImageOps.exif_transpose(Image.open(src).convert("RGB"))
-    ImageOps.fit(im, (w, h), Image.LANCZOS).save(f"assets/img/{name}.webp", "WEBP", quality=78, method=6)
+    ImageOps.fit(im, (w, h), Image.LANCZOS).save(f"site/assets/img/{name}.webp", "WEBP", quality=78, method=6)
 PY
 ```
 
 Then update the `alt` text on the matching `<img>` in `index.html` so it
-describes the new photo. Alt text matters for both screen readers and search.
+describes the new photo in `site/index.html`. Alt text matters for both screen
+readers and search.
 
 **The link preview image is a special case.** `og-image.jpg` is a composite:
 a photo with a dark gradient and the "DeMarzi Brothers and Sons" wordmark set
@@ -107,7 +144,7 @@ addresses or dates.
 
 | Line | Text | Check |
 |---|---|---|
-| `index.html:187` | "Frank runs the jobs personally…" | True? If someone else runs jobs, reword. |
+| `site/index.html` | "Frank runs the jobs personally…" | True? If someone else runs jobs, reword. |
 | Services section | Driveways & Paths / Slabs & Footings / Decorative Finishes / Civil & Earthworks | These are a sensible default for a concreting and civil contractor, **not** a supplied list. Confirm or change the four names and descriptions. |
 | Hero strip | "Family owned and operated" | Confirm. |
 | Contact section | "Straight answer, fair price, no pressure." | Confirm this is how Frank wants to sound. |
@@ -120,7 +157,8 @@ or a review, add it once it is real.
 
 ## Design system
 
-Everything visual is driven by custom properties at the top of `site.css`.
+Everything visual is driven by custom properties at the top of
+`site/assets/css/site.css`.
 Change a token there and it updates across the whole site.
 
 **Colour** — a warm mineral palette. No blue corporate styling, no gradients.
@@ -156,7 +194,7 @@ readable with JavaScript disabled.
 
 ## Editing common things
 
-**Change a service.** Find the `<li class="service">` block in `index.html`.
+**Change a service.** Find the `<li class="service">` block in `site/index.html`.
 Update the `<h3>`, the `<p>`, the `data-preview` path and the thumbnail `<img>`
 — the number is typed by hand in `service__num`. `data-preview` is the image
 that appears on the right when the row is hovered on a wide screen; the
@@ -165,7 +203,7 @@ point both at the same file.
 
 **Add or remove a gallery image.** Each plate is a `<figure class="work-item
 work-item--X">`. The letter (`a`–`e`) sets its size and grid position in
-`site.css` under section 11. Removing one means re-lettering the rest.
+`site/assets/css/site.css` under section 11. Removing one means re-lettering the rest.
 
 **Change a section heading.** All headings are plain `<h2>` / `<h3>` — edit the
 text directly. Keep the order (one `h1`, then `h2` per section, `h3` for items)
@@ -188,10 +226,12 @@ so the page stays correct for screen readers and search engines.
 - ~221 KB above the fold (gzipped HTML/CSS/JS + two fonts + hero image);
   everything below the fold is lazy-loaded
 
-## Deploying
+## Hosting somewhere other than Netlify
 
-Any static host works — Netlify, Cloudflare Pages, Vercel, GitHub Pages, or
-plain shared hosting. Upload the whole folder. There is nothing to build.
+Any static host works — Cloudflare Pages, Vercel, GitHub Pages, or plain shared
+hosting. Upload the **contents of `site/`** so that `index.html` sits at the web
+root. There is nothing to build.
 
-Serve `.woff2` with a long cache header (`Cache-Control: public, max-age=31536000,
-immutable`) if the host allows it.
+If the host allows custom headers, serve `.woff2` with
+`Cache-Control: public, max-age=31536000, immutable`. `netlify.toml` documents
+the full set of headers used.

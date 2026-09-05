@@ -1,0 +1,40 @@
+# Netlify configuration for DeMarzi Brothers and Sons.
+#
+# Only needed if the site is deployed by connecting this Git repository.
+# For a drag-and-drop deploy, drop the `site` folder itself and Netlify
+# will not read this file.
+
+[build]
+  # There is no build step — the site is plain HTML, CSS and JavaScript.
+  publish = "site"
+  command = ""
+
+# Fingerprint-free filenames, so cache aggressively only where the content
+# is genuinely immutable and cheaply re-uploaded if it changes.
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# CSS and JS are edited by hand, so revalidate rather than pin them.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "SAMEORIGIN"

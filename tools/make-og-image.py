@@ -21,8 +21,9 @@ BONE = (245, 242, 236)      # --bone
 OXIDE_LIGHT = (208, 128, 85)  # --oxide-light
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FONT_DIR = os.path.join(ROOT, "assets", "fonts")
-OUT = os.path.join(ROOT, "assets", "img", "og-image.jpg")
+SITE = os.path.join(ROOT, "site")
+FONT_DIR = os.path.join(SITE, "assets", "fonts")
+OUT = os.path.join(SITE, "assets", "img", "og-image.jpg")
 
 
 def load_variable_font(woff2_name):
