@@ -12,8 +12,37 @@ npm run preview  # serve the production build locally
 npm run check    # Astro + TypeScript diagnostics
 ```
 
-The build is fully static — `dist/` can be dropped on Netlify, Vercel, Cloudflare
-Pages, or any static host. No server or runtime is required.
+The build is fully static — no server or runtime required.
+
+## Deploying to Netlify
+
+**`html/` is the ready-to-upload build.** It is committed so it can be deployed
+without running a build first.
+
+- **Drag and drop** — go to <https://app.netlify.com/drop> and drop the `html`
+  folder (or the zip of its *contents*) onto the page.
+- **Connect the repo instead** — set the base directory to `creecys-concrete`,
+  the build command to `npm run build`, and the publish directory to
+  `creecys-concrete/dist`.
+
+`html/_headers` ships with the upload and tells Netlify to cache the
+fingerprinted assets in `/_astro/` for a year while always revalidating the
+HTML.
+
+> **Rebuild `html/` after any source change**, or the deployed site will be
+> stale:
+>
+> ```bash
+> npm run build && rm -rf html && cp -r dist html
+> ```
+
+### One thing to check before going live
+
+`site` in `astro.config.mjs` is set to `https://creecysconcrete.com.au`. That
+value is baked into the canonical URL and the Open Graph image URL at build
+time. If the site will live at a different address — including permanently on a
+`*.netlify.app` subdomain — change `site` and rebuild, otherwise link previews
+will point at a domain that isn't serving the page.
 
 ---
 

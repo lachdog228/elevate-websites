@@ -1,5 +1,8 @@
 node_modules/
 dist/
+
+# html/ is the committed build output for drag-and-drop deploys — keep it
+!html/
 .astro/
 .DS_Store
 npm-debug.log*
