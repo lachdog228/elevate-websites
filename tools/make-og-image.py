@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rebuild assets/img/og-image.jpg — the image shown when the site is shared.
 
-It composites a photograph with a dark gradient and the DeMarzi wordmark, so a
+It composites a photograph with a dark gradient and the Demasi wordmark, so a
 shared link reads as branded rather than as a stray photo.
 
     python3 -m pip install pillow fonttools brotli
@@ -70,7 +70,7 @@ def build(photo_path):
     x, baseline = 72, H - 74
 
     draw.text((x, baseline), "Brothers and Sons", font=serif(58, 400), fill=BONE, anchor="ls")
-    draw.text((x, baseline - 66), "DeMarzi", font=serif(92, 300), fill=BONE, anchor="ls")
+    draw.text((x, baseline - 66), "Demasi", font=serif(92, 300), fill=BONE, anchor="ls")
 
     label_font = sans(17, 500)
     label = "C O N C R E T I N G   &   C I V I L   W O R K S"

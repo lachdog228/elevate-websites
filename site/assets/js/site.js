@@ -1,5 +1,5 @@
 /* =============================================================================
-   DeMarzi Brothers and Sons — interactions
+   Demasi Brothers and Sons — interactions
 
    Principles
    - The page is complete and readable without this file. Every effect here is

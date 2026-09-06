@@ -2,5 +2,5 @@
 Thumbs.db
 node_modules/
 
-# Build output — regenerate with: cd site && zip -rq9 ../demarzi-website.zip .
-demarzi-website.zip
+# Build output — regenerate with: cd site && zip -rq9 ../demasi-website.zip .
+demasi-website.zip

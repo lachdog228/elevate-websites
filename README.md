@@ -1,6 +1,6 @@
-# DeMarzi Brothers and Sons
+# Demasi Brothers and Sons
 
-A single-page marketing site for DeMarzi Brothers and Sons — concreting and civil works.
+A single-page marketing site for Demasi Brothers and Sons — concreting and civil works.
 
 Plain HTML, CSS and JavaScript. No build step, no framework, no dependencies.
 
@@ -65,11 +65,11 @@ Each value appears in more than one place. Replace **all** occurrences.
 | What | Placeholder | Appears in |
 |---|---|---|
 | Phone | `0400 000 000` (and `tel:+61400000000`) | mobile menu, contact section, footer, structured data |
-| Email | `hello@demarzibrothers.com.au` | mobile menu, contact button, contact section, footer, structured data |
+| Email | `hello@demasibrothers.com.au` | mobile menu, contact button, contact section, footer, structured data |
 | Service area | `Your service area` | hero strip, contact section, footer, structured data |
 | Trading hours | `Mon–Fri, 7am – 4pm` | contact section |
 | ABN / licence | `ABN 00 000 000 000` | footer — replace, or delete the line |
-| Domain | `https://www.demarzibrothers.com.au/` | `<link rel="canonical">`, all `og:` tags, structured data, `robots.txt`, `sitemap.xml` |
+| Domain | `https://www.demasibrothers.com.au/` | `<link rel="canonical">`, all `og:` tags, structured data, `robots.txt`, `sitemap.xml` |
 | Suburb / state | `"addressLocality": "Suburb"`, `"addressRegion": "STATE"` | structured data (`application/ld+json`) |
 
 A quick way to do the repeatable ones:
@@ -78,17 +78,17 @@ A quick way to do the repeatable ones:
 # Phone (both the link and the visible text)
 sed -i 's/+61400000000/+61YOURNUMBER/g; s/0400 000 000/04XX XXX XXX/g' site/index.html
 # Email
-sed -i 's/hello@demarzibrothers.com.au/YOUR@EMAIL.com.au/g' site/index.html
+sed -i 's/hello@demasibrothers.com.au/YOUR@EMAIL.com.au/g' site/index.html
 # Service area
 sed -i 's/Your service area/Geelong and the Bellarine/g' site/index.html
 # Domain (index.html, robots.txt and sitemap.xml)
-sed -i 's|https://www.demarzibrothers.com.au|https://yourdomain.com.au|g' site/index.html site/robots.txt site/sitemap.xml
+sed -i 's|https://www.demasibrothers.com.au|https://yourdomain.com.au|g' site/index.html site/robots.txt site/sitemap.xml
 ```
 
 ### 2. Photography — required
 
 **Every image on the site is a licensed stock placeholder from Unsplash. None of
-it is DeMarzi's work.** It is there so the layout is finished and so the real
+it is Demasi's work.** It is there so the layout is finished and so the real
 photos can be dropped straight in.
 
 To replace one, save the new photo over the existing file in `site/assets/img/`
@@ -130,7 +130,7 @@ describes the new photo in `site/index.html`. Alt text matters for both screen
 readers and search.
 
 **The link preview image is a special case.** `og-image.jpg` is a composite:
-a photo with a dark gradient and the "DeMarzi Brothers and Sons" wordmark set
+a photo with a dark gradient and the "Demasi Brothers and Sons" wordmark set
 into it, so shared links look branded rather than like a stray photo. Dropping
 a plain photo over it loses that. To rebuild it with a new photo, run
 `tools/make-og-image.py` after pointing it at the new source file.
